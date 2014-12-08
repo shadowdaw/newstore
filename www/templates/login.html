@@ -1,0 +1,34 @@
+<ion-view  >
+<ion-header-bar  class="bar-stable" >
+<h1 class="title ">新商店登录中心</h1>
+  <div class="buttons">
+    <button class="button  button-clear button-assertive" ng-click="closelogin()">取消</button>
+  </div>
+</ion-header-bar>
+  <ion-content >
+  <div class="list card">
+    <form ng-submit="dologin()">
+  <a class="item loginbg">
+    <img src="img/temp/login/loginbg.png">
+  </a>
+  <label class="item item-input">
+    <i class="icon ion-ios7-person-outline placeholder-icon logininput"></i>
+    <input type="text" placeholder="请输入账号" name="userName" ng-model="Member.userName">
+  </label>
+  <label class="item item-input">
+    <i class="icon ion-ios7-locked-outline placeholder-icon logininput"></i>
+    <input type="text" placeholder="请输入密码" name="password" ng-model="Member.password">
+  </label>
+  <button class="button button-full button-assertive radius-5" type="submit">
+      登录
+    </button>
+    </form>
+  <div class="bar tabs-relative">
+    <button class="button  button-small button-clear button-dark" ng-click="closelogin()">忘记密码</button>
+    <button class="button  button-small button-clear button-calm" ng-click="openregister()">立即注册</button>
+</div>
+</div>
+
+  </ion-content>
+
+</ion-view>

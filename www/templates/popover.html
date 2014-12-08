@@ -1,0 +1,15 @@
+<ion-popover-view class="width-150" style="transform: translateY(-20px);">
+    <ion-header-bar>
+      <h1 class="title">全部</h1>
+    </ion-header-bar>
+    <ion-content>
+<ion-list >
+  <ion-item ng-repeat="category in productcates" type="item-text-wrap"  class="nopadding" ng-click="refreshproducts({{category.id}})">
+          <a class="item nopadding productcate" href="#">
+          <p>{{category.name}}</p>
+        </a>
+      </ion-item>
+    </ion-list>
+</ion-list>
+    </ion-content>
+  </ion-popover-view>

@@ -1,0 +1,35 @@
+<ion-view>
+<ion-header-bar  class="bar-stable" >
+<div class="buttons">
+    <button class="button icon-left ion-chevron-left button-clear button-dark" ng-click="closeregister()"></button>
+</div>
+<h1 class="title ">注册</h1>
+</ion-header-bar>
+ <ion-content >
+  <div class="list card" style="box-shadow: 0 0px 0px rgba(0, 0, 0, 0.1);">
+    <form ng-submit="submitForm()">
+  <label class="item item-input registerLabel radius-5" style="margin-top: 30px;margin-bottom: 23px;">
+    <i class="icon ion-iphone placeholder-icon logininput"></i>
+    <input type="text" name="userName" placeholder="请输入手机号" ng-model="formMember.userName">
+    <button class="button button-clear" style="border-left: 1px solid #DDDDDD" ng-click="closeregister()">验证码</button>
+  </label>
+  <label class="item item-input registerLabel radius-5" style="margin-bottom: 23px;">
+    <input type="text" style="height: 45px;" name="yzm" placeholder="输入您收到的验证码" ng-model="formMember.yzm">
+  </label>
+  <label class="item item-input registerLabel radius-5" style="margin-bottom: 23px;">
+    <i class="icon ion-ios7-locked-outline placeholder-icon logininput"></i>
+    <input type="text" placeholder="请输入密码" name="password"  ng-model="formMember.password">
+  </label>
+  <button class="button button-full button-assertive radius-5" type="submit">
+      注册
+    </button>
+</div>
+</form>
+  </ion-content>
+
+</ion-view>
+<style type="text/css">
+  .registerLabel{
+    padding:0px 0px 0px 16px;
+  }
+</style>

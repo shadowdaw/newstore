@@ -1,0 +1,82 @@
+<ion-view  >
+  <ion-content >
+  <div class="bar bar-header  bar-clear">
+           <button class="button button-clear" ng-click="closedetails()" >
+           <i class="icon ion-chevron-left"></i>
+        </button>
+        <button class="button button-clear" ng-click="SharePage()">
+          <i class="icon ion-more"></i>
+        </button>
+ </div>
+  <div class="item nopadding" >
+    <img class="logo" src="img/temp/shop/shoplogo.png">
+    <img class="bgimage" src="img/temp/shop/shopbg.png" >
+  </div>
+  <div class="tabs tabs-relative height-80">
+  <a class="tab-item">
+    <div class="shopCount ">
+    <span class="shopnumcount">447</span>
+    <span class="shopcatetitle">全部</span>
+    </div>
+  </a>
+  <a class="tab-item">
+    <div class="shopCount">
+    <span class="shopnumcount">221</span>
+    <span class="shopcatetitle">优惠</span>
+    </div>
+  </a>
+  <a class="tab-item">
+   <div class="shopCount">
+    <span class="shopnumcount">20</span>
+    <span class="shopcatetitle">新品</span>
+    </div>
+  </a>
+</div>
+  <div class="item item-image">
+    <img src="img/temp/shop/shopimg1.png">
+  </div>
+<div class="card">
+<div class="item bar padding-top " style="border:none">
+  <div class="title title-left ">所有商品</div>
+ </div>
+
+</div>
+
+<div class="item nopadding"
+    ng-repeat="product in products" style="width:50%" ng-click="showProductDetail({{product.id}});">
+   <img src="img/temp/shop/product4.png" style="width:100%">
+     <div class="padding-left padding-right product-desc">
+      无印良品 MUJI 可自由调节拉杆高度带轮锁硬壳拉杆箱
+  </div>
+
+  <div class="padding-left padding-right price">
+    <span class=" fl">
+      ￥ 1288.00
+    </span>
+    <i class="icon ion-heart fr assertive"></i>
+  </div>
+ </div> 
+<div style="display:block;height:50px;">
+
+</div>
+</ion-content>
+
+<div class="button-bar " style="position:fixed;bottom:0">
+
+  <a class="button " style="padding:0px;" ng-click="openPopover($event)">
+    宝贝分类
+  </a>
+  <a class="button " style="padding:0px;">
+    店铺简介
+  </a>
+  <a class="button " style="padding:0px;">
+    联系卖家
+  </a>
+  <a class="button " style="padding:0px;">
+    付款
+  </a>
+</div>
+
+
+</ion-view>
+
