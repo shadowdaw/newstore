@@ -8,27 +8,31 @@
           <i class="icon ion-more"></i>
         </button>
  </div>
-  <div class="item nopadding">
-    <img class="bgimage" src="img/temp/product/productbg.png" >
+  <div class="item nopadding" style="height:300px">
+    <img class="bgimage" src="{{product.product.detailImage}}" >
   </div>
 
 <div class="row" style="background: #fff;">
   <div class="col">
-    <strong class="padding-left padding-right" style="font-size: 16px;">
-      无印良品 女士 短袖 强捻巴里纱短袖罩衫
-    </strong><br>
-  <div class="padding-left padding-right">
-    <span class=" fl" style="color: #DF0024;font-size: 16px;">
-      ￥ 360.00
+      <div class="item  padding-right noborder nopadding padding-left">
+    <span class=" fl" style="font-size: 16px;">
+         {{product.product.name}}
     </span>
+  </div>
+  <div class="item  padding-right noborder nopadding padding-left">
+    <span class=" fl" style="color: #DF0024;font-size: 16px;">
+      ￥  {{product.product.discountPrice}}
+    </span>
+    <!--
     <span class="fr" style="margin-left: 5px;color: #666;font-size: 16px;">68</span><i class="icon ion-ios7-heart-outline fr"></i><br>
+  -->
     </div>
-    <div class="padding-left padding-right">
+    <div class="item padding-left padding-right noborder nopadding">
      <span class=" fl" style="text-decoration:line-through;color: #666;font-size: 16px;">
-      价格:￥ 720.00
+      价格:￥ {{product.product.price}}
     </span><br>
       <div style="text-align: center;color: #666;font-size: 16px;">
-        <span class="fl">卖家包邮</span><span>月销 55笔</span><span class="fr">宁波</span>
+        <span class="fl">卖家包邮</span><span class="fr">宁波</span>
       </div>
   </div>
   </div>

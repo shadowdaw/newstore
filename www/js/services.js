@@ -9,6 +9,9 @@ angular.module('starter.services', [])
 .factory('LocalData', function($http, $q) {
   var product;
   var order;
+  var shopcargory;
+  var shop;
+  var rediretfromUrl;
   return {    
     getproduct: function() {
       return product;
@@ -16,6 +19,24 @@ angular.module('starter.services', [])
     setproduct: function(data) {
       product=data;
     },
+    getshopcargory: function() {
+      return shopcargory?shopcargory:1;
+    },
+    setshopcargory: function(data) {
+      shopcargory=data;
+    },
+    getshop: function() {
+      return shop
+    },
+    setshop: function(data) {
+      shop=data;
+    },
+    getrediretfromUrl: function() {
+      return rediretfromUrl
+    },
+    setrediretfromUrl: function(data) {
+      rediretfromUrl=data;
+    }
   }
 })
 
@@ -166,6 +187,31 @@ angular.module('starter.services', [])
       })
       return deferred.promise;
     },
+    getUserblance: function(id) {
+      var deferred = $q.defer();
+      $http({
+        method: 'JSONP',
+        url: _url+'getBalance?callbackName=JSON_CALLBACK&userId='+id
+      }).success(function(data){
+        deferred.resolve(data);
+      }).error(function(data,status){
+        deferred.reject(status)
+      })
+      return deferred.promise;
+    },
+    pay: function(data) {
+       var deferred = $q.defer();
+      $http({
+        method: 'JSONP',
+        params:data,
+        url: 'http://admin.53xsd.com/trade/userPay?callbackName=JSON_CALLBACK'
+      }).success(function(data){
+        deferred.resolve(data);
+      }).error(function(data,status){
+        deferred.reject(status)
+      })
+      return deferred.promise;
+    },
     getProductdetail: function(id) {
       var deferred = $q.defer();
       $http({
@@ -229,7 +275,18 @@ angular.module('starter.services', [])
 })
 
 .factory('Location', function($http, $q) {
+  var cityName;
+
+
+
   return {
+    setCityName:function(city){
+     cityName=city;
+
+    },
+    getCityName:function(){
+      return cityName;
+    },
     getLocation: function() {
        var deferred = $q.defer();
       $http({
@@ -253,6 +310,18 @@ angular.module('starter.services', [])
         deferred.reject(status)
       })
       return deferred.promise;
+    },
+  getCitys: function(areaId) {
+       var deferred = $q.defer();
+      $http({
+        method: 'JSONP',
+        url: _url+'getCitys?callbackName=JSON_CALLBACK&areaId='+areaId
+      }).success(function(data){
+        deferred.resolve(data);
+      }).error(function(data,status){
+        deferred.reject(status)
+      })
+      return deferred.promise;
     }
   }
 })
@@ -265,6 +334,19 @@ angular.module('starter.services', [])
     },
     setMember: function(data) {
       member=data;
+    },
+    getCode: function(mobi) {
+       var deferred = $q.defer();
+      $http({
+        method: 'JSONP',
+        params:{mobile:mobi},
+        url: 'http://admin.53xsd.com/user/sendActiveCode?callbackName=JSON_CALLBACK'
+      }).success(function(data){
+        deferred.resolve(data);
+      }).error(function(data,status){
+        deferred.reject(status)
+      })
+      return deferred.promise;
     },
     doReg: function(data) {
        var deferred = $q.defer();

@@ -9,8 +9,8 @@
         </button>
  </div>
   <div class="item nopadding" >
-    <img class="logo" src="img/temp/shop/shoplogo.png">
-    <img class="bgimage" src="img/temp/shop/shopbg.png" >
+    <img class="logo" src="{{shopinfo.shop.logo}}">
+    <img class="bgimage" src="{{shopinfo.shop.image}}" >
   </div>
   <div class="tabs tabs-relative height-80">
   <a class="tab-item">
@@ -43,15 +43,17 @@
 </div>
 
 <div class="item nopadding"
-    ng-repeat="product in products" style="width:50%" ng-click="showProductDetail({{product.id}});">
-   <img src="img/temp/shop/product4.png" style="width:100%">
+    ng-repeat="product in products" style="width:50%;display:inline-block" ng-click="showProductDetail({{product.id}});">
+    <div style="width:100%;height:200px;overflow:hidden">
+   <img src="{{product.detailImage}}" style="width:100%;">
+    </div>
      <div class="padding-left padding-right product-desc">
-      无印良品 MUJI 可自由调节拉杆高度带轮锁硬壳拉杆箱
+      {{product.name}}
   </div>
 
   <div class="padding-left padding-right price">
     <span class=" fl">
-      ￥ 1288.00
+      ￥ {{product.price}}
     </span>
     <i class="icon ion-heart fr assertive"></i>
   </div>
@@ -63,7 +65,7 @@
 
 <div class="button-bar " style="position:fixed;bottom:0">
 
-  <a class="button " style="padding:0px;" ng-click="openPopover($event)">
+  <a class="button " style="padding:0px;" >
     宝贝分类
   </a>
   <a class="button " style="padding:0px;">
@@ -72,7 +74,7 @@
   <a class="button " style="padding:0px;">
     联系卖家
   </a>
-  <a class="button " style="padding:0px;">
+  <a class="button " style="padding:0px;" ng-click="shoptoPay()"> 
     付款
   </a>
 </div>

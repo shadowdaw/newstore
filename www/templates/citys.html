@@ -1,0 +1,45 @@
+<ion-view  >
+<ion-header-bar  class="bar-assertive" >
+   <button class="button button-clear" ng-click="backtoIndex()">
+    <i class="icon ion-close-round"></i>
+    </button>
+    <a class="title">选择城市</a>
+</ion-header-bar>
+  <ion-content >
+  <div class="list">
+
+  <div class="item item-divider">
+    当前城市
+  </div>
+
+  <div class="item">
+   <a  class="button locatonbutton">杭州</a>
+  </div>
+</div>
+
+   <div class="row">
+  <div class="col col-33 nopadding" >
+<ion-list >
+  <ion-item ng-repeat="category in categorys" type="item-text-wrap"  class="nopadding" 
+  ng-click="refreshCitys({{category.id}})">
+          <a class="item ">
+          <p>{{category.name}}</p>
+        </a>
+      </ion-item>
+    </ion-list>
+</ion-list>
+</div>
+  <div class="col col-67 nopadding">
+    <ion-list>
+      <ion-item ng-repeat="city in citys" type="item-text-wrap"  class="nopadding" >
+        <a class="item"   ng-click="chosethisCity('{{city.name}}')">
+          <p>{{city.name}}</p>
+       </a>
+      </ion-item>
+    </ion-list>
+  </div>
+</div>
+  
+  </ion-content>
+
+</ion-view>

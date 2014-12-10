@@ -4,23 +4,29 @@ angular.module('starter.controllers', [])
 .controller('IndexCtrl', function($scope, $ionicModal,$ionicPopover,$ionicBackdrop,Location,IndexService) {
   
 
+
+     
+  if(Location.getCityName()){
+   $scope.location=Location.getCityName();
+  }else{
+      Location.getLocation().then(function(data){
+          $scope.location=data.content.address_detail.city;
+        }, function(data){
+          console.log(data);
+        });
+  }
 $scope.menus=IndexService.get();
 //分享
  $ionicPopover.fromTemplateUrl('templates/region.html', {
     scope: $scope,
   }).then(function(region) {
-     Location.getLocation().then(function(data){
-        $scope.location=data.content.address_detail.city;
-      }, function(data){
-        alert(data);
-      });
     $scope.region = region;
   });
   $scope.getRegions = function($event) {
      Location.getAreas($scope.location).then(function(data){
         $scope.regionoptions =data.result;
       }, function(data){
-        alert(data);
+        console.log(data);
       });
     $scope.region.show($event);
   };
@@ -28,33 +34,35 @@ $scope.menus=IndexService.get();
   $scope.showShops = function(categoryId) {
     window.location.href="#/shops/"+categoryId;
   };
-
+ $scope.chosecity = function() {
+    $scope.region.hide();
+    window.location.href="#/citys";
+  };
 
   
 })
 
 
 
-.controller('ShopsCtrl', function($scope,$stateParams,Friends,Shops) {
-    $scope.friends = Friends.all();
-    $scope.shops = Shops.one();
+.controller('ShopsCtrl', function($scope,$stateParams,Shops,LocalData) {
     Shops.getcategorys($stateParams.categoryId).then(function(data){
         $scope.categorys = data.result;
           Shops.getShops(data.result[0].id).then(function(data){
              $scope.shops = data.result;
           }, function(data){
-            alert(data);
+            console.log(data);
           });
       }, function(data){
-        alert(data);
+        console.log(data);
       });
     
+    LocalData.setshopcargory($stateParams.categoryId);
 
     $scope.refreshshops= function(categoryId) {
       Shops.getShops(categoryId).then(function(data){
              $scope.shops = data.result;
           }, function(data){
-            alert(data);
+            console.log(data);
           });
     };
 
@@ -65,28 +73,72 @@ $scope.menus=IndexService.get();
 
 })
 
+.controller('CitysCtrl', function($scope,LocalData,Location) {
+
+      Location.getCitys(1).then(function(data){
+        $scope.categorys = data.result;
+           Location.getCitys(data.result[0].id).then(function(data){
+             $scope.citys = data.result;
+          }, function(data){
+            console.log(data);
+          });
+      }, function(data){
+        console.log(data);
+      });
+
+$scope.refreshCitys =function(cityId) {
+       Location.getCitys(cityId).then(function(data){
+            $scope.citys = data.result;
+          }, function(data){
+            console.log(data);
+          });
+    };
+$scope.chosethisCity=function(cityName) {
+      Location.setCityName(cityName);
+      window.location.href="#/tab/dash";
+}
+
+    $scope.backtoIndex = function() {
+      window.location.href="#/tab/dash";
+    };
+
+
+})
+
 .controller('ShopdetailCtrl', function($scope,$ionicPopover,$stateParams,Shopdetail,Shops,LocalData) {
   var shopId=$stateParams.shopId
-  $scope.closedetails= function() {
-   window.location.href="#/shopdetail/"+shopId;
-  };
 
-  $scope.showProductDetail=function(productId) {
-   window.location.href="#/product/"+productId;
-  };
 //商铺详情的获取
   // Shops.getShopDetail().then(function(data){
   //       $scope.shop=data.result;
   //     }, function(data){
-  //       alert(data);
+  //       console.log(data);
   //     })
+      Shops.getShopDetail(shopId).then(function(data){
+        $scope.shopinfo=data.result;
+        LocalData.setshop(data.result);
+      }, function(data){
+        console.log(data);
+      });
+
   Shops.getShopProducts(shopId).then(function(data){
         $scope.products=data.result;
-        LocalData.setproduct(data.result);
       }, function(data){
-        alert(data);
+        console.log(data);
       })
 
+  $scope.closedetails= function() {
+   window.location.href="#/shops/"+LocalData.getshopcargory();
+  };
+
+
+  $scope.showProductDetail=function(productId) {
+   window.location.href="#/product/"+productId;
+  };
+
+   $scope.shoptoPay=function(productId) {
+   window.location.href="#/shoptopay/"+shopId;
+  };
 
   // $scope.SharePage = function() {
   //   try{
@@ -122,10 +174,16 @@ $scope.menus=IndexService.get();
 })
 
 
-.controller('ProductCtrl', function($scope,$stateParams) {
+.controller('ProductCtrl', function($scope,$stateParams,Shops,LocalData) {
 var productId=$stateParams.productId;
+ Shops.getProductdetail(productId).then(function(data){
+        $scope.product=data.result;
+        LocalData.setproduct(data.result);
+      }, function(data){
+        console.log(data);
+      })
   $scope.closeProductDetail=function(){
-   window.location.href="#/shopdetail/"+productId;
+   window.location.href="#/shopdetail/"+LocalData.getshop().shop.id;
   };
  $scope.topaypage=function(){
    window.location.href="#/topay/"+productId;
@@ -134,9 +192,146 @@ var productId=$stateParams.productId;
 
 })
 
-.controller('ToPayCtrl', function($scope,$stateParams) {
+.controller('ToPayCtrl', function($scope,$stateParams,$ionicPopup,LocalData,Shops,MemberService) {
+  $scope.date=new Date();
+  $scope.payinfo= {};
+var productId=$stateParams.productId;
+
+     Shops.getProductdetail(productId).then(function(data){
+        $scope.product=data.result;
+        LocalData.setproduct(data.result);
+        loadshop();
+      }, function(data){
+        console.log(data);
+      })
+if(MemberService.getMember()){
+  $scope.member=MemberService.getMember();
+      Shops.getUserblance($scope.member.id).then(function(data){
+        $scope.memberblance=data.result;
+      }, function(data){
+        console.log(data);
+      })
+}else{
+  LocalData.setrediretfromUrl("#/topay/"+productId);
+  window.location.href="#/login";
+
+}
+
+
+
+function loadshop(){
+if(LocalData.getshop()){
+      $scope.shopinfo=LocalData.getshop();
+  }else{
+      Shops.getShopDetail(LocalData.getproduct().product.shopId).then(function(data){
+        $scope.shopinfo=data.result;
+        LocalData.setshop(data.result);
+      }, function(data){
+        console.log(data);
+      })
+
+  }
+
+};
+
+$scope.submitpayinfo=function () {
+  $scope.payinfo.userName=$scope.member.userName;
+  $scope.payinfo.shopId=$scope.shopinfo.shop.id;
+
+    Shops.pay($scope.payinfo).then(function(data){
+        var code=data.code;
+            if(code==0){
+              MemberService.setMember(data.result);
+              var alertPopup = $ionicPopup.console.log({
+                       title: '支付成功！',
+                       template: '返回店铺页面！'
+                     });
+                     alertPopup.then(function(res) {
+                       window.location.href="#/shopdetail/"+$scope.shopinfo.shop.id;
+                      });
+            }else if(code==-5){
+              MemberService.setMember(data.result);
+              var alertPopup = $ionicPopup.console.log({
+                       title: '余额不足！',
+                       template: '请重新输入金额！'
+                     });
+                     alertPopup.then(function(res) {
+                      });
+            };
+        }, function(data){
+        console.log(data);
+        })
+}
+
+
+$scope.product=LocalData.getproduct();
   $scope.back=function(){
    window.location.href="#/product/"+productId;
+  };
+
+})
+
+
+
+
+
+
+.controller('ShoptoPayCtrl', function($scope,$stateParams,$ionicPopup,LocalData,Shops,MemberService) {
+  $scope.date=new Date();
+  $scope.payinfo= {};
+var shopId=$stateParams.shopId;
+Shops.getShopDetail(shopId).then(function(data){
+        $scope.shopinfo=data.result;
+        LocalData.setshop(data.result);
+      }, function(data){
+        console.log(data);
+      })
+
+if(MemberService.getMember()){
+  $scope.member=MemberService.getMember();
+      Shops.getUserblance($scope.member.id).then(function(data){
+        $scope.memberblance=data.result;
+      }, function(data){
+        console.log(data);
+      })
+}else{
+  LocalData.setrediretfromUrl("#/shoptopay/"+shopId);
+  window.location.href="#/login";
+
+}
+
+$scope.submitpayinfo=function () {
+  $scope.payinfo.userName=$scope.member.userName;
+  $scope.payinfo.shopId=$scope.shopinfo.shop.id;
+
+    Shops.pay($scope.payinfo).then(function(data){
+        var code=data.code;
+            if(code==0){
+              MemberService.setMember(data.result);
+              var alertPopup = $ionicPopup.console.log({
+                       title: '支付成功！',
+                       template: '返回店铺页面！'
+                     });
+                     alertPopup.then(function(res) {
+                       window.location.href="#/shopdetail/"+$scope.shopinfo.shop.id;
+                      });
+            }else if(code==-5){
+              MemberService.setMember(data.result);
+              var alertPopup = $ionicPopup.console.log({
+                       title: '余额不足！',
+                       template: '请重新输入金额！'
+                     });
+                     alertPopup.then(function(res) {
+                      });
+            };
+        }, function(data){
+        console.log(data);
+        })
+}
+
+
+  $scope.back=function(){
+   window.location.href="#/shopdetail/"+shopId;
   };
 
 })
@@ -149,7 +344,7 @@ var productId=$stateParams.productId;
    Friends.jsonp().then(function(data){
         $scope.friends=data;
       }, function(data){
-        alert(data);
+        console.log(data);
       })
 })
 
@@ -163,7 +358,7 @@ var productId=$stateParams.productId;
       var friends  = Friends.all();
   //Show a backdrop for one second
   $scope.Factory = function() {
-    alert(friends);
+    console.log(friends);
   };
 
 
@@ -173,7 +368,7 @@ var productId=$stateParams.productId;
     try{
     window.plugins.socialsharing.share('Message and link', null, null, 'http://www.x-services.nl');
     }catch(err){
-      alert(err);
+      console.log(err);
     }
   };
 
@@ -181,9 +376,9 @@ var productId=$stateParams.productId;
   var friendsThree;
    $scope.FactoryTwo = function() {
     Location.getAreas("杭州市").then(function(data){
-        alert(JSON.stringify(data));
+        console.log(JSON.stringify(data));
       }, function(data){
-        alert(data);
+        console.log(data);
       })
   };
 
@@ -193,13 +388,14 @@ var productId=$stateParams.productId;
 //会员页面的controller
 .controller('MemberCtrl', function($scope, $ionicModal,MemberService) {
  $scope.openlogin=function(shopId) {
+  LocalData.setrediretfromUrl("#/tab/member");
     window.location.href="#/login";
   };
 $scope.Member =MemberService.getMember();
 })
 
 //会员页面的controller
-.controller('LoginCtrl', function($scope, $ionicModal,$ionicPopup, MemberService) {
+.controller('LoginCtrl', function($scope, $ionicModal,$ionicPopup, MemberService,LocalData) {
    $scope.closelogin= function() {
     window.location.href="#/tab/member";
   };
@@ -213,16 +409,16 @@ $scope.Member =MemberService.getMember();
         var code=data.code;
         if(code==0){
           MemberService.setMember(data.result);
-        var alertPopup = $ionicPopup.alert({
+        var alertPopup = $ionicPopup.console.log({
                    title: '登录成功！',
-                   template: '返回个人中心！'
+                   template: '返回登录前页面！'
                  });
                  alertPopup.then(function(res) {
-                   window.location.href="#/tab/member";
+                   window.location.href=LocalData.getrediretfromUrl();
                  });
                };
         }, function(data){
-        alert(data);
+        console.log(data);
         })
 
   }
@@ -233,13 +429,31 @@ $scope.Member =MemberService.getMember();
    $scope.closeregister= function() {
     window.history.go(-1);
   };
+
   $scope.formMember = {};
+
+  $scope.getactivecode= function() {
+    MemberService.getCode($scope.formMember.userName).then(function(data){
+        var code=data.code;
+        if(code==0){
+        var alertPopup = $ionicPopup.console.log({
+                   title: '已发送验证码',
+                   template: '验证码会在一分钟之内发送到您的手机.'
+                 });
+                 alertPopup.then(function(res) {
+                 });
+               };
+        }, function(data){
+        console.log(data);
+        })
+  };
+
 
   $scope.submitForm=function (){
       MemberService.doReg($scope.formMember).then(function(data){
         var code=data.code;
         if(code==0){
-        var alertPopup = $ionicPopup.alert({
+        var alertPopup = $ionicPopup.console.log({
                    title: '注册成功！',
                    template: '注册成功，点击确定跳转登录页面'
                  });
@@ -248,7 +462,7 @@ $scope.Member =MemberService.getMember();
                  });
                };
         }, function(data){
-        alert(data);
+        console.log(data);
         })
   };
 

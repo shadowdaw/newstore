@@ -89,6 +89,11 @@ angular.module('starter', ['ionic', 'starter.controllers', 'starter.services'])
         }
       }
     })
+    .state('citys', {
+      url: "/citys",
+      controller: 'CitysCtrl',
+      templateUrl: "templates/citys.html"
+    })
 
     .state('shops', {
       url: "/shops/:categoryId",
@@ -107,6 +112,11 @@ angular.module('starter', ['ionic', 'starter.controllers', 'starter.services'])
       url: "/product/:productId",
       controller: 'ProductCtrl',
       templateUrl: "templates/productdetail.html"
+    })
+    .state('shoptopay', {
+      url: "/shoptopay/:shopId",
+      controller: 'ShoptoPayCtrl',
+      templateUrl: "templates/shoptopay.html"
     })
 
     .state('topay', {

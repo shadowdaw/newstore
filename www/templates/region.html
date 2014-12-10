@@ -1,5 +1,5 @@
 <ion-popover-view style="width: 95%;height:320px;">
-<ion-scroll  style="width: 100%; height: 70%;padding-top: 20px;">
+<ion-scroll  style="width: 100%; height: 80%;padding-top: 20px;">
  <div class="item nopadding"
     collection-repeat="regionoption in regionoptions"
     collection-item-width="'33%'"
@@ -7,7 +7,7 @@
    <a  class="button locatonbutton">{{regionoption.name}}</a>
   </div>
  </ion-scroll>
-  <button class="button button-full icon-right ion-chevron-right radius-20">
+  <button class="button button-block icon-right ion-chevron-right radius-20" ng-click="chosecity()">
  当前城市：{{location}}
 </button>
   </ion-popover-view>

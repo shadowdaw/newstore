@@ -7,28 +7,25 @@
     <i class="icon ion-ios7-search placeholder-icon"></i>
     <input type="search" placeholder="找店铺">
   </label>
-  <button class="button button-clear icon-left ion-location ">
-  	定位
-  </button>
 </ion-header-bar>
   <ion-content >
   <div class="item item-image">
     <img src="img/temp/shops/shops_01.png">
   </div>
    <div class="row">
-  <div class="col col-25 nopadding" >
+  <div class="col col-33 nopadding" >
 <ion-list >
   <ion-item ng-repeat="category in categorys" type="item-text-wrap"  class="nopadding" 
   ng-click="refreshshops({{category.id}})">
           <a class="item shopcategory">
-          <div ><img src="{{category.logo}}"></div>
+          <div ><img src="{{category.image}}" style="width:80%"></div>
           <p>{{category.name}}</p>
         </a>
       </ion-item>
     </ion-list>
 </ion-list>
 </div>
-  <div class="col col-75 nopadding">
+  <div class="col col-67 nopadding">
     <ion-list>
       <ion-item ng-repeat="shop in shops" type="item-text-wrap"  class="nopadding" >
         <a class="item shopItem-left"    href="#/shopdetail/{{shop.id}}">
