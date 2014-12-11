@@ -380,17 +380,17 @@ angular.module('starter.services', [])
 .factory('IndexService', function($http, $q) {
   var menus=[
    {id: 1,name: '服装鞋帽',logo:'img/temp/icon/icon-cloth.png' },
-   {id: 2,name: '餐饮美食',logo:'img/temp/icon/icon-food.png' },
-   {id: 3,name: '酒店宾馆',logo:'img/temp/icon/icon-hotel.png' },
-   {id: 4,name: '旅游观光',logo:'img/temp/icon/icon-plane.png' },
-   {id: 5,name: '休闲娱乐',logo:'img/temp/icon/icon-drink.png' },
-   {id: 6,name: '美容美发',logo:'img/temp/icon/icon-hair.png' },
-   {id: 7,name: '家具装饰',logo:'img/temp/icon/icon-bed.png' },
-   {id: 8,name: '电子数码',logo:'img/temp/icon/icon-pad.png' },
-   {id: 9,name: '工艺礼品',logo:'img/temp/icon/icon-gift.png' },
-   {id: 10,name: '日用百货',logo:'img/temp/icon/icon-book.png' },
-   {id: 11,name: '汽车摩托',logo:'img/temp/icon/icon-car.png' },
-   {id: 12,name: '更多',logo:'img/temp/icon/icon-more.png' }
+   {id: 5,name: '餐饮美食',logo:'img/temp/icon/icon-food.png' },
+   {id: 6,name: '酒店宾馆',logo:'img/temp/icon/icon-hotel.png' },
+   {id: 7,name: '旅游观光',logo:'img/temp/icon/icon-plane.png' },
+   {id: 8,name: '休闲娱乐',logo:'img/temp/icon/icon-drink.png' },
+   {id: 9,name: '美容美发',logo:'img/temp/icon/icon-hair.png' },
+   {id: 10,name: '家具装饰',logo:'img/temp/icon/icon-bed.png' },
+   {id: 11,name: '电子数码',logo:'img/temp/icon/icon-pad.png' },
+   {id: 12,name: '工艺礼品',logo:'img/temp/icon/icon-gift.png' },
+   {id: 13,name: '日用百货',logo:'img/temp/icon/icon-book.png' },
+   {id: 14,name: '汽车摩托',logo:'img/temp/icon/icon-car.png' },
+   {id: 15,name: '更多',logo:'img/temp/icon/icon-more.png' }
   ];
   return {    
     get: function() {
