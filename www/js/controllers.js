@@ -1,7 +1,7 @@
 angular.module('starter.controllers', [])
 
 //主页 商铺 商品详情等controller  开始位置
-.controller('IndexCtrl', function($scope, $ionicModal,$ionicPopover,$ionicBackdrop,Location,IndexService) {
+.controller('IndexCtrl', function($scope, $ionicModal,$ionicPopover,$ionicBackdrop,Location,IndexService,Shops) {
   
 
 
@@ -21,7 +21,7 @@ $scope.menus=IndexService.get();
     scope: $scope,
   }).then(function(region) {
     $scope.region = region;
-  });
+    });
   $scope.getRegions = function($event) {
      Location.getAreas($scope.location).then(function(data){
         $scope.regionoptions =data.result;
@@ -38,6 +38,16 @@ $scope.menus=IndexService.get();
     $scope.region.hide();
     window.location.href="#/citys";
   };
+
+
+  $scope.refrshindexbycity = function(id) {
+    $scope.region.hide();
+      Shops.getShopsbyCity(id).then(function(data){
+          $scope.shops=data.result;
+        }, function(data){
+          console.log(data);
+        });
+  }
 
   
 })
@@ -408,12 +418,22 @@ $scope.tomydollarpage=function (){
 
 })
 
-.controller('MydollarCtrl', function($scope,$stateParams) {
+.controller('MydollarCtrl', function($scope,$stateParams,Shops,MemberService) {
+  var memberId=$stateParams.memberId;
 $scope.backtoMemberpage=function (){
 window.location.href="#/tab/member";
   
 }
-
+ Shops.getUserblance(memberId).then(function(data){
+        $scope.memberblance=data.result;
+      }, function(data){
+        console.log(data);
+      })
+ MemberService.getRecord(memberId).then(function(data){
+        $scope.Recodes=data.result;
+      }, function(data){
+        console.log(data);
+      })
 })
 
 //会员页面的controller

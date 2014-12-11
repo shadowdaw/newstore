@@ -163,6 +163,18 @@ angular.module('starter.services', [])
       })
       return deferred.promise;
     },
+    getShopsbyCity: function(id) {
+      var deferred = $q.defer();
+      $http({
+        method: 'JSONP',
+        url: _url+'getShopsByArea?callbackName=JSON_CALLBACK&cityId='+id
+      }).success(function(data){
+        deferred.resolve(data);
+      }).error(function(data,status){
+        deferred.reject(status)
+      })
+      return deferred.promise;
+    },
     getShopProducts: function(id) {
       var deferred = $q.defer();
       $http({
@@ -334,6 +346,19 @@ angular.module('starter.services', [])
     },
     setMember: function(data) {
       member=data;
+    },
+    getRecord: function(userId) {
+       var deferred = $q.defer();
+      $http({
+        method: 'JSONP',
+        params:{userId:userId},
+        url: 'http://admin.53xsd.com/mobi/getRecord?callbackName=JSON_CALLBACK'
+      }).success(function(data){
+        deferred.resolve(data);
+      }).error(function(data,status){
+        deferred.reject(status)
+      })
+      return deferred.promise;
     },
     getCode: function(mobi) {
        var deferred = $q.defer();

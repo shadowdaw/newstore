@@ -8,32 +8,25 @@
   <ion-content >
   <div class="item">
     账户余额:
-    <h1 style="color:red">5200</h1>
+    <h1 style="color:red">{{memberblance.balance}}</h1>
   </div>
-
-   <div class="row">
-  <div class="col col-33 nopadding" >
+  <div class="item item-divider">
+    最近收支明细
+  </div>
 <ion-list >
-  <ion-item ng-repeat="category in categorys" type="item-text-wrap"  class="nopadding" 
-  ng-click="refreshCitys({{category.id}})">
-          <a class="item ">
-          <p>{{category.name}}</p>
-        </a>
+  <ion-item ng-repeat="recode in Recodes" type="item-text-wrap"  class="nopadding" >
+          <div class="item"> 
+            <div class="input-label">
+                 创建时间：<span>{{recode.createTime}}</span>
+             </div>
+              <div class="input-label">
+                 收支金额：<span>{{recode.amount}}</span>
+             </div>
+          </div>
       </ion-item>
     </ion-list>
 </ion-list>
-</div>
-  <div class="col col-67 nopadding">
-    <ion-list>
-      <ion-item ng-repeat="city in citys" type="item-text-wrap"  class="nopadding" >
-        <a class="item"   ng-click="chosethisCity('{{city.name}}')">
-          <p>{{city.name}}</p>
-       </a>
-      </ion-item>
-    </ion-list>
-  </div>
-</div>
-  
+
   </ion-content>
 
 </ion-view>
