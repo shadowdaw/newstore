@@ -183,6 +183,7 @@
 }
 .shopItem-left{
 padding-left: 130px;
+padding-right: 0px;
 min-height: 100px;
 }
 
@@ -198,6 +199,7 @@ min-height: 100px;
 }
 .shopcategory{
 padding-left: 30px;
+padding-right: 0px;
 min-height: 40px;
 }
 .shopcategory div{

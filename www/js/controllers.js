@@ -386,7 +386,7 @@ $scope.submitpayinfo=function () {
 })
 
 //会员页面的controller
-.controller('MemberCtrl', function($scope, $ionicModal,MemberService) {
+.controller('MemberCtrl', function($scope, $ionicModal,MemberService,LocalData) {
  $scope.openlogin=function(shopId) {
   LocalData.setrediretfromUrl("#/tab/member");
     window.location.href="#/login";
@@ -397,7 +397,7 @@ $scope.Member =MemberService.getMember();
 //会员页面的controller
 .controller('LoginCtrl', function($scope, $ionicModal,$ionicPopup, MemberService,LocalData) {
    $scope.closelogin= function() {
-    window.location.href="#/tab/member";
+    window.location.href=LocalData.getrediretfromUrl();
   };
 
    $scope.openregister=function(shopId) {
