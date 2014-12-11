@@ -125,6 +125,12 @@ angular.module('starter', ['ionic', 'starter.controllers', 'starter.services'])
       templateUrl: "templates/topay.html"
     })
 
+    .state('mydollar', {
+      url: "/mydollar/:memberId",
+      controller: 'MydollarCtrl',
+      templateUrl: "templates/mydollar.html"
+    })
+
     .state('login', {
       url: "/login",
       controller: 'LoginCtrl',

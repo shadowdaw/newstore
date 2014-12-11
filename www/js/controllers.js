@@ -47,7 +47,7 @@ $scope.menus=IndexService.get();
 .controller('ShopsCtrl', function($scope,$stateParams,Shops,LocalData) {
     Shops.getcategorys($stateParams.categoryId).then(function(data){
         $scope.categorys = data.result;
-          Shops.getShops(data.result[0].id).then(function(data){
+          Shops.getShops(0).then(function(data){
              $scope.shops = data.result;
           }, function(data){
             console.log(data);
@@ -192,6 +192,9 @@ var productId=$stateParams.productId;
 
 })
 
+
+
+
 .controller('ToPayCtrl', function($scope,$stateParams,$ionicPopup,LocalData,Shops,MemberService) {
   $scope.date=new Date();
   $scope.payinfo= {};
@@ -242,7 +245,7 @@ $scope.submitpayinfo=function () {
         var code=data.code;
             if(code==0){
               MemberService.setMember(data.result);
-              var alertPopup = $ionicPopup.console.log({
+              var alertPopup = $ionicPopup.alert({
                        title: '支付成功！',
                        template: '返回店铺页面！'
                      });
@@ -251,7 +254,7 @@ $scope.submitpayinfo=function () {
                       });
             }else if(code==-5){
               MemberService.setMember(data.result);
-              var alertPopup = $ionicPopup.console.log({
+              var alertPopup = $ionicPopup.alert({
                        title: '余额不足！',
                        template: '请重新输入金额！'
                      });
@@ -308,7 +311,7 @@ $scope.submitpayinfo=function () {
         var code=data.code;
             if(code==0){
               MemberService.setMember(data.result);
-              var alertPopup = $ionicPopup.console.log({
+              var alertPopup = $ionicPopup.alert({
                        title: '支付成功！',
                        template: '返回店铺页面！'
                      });
@@ -317,7 +320,7 @@ $scope.submitpayinfo=function () {
                       });
             }else if(code==-5){
               MemberService.setMember(data.result);
-              var alertPopup = $ionicPopup.console.log({
+              var alertPopup = $ionicPopup.alert({
                        title: '余额不足！',
                        template: '请重新输入金额！'
                      });
@@ -392,6 +395,25 @@ $scope.submitpayinfo=function () {
     window.location.href="#/login";
   };
 $scope.Member =MemberService.getMember();
+$scope.tomydollarpage=function (){
+   if(MemberService.getMember()){
+     window.location.href="#/mydollar/"+MemberService.getMember().id;
+   }else{
+      LocalData.setrediretfromUrl("#/tab/member");
+      window.location.href="#/login";
+   }
+
+}
+
+
+})
+
+.controller('MydollarCtrl', function($scope,$stateParams) {
+$scope.backtoMemberpage=function (){
+window.location.href="#/tab/member";
+  
+}
+
 })
 
 //会员页面的controller
@@ -409,7 +431,7 @@ $scope.Member =MemberService.getMember();
         var code=data.code;
         if(code==0){
           MemberService.setMember(data.result);
-        var alertPopup = $ionicPopup.console.log({
+        var alertPopup = $ionicPopup.alert({
                    title: '登录成功！',
                    template: '返回登录前页面！'
                  });
@@ -418,7 +440,7 @@ $scope.Member =MemberService.getMember();
                  });
                };
         }, function(data){
-        console.log(data);
+          console.log(data);
         })
 
   }
@@ -436,7 +458,7 @@ $scope.Member =MemberService.getMember();
     MemberService.getCode($scope.formMember.userName).then(function(data){
         var code=data.code;
         if(code==0){
-        var alertPopup = $ionicPopup.console.log({
+        var alertPopup = $ionicPopup.alert({
                    title: '已发送验证码',
                    template: '验证码会在一分钟之内发送到您的手机.'
                  });
@@ -453,7 +475,7 @@ $scope.Member =MemberService.getMember();
       MemberService.doReg($scope.formMember).then(function(data){
         var code=data.code;
         if(code==0){
-        var alertPopup = $ionicPopup.console.log({
+        var alertPopup = $ionicPopup.alert({
                    title: '注册成功！',
                    template: '注册成功，点击确定跳转登录页面'
                  });

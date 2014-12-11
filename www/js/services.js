@@ -32,7 +32,7 @@ angular.module('starter.services', [])
       shop=data;
     },
     getrediretfromUrl: function() {
-      return rediretfromUrl
+      return rediretfromUrl?rediretfromUrl:"#/tab/member";
     },
     setrediretfromUrl: function(data) {
       rediretfromUrl=data;
