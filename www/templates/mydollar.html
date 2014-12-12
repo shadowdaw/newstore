@@ -8,7 +8,7 @@
   <ion-content >
   <div class="item">
     账户余额:
-    <h1 style="color:red">{{memberblance.balance}}</h1>
+    <h1 style="color:red">{{ memberblance.balance | number : 2 }}</h1>
   </div>
   <div class="item item-divider">
     最近收支明细

@@ -263,28 +263,28 @@ angular.module('starter.services', [])
   }
 })
 
-.factory('Getregions', function() {
-  var regionoptions = [
-   {id: 8,name: '西湖区' },
-   {id: 1,name: '拱墅区' },
-   {id: 2,name: '上城区' },
-   {id: 3,name: '余杭区' },
-   {id: 4,name: '江干区' },
-   {id: 5,name: '下城区' },
-   {id: 6,name: '滨江区' },
-   {id: 7,name: '萧山区' }
-  ];
+// .factory('Getregions', function() {
+//   var regionoptions = [
+//    {id: 8,name: '西湖区' },
+//    {id: 1,name: '拱墅区' },
+//    {id: 2,name: '上城区' },
+//    {id: 3,name: '余杭区' },
+//    {id: 4,name: '江干区' },
+//    {id: 5,name: '下城区' },
+//    {id: 6,name: '滨江区' },
+//    {id: 7,name: '萧山区' }
+//   ];
 
-  return {
-    categorys: function() {
-      return regionoptions;
-    },
-    get: function(friendId) {
-      // Simple index lookup
-      return regionoptions [friendId];
-    }
-  }
-})
+//   return {
+//     categorys: function() {
+//       return regionoptions;
+//     },
+//     get: function(friendId) {
+//       // Simple index lookup
+//       return regionoptions [friendId];
+//     }
+//   }
+// })
 
 .factory('Location', function($http, $q) {
   var cityName;
@@ -294,10 +294,14 @@ angular.module('starter.services', [])
   return {
     setCityName:function(city){
      cityName=city;
-
+     localStorage.setItem("cityName",cityName);
     },
     getCityName:function(){
+      if(cityName){
       return cityName;
+      }else{
+       return localStorage.getItem("cityName");
+      }
     },
     getLocation: function() {
        var deferred = $q.defer();
@@ -342,10 +346,16 @@ angular.module('starter.services', [])
   var member;
   return {    
     getMember: function() {
-      return member;
+      if(member){
+         return member;
+       }else{
+         member=JSON.parse(localStorage.getItem("member"));
+         return member;
+       }
     },
     setMember: function(data) {
-      member=data;
+       member=data;
+      localStorage.setItem("member",JSON.stringify(member))
     },
     getRecord: function(userId) {
        var deferred = $q.defer();
@@ -426,6 +436,23 @@ angular.module('starter.services', [])
     }
   }
 })
+
+.factory('AdService', function($http, $q) {
+  return {    
+    getAds: function() {
+       var deferred = $q.defer();
+      $http({
+        method: 'JSONP',
+        url: _url+'getAdv?callbackName=JSON_CALLBACK'
+      }).success(function(data){
+        deferred.resolve(data);
+      }).error(function(data,status){
+        deferred.reject(status)
+      })
+      return deferred.promise;
+    }
+  }
+})
 ;
 
 
@@ -439,7 +466,8 @@ function friend(id,name){ //use constructor
 this.id=id; 
 this.name=name; 
 return this; 
-} 
+}
+
 
 
 
