@@ -8,7 +8,6 @@ angular.module('starter.controllers', [])
   }else{
       Location.getLocation().then(function(data){
           $scope.location=data.content.address_detail.city;
-          
         }, function(data){
           console.log(data);
         });
@@ -23,9 +22,9 @@ $scope.areaName=Location.getAreaName();
     $scope.region = region;
     });
   $scope.getRegions = function($event) {
+      $scope.region.show($event);
      Location.getAreas($scope.location).then(function(data){
         $scope.regionoptions =data.result;
-        $scope.region.show($event);
       }, function(data){
         console.log(data);
       });

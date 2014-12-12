@@ -320,8 +320,8 @@ angular.module('starter.services', [])
      localStorage.setItem("areaName",areaName);
     },
     getAreaName:function(){
-      if(cityId){
-      return cityId;
+      if(areaName){
+      return areaName;
       }else{
        return localStorage.getItem("areaName");
       }

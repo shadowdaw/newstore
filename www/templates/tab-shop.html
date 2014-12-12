@@ -9,14 +9,14 @@
         </button>
  </div>
   <div class="item nopadding" >
-    <img class="logo" src="{{shopinfo.shop.logo}}">
-    <img class="bgimage" src="{{shopinfo.shop.image}}" >
+    <img class="logo" src="{{shopinfo.shop.logo  |  urlLogoFilter}}">
+    <img class="bgimage" src="{{shopinfo.shop.image |  urlBgFilter}}" >
   </div>
   <div class="list">
 
   <a class="item item-icon-left" >
     <i class="icon ion-pricetag" style="color:red"></i>
-    {{shopinfo.shop.address || '无折扣'}}
+    {{'无折扣'}}
   </a>
 
   <a class="item item-icon-left item-icon-right" href="tel:{{shopinfo.shop.mobile}}">
