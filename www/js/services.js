@@ -12,6 +12,7 @@ angular.module('starter.services', [])
   var shopcargory;
   var shop;
   var rediretfromUrl;
+  var cityId;
   return {    
     getproduct: function() {
       return product;
@@ -36,6 +37,17 @@ angular.module('starter.services', [])
     },
     setrediretfromUrl: function(data) {
       rediretfromUrl=data;
+    },
+     setCityId:function(data){
+     cityId=data;
+     localStorage.setItem("cityId",cityId);
+    },
+    getCityId:function(){
+      if(cityId){
+      return cityId;
+      }else{
+       return localStorage.getItem("cityId");
+      }
     }
   }
 })

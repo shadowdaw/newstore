@@ -20,8 +20,12 @@
                  创建时间：<span>{{recode.createTime}}</span>
              </div>
               <div class="input-label">
-                 收支金额：<span>{{recode.amount}}</span>
+                 收支金额：<span style="color:red">{{recode.amount}} 新商币</span>
              </div>
+              <div class="input-label">
+                 消费类型：<span>{{recode.objType| orderTypeFilter}}</span>
+             </div>
+             
           </div>
       </ion-item>
     </ion-list>

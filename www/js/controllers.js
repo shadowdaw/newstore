@@ -84,6 +84,13 @@ $scope.menus=IndexService.get();
 })
 
 .controller('CitysCtrl', function($scope,LocalData,Location) {
+ Location.getLocation().then(function(data){
+          $scope.realLocation=data.content.address_detail.city;
+        }, function(data){
+          console.log(data);
+  });
+
+
 
       Location.getCitys(1).then(function(data){
         $scope.categorys = data.result;
