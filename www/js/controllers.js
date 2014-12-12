@@ -308,7 +308,7 @@ if(MemberService.getMember()){
         console.log(data);
       })
 }else{
-  LocalData.setrediretfromUrl("#/shoptopay/"+shopId);
+  LocalData.setrediretfromUrl("#/shopdetail/"+shopId);
   window.location.href="#/login";
 
 }
