@@ -1,6 +1,6 @@
 <ion-view  >
 <ion-header-bar  class="bar-assertive" >
-   <button class="button button-clear" ng-click="backtoIndex()">
+   <button class="button button-clear" ng-click="backtoIndex()" id="header">
     <i class="icon ion-close-round"></i>
     </button>
      <h1 class="title">选择城市</h1>
@@ -13,7 +13,7 @@
   </div>
 
   <div class="item">
-   <a  class="button locatonbutton">{{realLocation}}</a>
+   <a  class="button locatonbutton" ng-click="chosethisCity('{{realLocation}}')">{{realLocation}}</a>
   </div>
 </div>
 

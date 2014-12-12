@@ -2,20 +2,20 @@ angular.module('starter.controllers', [])
 
 //主页 商铺 商品详情等controller  开始位置
 .controller('IndexCtrl', function($scope, $ionicModal,$ionicPopover,$ionicBackdrop,Location,IndexService,Shops) {
-  
-
-
-     
+    
   if(Location.getCityName()){
    $scope.location=Location.getCityName();
   }else{
       Location.getLocation().then(function(data){
           $scope.location=data.content.address_detail.city;
+          
         }, function(data){
           console.log(data);
         });
   }
 $scope.menus=IndexService.get();
+
+$scope.areaName=Location.getAreaName();
 //分享
  $ionicPopover.fromTemplateUrl('templates/region.html', {
     scope: $scope,
@@ -25,10 +25,10 @@ $scope.menus=IndexService.get();
   $scope.getRegions = function($event) {
      Location.getAreas($scope.location).then(function(data){
         $scope.regionoptions =data.result;
+        $scope.region.show($event);
       }, function(data){
         console.log(data);
       });
-    $scope.region.show($event);
   };
 
   $scope.showShops = function(categoryId) {
@@ -40,8 +40,11 @@ $scope.menus=IndexService.get();
   };
 
 
-  $scope.refrshindexbycity = function(id) {
+  $scope.refrshindexbycity = function(areaName,id) {
     $scope.region.hide();
+      Location.setCityId(id);
+      $scope.areaName=areaName;
+      Location.setAreaName(areaName);
       Shops.getShopsbyCity(id).then(function(data){
           $scope.shops=data.result;
         }, function(data){
@@ -54,10 +57,16 @@ $scope.menus=IndexService.get();
 
 
 
-.controller('ShopsCtrl', function($scope,$stateParams,Shops,LocalData) {
+.controller('ShopsCtrl', function($scope,$stateParams,Shops,LocalData,Location) {
+   $scope.categoryId=$stateParams.categoryId;
+   var shopparam=new Object();
+   if(Location.getCityId()){
+   shopparam.cityId=Location.getCityId();
+  }
+   shopparam.categoryId=$stateParams.categoryId;
     Shops.getcategorys($stateParams.categoryId).then(function(data){
         $scope.categorys = data.result;
-          Shops.getShops(0).then(function(data){
+          Shops.getShops(shopparam).then(function(data){
              $scope.shops = data.result;
           }, function(data){
             console.log(data);
@@ -69,7 +78,8 @@ $scope.menus=IndexService.get();
     LocalData.setshopcargory($stateParams.categoryId);
 
     $scope.refreshshops= function(categoryId) {
-      Shops.getShops(categoryId).then(function(data){
+      shopparam.categoryId=categoryId;
+      Shops.getShops(shopparam).then(function(data){
              $scope.shops = data.result;
           }, function(data){
             console.log(data);
@@ -83,7 +93,7 @@ $scope.menus=IndexService.get();
 
 })
 
-.controller('CitysCtrl', function($scope,LocalData,Location) {
+.controller('CitysCtrl', function($scope,$ionicScrollDelegate,LocalData,Location) {
  Location.getLocation().then(function(data){
           $scope.realLocation=data.content.address_detail.city;
         }, function(data){
@@ -106,6 +116,7 @@ $scope.menus=IndexService.get();
 $scope.refreshCitys =function(cityId) {
        Location.getCitys(cityId).then(function(data){
             $scope.citys = data.result;
+           $ionicScrollDelegate.scrollTop();
           }, function(data){
             console.log(data);
           });
@@ -157,12 +168,12 @@ $scope.chosethisCity=function(cityName) {
    window.location.href="#/shoptopay/"+shopId;
   };
 
-  // $scope.SharePage = function() {
-  //   try{
-  //   window.plugins.socialsharing.share('我在使用新商店购物，获取新商币，购物更便利', null, null, 'http://www.xinshangdian.com');
-  //   }catch(err){
-
-  //   };
+  $scope.SharePage = function() {
+    try{
+    window.plugins.socialsharing.share('我在使用新商店购物，获取新商币，购物更便利', null, null, 'http://admin.o2o2m.com/app/download?appcode=xsd');
+    }catch(err){
+    };
+  }
 
   $ionicPopover.fromTemplateUrl('templates/popover.html', {
     scope: $scope,
@@ -406,10 +417,23 @@ $scope.submitpayinfo=function () {
 })
 
 //会员页面的controller
-.controller('MemberCtrl', function($scope, $ionicModal,MemberService,LocalData) {
+.controller('MemberCtrl', function($scope, $ionicPopup,$ionicModal,MemberService,LocalData) {
  $scope.openlogin=function(shopId) {
-  LocalData.setrediretfromUrl("#/tab/member");
-    window.location.href="#/login";
+    if(MemberService.getMember()){
+             var confirmPopup = $ionicPopup.confirm({
+                   title: '您已经登录',
+                   template: '是否退出登录?'
+                 }).then(function(res) {
+                   if(res) {
+                     MemberService.quitLogin();
+                     window.location.reload();
+                   } else {
+                   }
+                 });
+    }else{
+      LocalData.setrediretfromUrl("#/tab/member");
+      window.location.href="#/login";
+    }
   };
 $scope.Member =MemberService.getMember();
 $scope.tomydollarpage=function (){

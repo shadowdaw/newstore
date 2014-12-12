@@ -12,7 +12,6 @@ angular.module('starter.services', [])
   var shopcargory;
   var shop;
   var rediretfromUrl;
-  var cityId;
   return {    
     getproduct: function() {
       return product;
@@ -37,17 +36,6 @@ angular.module('starter.services', [])
     },
     setrediretfromUrl: function(data) {
       rediretfromUrl=data;
-    },
-     setCityId:function(data){
-     cityId=data;
-     localStorage.setItem("cityId",cityId);
-    },
-    getCityId:function(){
-      if(cityId){
-      return cityId;
-      }else{
-       return localStorage.getItem("cityId");
-      }
     }
   }
 })
@@ -163,11 +151,12 @@ angular.module('starter.services', [])
       })
       return deferred.promise;
     },
-    getShops: function(id) {
+    getShops: function(data) {
       var deferred = $q.defer();
       $http({
         method: 'JSONP',
-        url: _url+'getShopsByCategory?callbackName=JSON_CALLBACK&categoryId='+id
+        params:data,
+        url: _url+'getShopsByCategory?callbackName=JSON_CALLBACK'
       }).success(function(data){
         deferred.resolve(data);
       }).error(function(data,status){
@@ -300,8 +289,8 @@ angular.module('starter.services', [])
 
 .factory('Location', function($http, $q) {
   var cityName;
-
-
+  var cityId;
+  var areaName;
 
   return {
     setCityName:function(city){
@@ -313,6 +302,28 @@ angular.module('starter.services', [])
       return cityName;
       }else{
        return localStorage.getItem("cityName");
+      }
+    },
+     setCityId:function(data){
+     cityId=data;
+     localStorage.setItem("cityId",cityId);
+    },
+    getCityId:function(){
+      if(cityId){
+      return cityId;
+      }else{
+       return localStorage.getItem("cityId");
+      }
+    },
+    setAreaName:function(data){
+     areaName=data;
+     localStorage.setItem("areaName",areaName);
+    },
+    getAreaName:function(){
+      if(cityId){
+      return cityId;
+      }else{
+       return localStorage.getItem("areaName");
       }
     },
     getLocation: function() {
@@ -420,6 +431,10 @@ angular.module('starter.services', [])
         deferred.reject(status)
       })
       return deferred.promise;
+    },
+  quitLogin:function() {
+      member=null;
+      localStorage.removeItem("member");
     }
   }
 })
@@ -429,10 +444,10 @@ angular.module('starter.services', [])
    {id: 1,name: '服装鞋帽',logo:'img/temp/icon/icon-cloth.png' },
    {id: 5,name: '餐饮美食',logo:'img/temp/icon/icon-food.png' },
    {id: 6,name: '酒店宾馆',logo:'img/temp/icon/icon-hotel.png' },
-   {id: 7,name: '旅游观光',logo:'img/temp/icon/icon-plane.png' },
+   {id: 7,name: '本地特色',logo:'img/temp/icon/icon-plane.png' },
    {id: 8,name: '休闲娱乐',logo:'img/temp/icon/icon-drink.png' },
    {id: 9,name: '美容美发',logo:'img/temp/icon/icon-hair.png' },
-   {id: 10,name: '家具装饰',logo:'img/temp/icon/icon-bed.png' },
+   {id: 10,name: '家居建材',logo:'img/temp/icon/icon-bed.png' },
    {id: 11,name: '电子数码',logo:'img/temp/icon/icon-pad.png' },
    {id: 12,name: '工艺礼品',logo:'img/temp/icon/icon-gift.png' },
    {id: 13,name: '日用百货',logo:'img/temp/icon/icon-book.png' },

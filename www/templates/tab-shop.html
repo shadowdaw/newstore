@@ -12,24 +12,23 @@
     <img class="logo" src="{{shopinfo.shop.logo}}">
     <img class="bgimage" src="{{shopinfo.shop.image}}" >
   </div>
-  <div class="tabs tabs-relative height-80">
-  <a class="tab-item">
-    <div class="shopCount ">
-    <span class="shopnumcount">447</span>
-    <span class="shopcatetitle">全部</span>
-    </div>
+  <div class="list">
+
+  <a class="item item-icon-left" >
+    <i class="icon ion-pricetag" style="color:red"></i>
+    {{shopinfo.shop.address || '无折扣'}}
   </a>
-  <a class="tab-item">
-    <div class="shopCount">
-    <span class="shopnumcount">221</span>
-    <span class="shopcatetitle">优惠</span>
-    </div>
+
+  <a class="item item-icon-left item-icon-right" href="tel:{{shopinfo.shop.mobile}}">
+    <i class="icon ion-ios7-telephone" style="color:Lime"></i>
+     {{shopinfo.shop.mobile}}
+    <i class="icon ion-chevron-right" style="font-size: 16px;"></i>
   </a>
-  <a class="tab-item">
-   <div class="shopCount">
-    <span class="shopnumcount">20</span>
-    <span class="shopcatetitle">新品</span>
-    </div>
+
+  <a class="item item-icon-left item-icon-right" href="#">
+    <i class="icon ion-location" style="color:DeepSkyBlue"></i>
+    {{shopinfo.shop.address || '无位置信息'}}
+    <i class="icon ion-chevron-right" style="font-size: 16px;"></i>
   </a>
 </div>
 <!--
@@ -45,7 +44,7 @@
 </div>
 
 <div class="item nopadding"
-    ng-repeat="product in products" style="width:50%;display:inline-block" ng-click="showProductDetail({{product.id}});">
+    ng-repeat="product in products" style="width:48%;display:inline-block;margin-left:1%;" ng-click="showProductDetail({{product.id}});">
     <div style="width:100%;height:200px;overflow:hidden">
    <img src="{{product.detailImage}}" style="width:100%;">
     </div>
