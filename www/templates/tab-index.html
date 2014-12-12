@@ -5,7 +5,7 @@
     <input type="search" placeholder="找店铺" >
   </label>
   <a class="button button-clear icon-left ion-location" ng-click="getRegions($event)" style="font-size:12px;line-height: 18px;"autofocus>
-   {{location}}<br>
+   {{location | locationFilter}}<br>
     {{areaName}}
   </a>
 </ion-header-bar>

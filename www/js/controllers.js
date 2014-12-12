@@ -122,6 +122,7 @@ $scope.refreshCitys =function(cityId) {
     };
 $scope.chosethisCity=function(cityName) {
       Location.setCityName(cityName);
+      Location.clearAreaName();
       window.location.href="#/tab/dash";
 }
 

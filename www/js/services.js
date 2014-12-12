@@ -326,6 +326,10 @@ angular.module('starter.services', [])
        return localStorage.getItem("areaName");
       }
     },
+    clearAreaName:function(){
+      areaName=null;
+      localStorage.removeItem("areaName");
+    },
     getLocation: function() {
        var deferred = $q.defer();
       $http({

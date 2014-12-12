@@ -12,6 +12,19 @@ myfilter.filter('orderTypeFilter', function() {
 
 });
 
+
+myfilter.filter('locationFilter', function() {
+  var titleCaseFilter = function(input) {
+	  	if (input.length<3){
+	    return input+'市';
+	  	}else{
+	    return input;
+		}
+  };
+  return titleCaseFilter;
+
+});
+
 myfilter.filter('urlLogoFilter', function() {
   var titleCaseFilter = function(input) {
 	  	if (input=='http://image.53xsd.com/newshop'){
