@@ -27,7 +27,7 @@ myfilter.filter('locationFilter', function() {
 
 myfilter.filter('urlLogoFilter', function() {
   var titleCaseFilter = function(input) {
-	  	if (input=='http://image.53xsd.com/newshop'){
+	  	if (input=='http://image.53xsd.com/newshop'||input==''){
 	    return 'img/temp/shop/logo.png';
 	  	}else{
 	    return input;
@@ -39,7 +39,7 @@ myfilter.filter('urlLogoFilter', function() {
 
 myfilter.filter('urlBgFilter', function() {
   var titleCaseFilter = function(input) {
-	  	if (input=='http://image.53xsd.com/newshop'){
+	  	if (input=='http://image.53xsd.com/newshop'||input==''){
 	    return 'img/temp/shop/bg.png';
 	  	}else{
 	    return input;

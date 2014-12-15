@@ -329,6 +329,8 @@ angular.module('starter.services', [])
     clearAreaName:function(){
       areaName=null;
       localStorage.removeItem("areaName");
+      areaId=null;
+      localStorage.removeItem("areaId");
     },
     getLocation: function() {
        var deferred = $q.defer();

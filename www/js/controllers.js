@@ -2,7 +2,7 @@ angular.module('starter.controllers', [])
 
 //主页 商铺 商品详情等controller  开始位置
 .controller('IndexCtrl', function($scope, $ionicModal,$ionicPopover,$ionicBackdrop,Location,IndexService,Shops) {
-    
+    $scope.location="定位中";
   if(Location.getCityName()){
    $scope.location=Location.getCityName();
   }else{
@@ -58,7 +58,7 @@ $scope.areaName=Location.getAreaName();
       Location.setAreaId(id);
       $scope.areaName=areaName;
       Location.setAreaName(areaName);
-      Shops.getShopsbyCity(id).then(function(data){
+      Shops.getShops(id).then(function(data){
           $scope.shops=data.result;
         }, function(data){
           console.log(data);
