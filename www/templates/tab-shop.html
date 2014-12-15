@@ -9,7 +9,7 @@
         </button>
  </div>
   <div class="item nopadding" >
-    <img class="logo" src="{{shopinfo.shop.logo  |  urlLogoFilter}}">
+   <!-- <img class="logo" src="{{shopinfo.shop.logo  |  urlLogoFilter}}">-->
     <img class="bgimage" src="{{shopinfo.shop.image |  urlBgFilter}}" >
   </div>
   <div class="list">
@@ -54,7 +54,7 @@
 
   <div class="padding-left padding-right price">
     <span class=" fl">
-      ￥ {{product.price}}
+      ￥ {{product.discountPrice}}
     </span>
     <i class="icon ion-heart fr assertive"></i>
   </div>

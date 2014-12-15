@@ -185,6 +185,7 @@ $scope.chosethisCity=function(cityName) {
    window.location.href="#/shoptopay/"+shopId;
   };
 
+
   $scope.SharePage = function() {
     try{
     window.plugins.socialsharing.share('我在使用新商店购物，获取新商币，购物更便利', null, null, 'http://admin.o2o2m.com/app/download?appcode=xsd');
