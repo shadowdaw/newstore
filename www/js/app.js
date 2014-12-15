@@ -80,6 +80,13 @@ angular.module('starter', ['ionic', 'starter.controllers', 'starter.services','s
       }
     })
 
+    
+    .state('setting', {
+      url: "/setting",
+      controller: 'SetCtrl',
+      templateUrl: "templates/setting.html"
+    })
+
     .state('tab.group', {
       url: '/group',
       views: {

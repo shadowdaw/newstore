@@ -2,7 +2,7 @@ angular.module('starter.controllers', [])
 
 //主页 商铺 商品详情等controller  开始位置
 .controller('IndexCtrl', function($scope, $ionicModal,$ionicPopover,$ionicBackdrop,Location,IndexService,Shops) {
-    $scope.location="定位中";
+    $scope.location="定位中";    
   if(Location.getCityName()){
    $scope.location=Location.getCityName();
   }else{
@@ -447,6 +447,15 @@ $scope.submitpayinfo=function () {
 
 //会员页面的controller
 .controller('MemberCtrl', function($scope, $ionicPopup,$ionicModal,MemberService,LocalData) {
+  $scope.opensetting=function(){
+         if(MemberService.getMember()){
+           window.location.href="#/setting";
+         }else{
+            LocalData.setrediretfromUrl("#/tab/member");
+            window.location.href="#/login";
+         }
+  };
+
  $scope.openlogin=function(shopId) {
     if(MemberService.getMember()){
              var confirmPopup = $ionicPopup.confirm({
@@ -597,6 +606,26 @@ window.location.href="#/tab/member";
       window.location.href="#/tab/dash";
     };
       $scope.friends  = Friends.all();
+
+})
+
+.controller('SetCtrl', function($scope, $ionicPopup,$ionicModal,MemberService,LocalData) {
+  $scope.quitlogin=function() {
+    if(MemberService.getMember()){
+             var confirmPopup = $ionicPopup.confirm({
+                    title: '退出应用',
+                    template: '你确定要退出应用吗?',
+                    okText: '退出',
+                    cancelText: '取消'
+                 }).then(function(res) {
+                   if(res) {
+                     MemberService.quitLogin();
+                     window.location.href="#/tab/member";
+                   } else {
+                   }
+                 });
+    }
+  };
 
 })
 
