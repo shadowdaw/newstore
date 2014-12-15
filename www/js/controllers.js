@@ -610,6 +610,11 @@ window.location.href="#/tab/member";
 })
 
 .controller('SetCtrl', function($scope, $ionicPopup,$ionicModal,MemberService,LocalData) {
+
+$scope.backtoMemberpage=function() {
+      window.location.href="#/tab/member";
+ };
+
   $scope.quitlogin=function() {
     if(MemberService.getMember()){
              var confirmPopup = $ionicPopup.confirm({
