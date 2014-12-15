@@ -6,11 +6,22 @@ angular.module('starter.controllers', [])
   if(Location.getCityName()){
    $scope.location=Location.getCityName();
   }else{
-      Location.getLocation().then(function(data){
-          $scope.location=data.content.address_detail.city;
-        }, function(data){
-          console.log(data);
-        });
+      var geolocation = new BMap.Geolocation();
+        geolocation.getCurrentPosition(function(r){
+      if(this.getStatus() == BMAP_STATUS_SUCCESS){
+        var geoc = new BMap.Geocoder();    
+        geoc.getLocation(r.point, function(rs){
+        var addComp = rs.addressComponents;
+        $scope.location=addComp.city;
+        Location.setCityName(addComp.city);
+        $scope.areaName=addComp.district;
+        Location.setAreaName(addComp.district);
+       });     
+      }
+    else {
+      $scope.location='定位失败';
+    }        
+     },{enableHighAccuracy: true})
   }
 $scope.menus=IndexService.get();
 
