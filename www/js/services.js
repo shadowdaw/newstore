@@ -289,7 +289,7 @@ angular.module('starter.services', [])
 
 .factory('Location', function($http, $q) {
   var cityName;
-  var cityId;
+  var areaId;
   var areaName;
 
   return {
@@ -304,15 +304,15 @@ angular.module('starter.services', [])
        return localStorage.getItem("cityName");
       }
     },
-     setCityId:function(data){
-     cityId=data;
-     localStorage.setItem("cityId",cityId);
+     setAreaId:function(data){
+     areaId=data;
+     localStorage.setItem("areaId",areaId);
     },
-    getCityId:function(){
-      if(cityId){
-      return cityId;
+    getAreaId:function(){
+      if(areaId){
+      return areaId;
       }else{
-       return localStorage.getItem("cityId");
+       return localStorage.getItem("areaId");
       }
     },
     setAreaName:function(data){

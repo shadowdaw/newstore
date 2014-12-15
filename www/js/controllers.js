@@ -31,6 +31,9 @@ $scope.areaName=Location.getAreaName();
   };
 
   $scope.showShops = function(categoryId) {
+    if(categoryId==15){
+      return;
+    }
     window.location.href="#/shops/"+categoryId;
   };
  $scope.chosecity = function() {
@@ -41,7 +44,7 @@ $scope.areaName=Location.getAreaName();
 
   $scope.refrshindexbycity = function(areaName,id) {
     $scope.region.hide();
-      Location.setCityId(id);
+      Location.setAreaId(id);
       $scope.areaName=areaName;
       Location.setAreaName(areaName);
       Shops.getShopsbyCity(id).then(function(data){
@@ -59,9 +62,23 @@ $scope.areaName=Location.getAreaName();
 .controller('ShopsCtrl', function($scope,$stateParams,Shops,LocalData,Location) {
    $scope.categoryId=$stateParams.categoryId;
    var shopparam=new Object();
-   if(Location.getCityId()){
-   shopparam.cityId=Location.getCityId();
-  }
+   if(Location.getAreaId()){
+   shopparam.areaId=Location.getAreaId();
+    }
+   if(Location.getCityName()){
+    shopparam.cityName=Location.getCityName();
+    }else{
+        Location.getLocation().then(function(data){
+          shopparam.cityName=Location.getCityName();
+          }, function(data){
+            console.log(data);
+          });
+    }
+
+
+
+
+    
    shopparam.categoryId=$stateParams.categoryId;
     Shops.getcategorys($stateParams.categoryId).then(function(data){
         $scope.categorys = data.result;
@@ -435,6 +452,24 @@ $scope.submitpayinfo=function () {
       window.location.href="#/login";
     }
   };
+
+$scope.quitlogin=function(shopId) {
+    if(MemberService.getMember()){
+             var confirmPopup = $ionicPopup.confirm({
+                   title: '您已经登录',
+                   template: '是否退出登录?'
+                 }).then(function(res) {
+                   if(res) {
+                     MemberService.quitLogin();
+                     window.location.reload();
+                   } else {
+                   }
+                 });
+    }
+  };
+
+
+
 $scope.Member =MemberService.getMember();
 $scope.tomydollarpage=function (){
    if(MemberService.getMember()){
