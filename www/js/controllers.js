@@ -413,6 +413,27 @@ $scope.submitpayinfo=function () {
       })
 })
 
+// 接口未开发
+//.controller('NearByCtrl', function($scope,Shops) { 
+//   var pointParam = new Object();
+//   var geolocation = new BMap.Geolocation();
+//   geolocation.getCurrentPosition(function(r){
+//       if(this.getStatus() == BMAP_STATUS_SUCCESS){
+//         alert(JSON.stringify(r.point));
+//         pointParam.x = r.point.lng;
+//         pointParam.y = r.point.lat;
+//       }else{
+//          alert("定位失败");
+//       }        
+//   },{enableHighAccuracy: true})
+
+//   Shops.getNearbyShops(pointParam).then(function(data){
+//         $scope.nearbyShops=data.result;
+//       }, function(data){
+//         console.log(data);
+//       })
+// })
+
 .controller('FriendDetailCtrl', function($scope, $stateParams, Friends) {
   $scope.friend = Friends.get($stateParams.friendId);
 })
