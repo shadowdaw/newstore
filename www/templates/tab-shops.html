@@ -15,12 +15,12 @@
   <div class="item item-image">
     <img src="img/temp/shops/shops_01.png">
   </div>
-
-    <ion-scroll style="width:33%;" class="fl" >
+   <div class="row">
+  <div class="col col-33 nopadding" >
 <ion-list >
  <a class="item shopcategory" ng-click="refreshshops({{categoryId}})">
           <div ><img src="img/temp/shops/all.png" style="width:80%"></div>
-          <p>全部</p>
+          <p ng-click="loadMore()">全部</p>
         </a>
   <ion-item ng-repeat="category in categorys" type="item-text-wrap"  class="nopadding" 
   ng-click="refreshshops({{category.id}})">
@@ -31,8 +31,8 @@
       </ion-item>
     </ion-list>
 </ion-list>
-     </ion-scroll>
-    <ion-scroll style="width:67%;height:600px" class="fr" >
+</div>
+  <div class="col col-67 nopadding">
     <ion-list>
 
       <ion-item ng-repeat="shop in shops" type="item-text-wrap"  class="nopadding" >
@@ -43,7 +43,9 @@
        </a>
       </ion-item>
     </ion-list>
-     </ion-scroll>
+  </div>
+</div>
+  
   </ion-content>
 
 </ion-view>

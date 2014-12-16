@@ -156,7 +156,7 @@ angular.module('starter.services', [])
       $http({
         method: 'JSONP',
         params:data,
-        url: _url+'getShopsByCategory?callbackName=JSON_CALLBACK'
+        url: _url+'getShops?callbackName=JSON_CALLBACK'
       }).success(function(data){
         deferred.resolve(data);
       }).error(function(data,status){

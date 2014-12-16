@@ -7,6 +7,17 @@
 // 'starter.controllers' is found in controllers.js
 angular.module('starter', ['ionic', 'starter.controllers', 'starter.services','starter.filters'])
 
+.directive('whenScrolled', function() { 
+  return function(scope, elm, attr) { 
+    var raw = elm[0]; 
+    elm.bind('scroll', function() { 
+      if (raw.scrollTop+raw.offsetHeight >= raw.scrollHeight) { 
+        scope.$apply(attr.whenScrolled); 
+      } 
+    }); 
+  }; 
+})
+
 .run(function($ionicPlatform) {
   $ionicPlatform.ready(function() {
     // Hide the accessory bar by default (remove this to show the accessory bar above the keyboard

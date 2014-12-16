@@ -79,6 +79,7 @@ AdService.getAds().then(function(data){
 .controller('ShopsCtrl', function($scope,$stateParams,Shops,LocalData,Location) {
    $scope.categoryId=$stateParams.categoryId;
    var shopparam=new Object();
+   var currentPage = 1;
    if(Location.getAreaId()){
    shopparam.areaId=Location.getAreaId();
     }
@@ -97,17 +98,25 @@ AdService.getAds().then(function(data){
 
     
    shopparam.categoryId=$stateParams.categoryId;
-    Shops.getcategorys($stateParams.categoryId).then(function(data){
-        $scope.categorys = data.result;
-          Shops.getShops(shopparam).then(function(data){
-             $scope.shops = data.result;
-          }, function(data){
-            console.log(data);
-          });
+   Shops.getcategorys($stateParams.categoryId).then(function(data){
+   $scope.categorys = data.result;
       }, function(data){
         console.log(data);
       });
-    
+   $scope.loadMore = function(){
+    shopparam.pageIndex = currentPage;
+    alert(currentPage);
+    Shops.getShops(shopparam).then(function(data){
+      alert(data.result.size());
+      for (var i in data.result) { 
+          $scope.shops.push(data.result[i]); 
+        } 
+      currentPage++;
+     }, function(data){
+      console.log(data);
+    });
+   }
+     
     LocalData.setshopcargory($stateParams.categoryId);
 
     $scope.refreshshops= function(categoryId) {
