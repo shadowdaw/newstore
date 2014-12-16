@@ -1,7 +1,7 @@
 angular.module('starter.controllers', [])
 
 //主页 商铺 商品详情等controller  开始位置
-.controller('IndexCtrl', function($scope, $ionicModal,$ionicPopover,$ionicBackdrop,Location,IndexService,Shops) {
+.controller('IndexCtrl', function($scope, $ionicModal,$ionicPopover,$ionicBackdrop,Location,IndexService,AdService,Shops) {
     $scope.location="定位中";    
   if(Location.getCityName()){
    $scope.location=Location.getCityName();
@@ -26,6 +26,12 @@ angular.module('starter.controllers', [])
 $scope.menus=IndexService.get();
 
 $scope.areaName=Location.getAreaName();
+
+AdService.getAds().then(function(data){
+        $scope.ads = data.result;
+      }, function(data){
+        console.log(data);
+}); 
 //分享
  $ionicPopover.fromTemplateUrl('templates/region.html', {
     scope: $scope,
