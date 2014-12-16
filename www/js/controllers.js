@@ -231,11 +231,14 @@ $scope.chosethisCity=function(cityName) {
 })
 
 
-.controller('ProductCtrl', function($scope,$stateParams,Shops,LocalData) {
+.controller('ProductCtrl', function($scope,$stateParams,$sce,Shops,LocalData) {
 var productId=$stateParams.productId;
  Shops.getProductdetail(productId).then(function(data){
         $scope.product=data.result;
         LocalData.setproduct(data.result);
+        $scope.deliberatelyTrustDangerousSnippet = function() {  
+        return $sce.trustAsHtml($scope.product.productText.text);  
+        };  
       }, function(data){
         console.log(data);
       })
@@ -245,6 +248,8 @@ var productId=$stateParams.productId;
  $scope.topaypage=function(){
    window.location.href="#/topay/"+productId;
   };
+
+  
 
 
 })
