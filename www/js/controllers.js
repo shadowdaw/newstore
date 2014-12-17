@@ -48,9 +48,6 @@ AdService.getAds().then(function(data){
   };
 
   $scope.showShops = function(categoryId) {
-    if(categoryId==15){
-      return;
-    }
     window.location.href="#/shops/"+categoryId;
   };
  $scope.chosecity = function() {
