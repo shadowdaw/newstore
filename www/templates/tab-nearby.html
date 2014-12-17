@@ -1,5 +1,36 @@
-<ion-view title="Friends">
-  <ion-content>
-   <a class="item">正在建设中</a>
+<ion-view  >
+<ion-header-bar  class="bar-assertive" >
+  <label class="item item-input" style="border-radius: 15px;width: 80%;">
+    <i class="icon ion-ios7-search placeholder-icon"></i>
+    <input type="search" placeholder="找店铺" disabled>
+  </label>
+  <a class="button button-clear icon-left ion-location" ng-click="getRegions($event)" style="font-size:12px;line-height: 18px;width: 80px;" autofocus="true" >
+   {{location}}<br>
+    {{areaName}}
+  </a>
+</ion-header-bar>
+  <ion-content >
+ <div class="item item-divider">
+ 	<!--
+    <div class="button-bar" style="width:70%;margin: 0 auto;" >
+  <a class="button" >所有店铺</a>
+  <a class="button">全部分类</a>
+-->
+</div>
+  </div>
+  </ion-scroll>
+    <ion-scroll style="height:80%" class="fr" >
+    <ion-list>
+
+      <ion-item ng-repeat="shop in nearbyShops" type="item-text-wrap"  class="nopadding" >
+        <a class="item shopItem-left"    href="#/shopdetail/{{shop.id}}">
+          <img src="{{shop.logo}}">
+          <h2>{{shop.name}}</h2>
+          <p style="white-space:normal">{{shop.address}}</p>
+       </a>
+      </ion-item>
+    </ion-list>
+     </ion-scroll>
   </ion-content>
+
 </ion-view>

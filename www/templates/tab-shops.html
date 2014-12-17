@@ -31,7 +31,7 @@
     </ion-list>
 </ion-list>
      </ion-scroll>
-    <ion-scroll style="width:67%;height:600px" class="fr" >
+    <ion-scroll style="width:67%;height:500px" class="fr" >
     <ion-list>
 
       <ion-item ng-repeat="shop in shops" type="item-text-wrap"  class="nopadding" >
@@ -42,6 +42,10 @@
        </a>
       </ion-item>
     </ion-list>
+    <ion-infinite-scroll
+    on-infinite="loadMore()"
+    distance="2%">
+  </ion-infinite-scroll>
      </ion-scroll>
   </ion-content>
 
