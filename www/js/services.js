@@ -304,7 +304,8 @@ angular.module('starter.services', [])
   var cityName;
   var areaId;
   var areaName;
-
+  var longitude;
+  var latitude;
   return {
     setCityName:function(city){
      cityName=city;
@@ -337,6 +338,39 @@ angular.module('starter.services', [])
       return areaName;
       }else{
        return localStorage.getItem("areaName");
+      }
+    },
+    setAreaName:function(data){
+     areaName=data;
+     localStorage.setItem("areaName",areaName);
+    },
+    getAreaName:function(){
+      if(areaName){
+      return areaName;
+      }else{
+       return localStorage.getItem("areaName");
+      }
+    },
+    setLongitude:function(data){
+     longitude=data;
+     localStorage.setItem("longitude",longitude);
+    },
+    getLongitude:function(){
+      if(longitude){
+      return longitude;
+      }else{
+       return localStorage.getItem("longitude");
+      }
+    },
+    setLatitude:function(data){
+     latitude=data;
+     localStorage.setItem("latitude",latitude);
+    },
+    getLatitude:function(){
+      if(latitude){
+      return latitude;
+      }else{
+       return localStorage.getItem("latitude");
       }
     },
     clearAreaName:function(){

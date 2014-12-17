@@ -16,6 +16,11 @@ angular.module('starter.controllers', [])
         Location.setCityName(addComp.city);
         $scope.areaName=addComp.district;
         Location.setAreaName(addComp.district);
+        Location.getAreaIdByCityArea(addComp.city,addComp.district).then(function(data){
+        Location.setAreaId(data.result);
+        }, function(data){
+          console.log(data);
+        });
        });     
       }
     else {
@@ -26,11 +31,6 @@ angular.module('starter.controllers', [])
 $scope.menus=IndexService.get();
 
 $scope.areaName=Location.getAreaName();
-Location.getAreaIdByCityArea(Location.getCityName(),Location.getAreaName()).then(function(data){
-        Location.setAreaId(data.result);
-        }, function(data){
-          console.log(data);
-        });
 
 $scope.ads=IndexService.getAds();
 if(!IndexService.isLoded()){
@@ -448,24 +448,40 @@ $scope.submitpayinfo=function () {
 //         console.log(data);
 //       })
 // })
-.controller('NearByCtrl', function($scope,Shops,Location) { 
+.controller('NearByCtrl', function($scope,Shops,Location,IndexService) { 
+  $scope.menus=IndexService.get();
   var pointParam = new Object();
   var geolocation = new BMap.Geolocation();
   geolocation.getCurrentPosition(function(r){
-      if(this.getStatus() == BMAP_STATUS_SUCCESS){
-        pointParam.latitude = r.point.lng;//后台参数名:latitude 经度 longitude 纬度 cityId 区ID
-        pointParam.longitude = r.point.lat;
+    if(this.getStatus() == BMAP_STATUS_SUCCESS){
+      geoc.getLocation(r.point, function(rs){
+        var addComp = rs.addressComponents;
+        $scope.nearbyCity=addComp.city;
+        $scope.nearbyArea=addComp.district;
+        //后台参数名:latitude 经度 longitude 纬度 cityId 区ID categoryId为0表示全部
+        pointParam.latitude = Location.getLongitude();
+        pointParam.longitude = Location.getLatitude();
+        Location.setLatitude(r.point.lat);
+        Location.setLongitude(r.point.lng);
         pointParam.cityId = Location.getAreaId();
+        //pointParam.categoryId = 0; 接口未完成
         Shops.getNearbyShops(pointParam).then(function(data){
-        $scope.nearbyShops=data.result;
-      }, function(data){
-        console.log(data);
+            $scope.nearbyShops=data.result;
+          }, function(data){
+            console.log(data);
       })
-      }else{
-         alert("定位失败");
-      }        
-  },{enableHighAccuracy: true})
-
+    });      
+    }
+});
+  //categoryId为0表示全部
+  $scope.showNearbyByCategoryId = function(categoryId){
+    pointParam.categoryId = categoryId;
+    Shops.getNearbyShops(pointParam).then(function(data){
+          $scope.nearbyShops=data.result;
+        }, function(data){
+          console.log(data);
+        })
+  };
 })
 
 .controller('FriendDetailCtrl', function($scope, $stateParams, Friends) {
