@@ -15,8 +15,7 @@
   <div class="item item-image">
     <img src="img/temp/shops/shops_01.png">
   </div>
-   <div class="row">
-  <div class="col col-33 nopadding" >
+ <ion-scroll style="width:33%;" class="fl" >
 <ion-list >
  <a class="item shopcategory" ng-click="refreshshops({{categoryId}})">
           <div ><img src="img/temp/shops/all.png" style="width:80%"></div>
@@ -31,8 +30,8 @@
       </ion-item>
     </ion-list>
 </ion-list>
-</div>
-  <div class="col col-67 nopadding">
+     </ion-scroll>
+    <ion-scroll style="width:67%;height:600px" class="fr" >
     <ion-list>
 
       <ion-item ng-repeat="shop in shops" type="item-text-wrap"  class="nopadding" >
@@ -43,9 +42,7 @@
        </a>
       </ion-item>
     </ion-list>
-  </div>
-</div>
-  
+     </ion-scroll>
   </ion-content>
 
 </ion-view>
