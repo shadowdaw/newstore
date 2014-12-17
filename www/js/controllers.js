@@ -31,11 +31,15 @@ Location.getAreaIdByCityArea(Location.getCityName(),Location.getAreaName()).then
         }, function(data){
           console.log(data);
         });
+
+$scope.ads=IndexService.getAds();
+if(!IndexService.isLoded()){
 AdService.getAds().then(function(data){
-        $scope.ads = data.result;
+        IndexService.setAds(data.result)
       }, function(data){
         console.log(data);
 }); 
+}
 //分享
  $ionicPopover.fromTemplateUrl('templates/region.html', {
     scope: $scope,
