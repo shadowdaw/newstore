@@ -79,7 +79,9 @@ AdService.getAds().then(function(data){
 .controller('ShopsCtrl', function($scope,$stateParams,Shops,LocalData,Location) {
    $scope.categoryId=$stateParams.categoryId;
    var shopparam=new Object();
-   var currentPage = 1;
+   $scope.busy = false;
+   $scope.currentPage = 1;
+   $scope.pages = 1;
    if(Location.getAreaId()){
    shopparam.areaId=Location.getAreaId();
     }
@@ -94,31 +96,44 @@ AdService.getAds().then(function(data){
     }
 
 
-
-
-    
+  
    shopparam.categoryId=$stateParams.categoryId;
-   Shops.getcategorys($stateParams.categoryId).then(function(data){
-   $scope.categorys = data.result;
+    Shops.getcategorys($stateParams.categoryId).then(function(data){
+        if ($scope.busy) {
+              return false;
+        }
+        $scope.busy = true;
+        $scope.categorys = data.result;
+          Shops.getShops(shopparam).then(function(data){
+             $scope.busy = false;
+             $scope.shops = data.result;
+             $scope.pages = 10;//模拟总页数
+          }, function(data){
+            console.log(data);
+          });
       }, function(data){
         console.log(data);
       });
-   $scope.loadMore = function(){
-    shopparam.pageIndex = currentPage;
-    alert(currentPage);
-    Shops.getShops(shopparam).then(function(data){
-      alert(data.result.size());
-      for (var i in data.result) { 
-          $scope.shops.push(data.result[i]); 
-        } 
-      currentPage++;
-     }, function(data){
-      console.log(data);
-    });
-   }
-     
     LocalData.setshopcargory($stateParams.categoryId);
-
+    $scope.loadMore = function() {
+    if ($scope.currentPage < $scope.pages) {
+      $scope.currentPage++;
+      if ($scope.busy) {
+        return false;
+      }
+      $scope.busy = true;
+      shopparam.pageIndex = $scope.currentPage;
+       Shops.getShops(shopparam).then(function(data){
+             $scope.busy = false;
+              for (var i in data.result) {
+                $scope.shops.push(data.result[i]);
+              }
+          }, function(data){
+            console.log(data);
+          });
+      
+    }
+  };
     $scope.refreshshops= function(categoryId) {
       shopparam.categoryId=categoryId;
       Shops.getShops(shopparam).then(function(data){
@@ -321,6 +336,7 @@ $scope.submitpayinfo=function () {
     Shops.pay($scope.payinfo).then(function(data){
         var code=data.code;
             if(code==0){
+              MemberService.setMember(data.result);
               var alertPopup = $ionicPopup.alert({
                        title: '支付成功！',
                        template: '返回店铺页面！'
@@ -329,6 +345,7 @@ $scope.submitpayinfo=function () {
                        window.location.href="#/shopdetail/"+$scope.shopinfo.shop.id;
                       });
             }else if(code==-5){
+              MemberService.setMember(data.result);
               var alertPopup = $ionicPopup.alert({
                        title: '余额不足！',
                        template: '请重新输入金额！'
@@ -385,6 +402,7 @@ $scope.submitpayinfo=function () {
     Shops.pay($scope.payinfo).then(function(data){
         var code=data.code;
             if(code==0){
+              MemberService.setMember(data.result);
               var alertPopup = $ionicPopup.alert({
                        title: '支付成功！',
                        template: '返回店铺页面！'
@@ -393,7 +411,7 @@ $scope.submitpayinfo=function () {
                        window.location.href="#/shopdetail/"+$scope.shopinfo.shop.id;
                       });
             }else if(code==-5){
-              
+              MemberService.setMember(data.result);
               var alertPopup = $ionicPopup.alert({
                        title: '余额不足！',
                        template: '请重新输入金额！'
@@ -530,8 +548,6 @@ $scope.quitlogin=function(shopId) {
 
 
 $scope.Member =MemberService.getMember();
-
-
 $scope.tomydollarpage=function (){
    if(MemberService.getMember()){
      window.location.href="#/mydollar/"+MemberService.getMember().id;
