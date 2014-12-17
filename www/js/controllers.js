@@ -478,11 +478,17 @@ $scope.submitpayinfo=function () {
         pointParam.longitude = r.point.lng;
         pointParam.cityId = Location.getAreaId();
         pointParam.categoryId = 0; 
-        Shops.getNearbyShops(pointParam).then(function(data){
-            $scope.nearbyShops=data.result;
-          }, function(data){
-            console.log(data);
-      })
+        Location.getAreaIdByCityArea(addComp.city,addComp.district).then(function(aeardata){
+            Location.setAreaId(aeardata.result);
+            pointParam.cityId = aeardata.result;
+          Shops.getNearbyShops(pointParam).then(function(data){
+              $scope.nearbyShops=data.result;
+            }, function(data){
+              console.log(data);
+          });
+        }, function(data){
+          console.log(data);
+        });
     });      
     }
 });
