@@ -520,6 +520,7 @@ angular.module('starter.services', [])
    {id: 14,name: '汽车摩托',logo:'img/temp/icon/icon-car.png' },
    {id: 15,name: '更多',logo:'img/temp/icon/icon-more.png' }
   ];
+  var page={busy:false,currentPage:1,pages:1}; 
 
 var ads = [
 {advertisement: {
@@ -545,6 +546,9 @@ filePath: "http://image.53xsd.com/newshop/2014/12/8a63ddb1-3f0a-4c3c-8fa6-9567f1
   return {    
     get: function() {
       return menus;
+    },
+    getPage: function() {
+      return page;
     },
     setMember: function(data) {
       member=data;

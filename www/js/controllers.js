@@ -1,7 +1,7 @@
 angular.module('starter.controllers', [])
 
 //主页 商铺 商品详情等controller  开始位置
-.controller('IndexCtrl', function($scope, $ionicModal,$ionicPopover,$ionicSlideBoxDelegate,$ionicBackdrop,Location,IndexService,AdService,Shops) {
+.controller('IndexCtrl', function($scope, $ionicModal,$ionicPopover,$ionicBackdrop,Location,IndexService,AdService,Shops) {
     $scope.location="定位中";    
   if(Location.getCityName()){
    $scope.location=Location.getCityName();
@@ -32,10 +32,10 @@ $scope.menus=IndexService.get();
 
 $scope.areaName=Location.getAreaName();
 
+$scope.ads=IndexService.getAds();
 if(!IndexService.isLoded()){
 AdService.getAds().then(function(data){
-  $scope.ads=data.result;
-        $ionicSlideBoxDelegate.update();
+        IndexService.setAds(data.result)
       }, function(data){
         console.log(data);
 }); 
@@ -134,13 +134,10 @@ AdService.getAds().then(function(data){
               for (var i in data.result.result) {
                 $scope.shops.push(data.result.result[i]);
               }
-              $scope.$broadcast('scroll.infiniteScrollComplete');
           }, function(data){
             console.log(data);
           });
       
-    }else{
-      $scope.$broadcast('scroll.infiniteScrollComplete');
     }
   };
     $scope.refreshshops= function(categoryId) {
@@ -278,11 +275,10 @@ $scope.chosethisCity=function(cityName) {
 })
 
 
-.controller('ProductCtrl', function($scope,$stateParams,$ionicSlideBoxDelegate,$sce,Shops,LocalData) {
+.controller('ProductCtrl', function($scope,$stateParams,$sce,Shops,LocalData) {
 var productId=$stateParams.productId;
  Shops.getProductdetail(productId).then(function(data){
         $scope.product=data.result;
-        $ionicSlideBoxDelegate.update();
         LocalData.setproduct(data.result);
         $scope.deliberatelyTrustDangerousSnippet = function() {  
         return $sce.trustAsHtml($scope.product.productText.text);  
@@ -476,13 +472,19 @@ $scope.submitpayinfo=function () {
         Location.setLongitude(r.point.lng);
         pointParam.latitude = r.point.lat;
         pointParam.longitude = r.point.lng;
-        pointParam.cityId = Location.getAreaId();
         pointParam.categoryId = 0; 
-        Shops.getNearbyShops(pointParam).then(function(data){
-            $scope.nearbyShops=data.result;
-          }, function(data){
-            console.log(data);
-      })
+        Location.getAreaIdByCityArea(addComp.city,addComp.district).then(function(aeardata){
+            Location.setAreaId(aeardata.result);
+            pointParam.cityId = aeardata.result;
+          Shops.getNearbyShops(pointParam).then(function(data){
+              $scope.nearbyShops=data.result;
+            }, function(data){
+              console.log(data);
+          });
+        }, function(data){
+          console.log(data);
+        });
+        
     });      
     }
 });
@@ -750,5 +752,8 @@ $scope.backtoMemberpage=function() {
 .controller('SettingCtrl', function($scope,Friends) {
 })
 
-
 ;
+
+
+
+  
