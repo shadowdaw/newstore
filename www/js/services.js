@@ -381,6 +381,18 @@ angular.module('starter.services', [])
         deferred.reject(status)
       })
       return deferred.promise;
+    },
+    getAreaIdByCityArea: function(cityName,areaName){
+      var deferred = $q.defer();
+      $http({
+        method: 'JSONP',
+        url: _url+'getAreaId?callbackName=JSON_CALLBACK&cityName='+cityName+'&areaName='+areaName
+      }).success(function(data){
+        deferred.resolve(data);
+      }).error(function(data,status){
+        deferred.reject(status)
+      })
+      return deferred.promise;
     }
   }
 })

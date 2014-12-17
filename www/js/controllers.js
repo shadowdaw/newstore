@@ -26,7 +26,11 @@ angular.module('starter.controllers', [])
 $scope.menus=IndexService.get();
 
 $scope.areaName=Location.getAreaName();
-
+Location.getAreaIdByCityArea(Location.getCityName(),Location.getAreaName()).then(function(data){
+        Location.setAreaId(data.result);
+        }, function(data){
+          console.log(data);
+        });
 AdService.getAds().then(function(data){
         $scope.ads = data.result;
       }, function(data){
