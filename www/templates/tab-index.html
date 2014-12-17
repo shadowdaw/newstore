@@ -10,20 +10,10 @@
   </a>
 </ion-header-bar>
   <ion-content >
-<ion-slide-box on-slide-changed="slideHasChanged($index)" does-continue="true" auto-play="true">
-  <ion-slide>   
-  <div class="item item-image" >
-    <img src="img/temp/index01.png">
-  </div>
-  </ion-slide>
-  <ion-slide>
-  <div class="item item-image">
-    <img src="img/temp/index03.png">
-  </div>
-  </ion-slide>
-  <ion-slide>
-  <div class="item item-image">
-    <img src="img/temp/shop/shopimg1.png">
+<ion-slide-box on-slide-changed="slideHasChanged($index)">
+  <ion-slide ng-repeat="ad in ads">
+     <div class="item item-image" >
+    <img src="{{ad.advertisementItem.filePath}}">
   </div>
   </ion-slide>
 </ion-slide-box>
