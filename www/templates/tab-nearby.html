@@ -18,15 +18,14 @@
 -->
 </div>
   </div>
-  </ion-scroll>
-    <ion-scroll style="height:80%" class="fr" >
+    <ion-scroll style="height:600px"  >
     <ion-list>
-
       <ion-item ng-repeat="shop in nearbyShops" type="item-text-wrap"  class="nopadding" >
-        <a class="item shopItem-left"    href="#/shopdetail/{{shop.id}}">
+        <a class="item item-thumbnail-left"    href="#/shopdetail/{{shop.id}}">
           <img src="{{shop.logo}}">
           <h2>{{shop.name}}</h2>
-          <p style="white-space:normal">{{shop.address}}</p>
+          <p >{{shop.address}}</p>
+          <p style="white-space:normal">距离：{{ shop.distance | number : 0 }}米</p>
        </a>
       </ion-item>
     </ion-list>
