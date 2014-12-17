@@ -106,8 +106,8 @@ AdService.getAds().then(function(data){
         $scope.categorys = data.result;
           Shops.getShops(shopparam).then(function(data){
              $scope.busy = false;
-             $scope.shops = data.result;
-             $scope.pages = 10;//模拟总页数
+             $scope.shops = data.result.result;
+             $scope.pages = data.result.totalPages;
           }, function(data){
             console.log(data);
           });
@@ -115,6 +115,7 @@ AdService.getAds().then(function(data){
         console.log(data);
       });
     LocalData.setshopcargory($stateParams.categoryId);
+    //分页函数
     $scope.loadMore = function() {
     if ($scope.currentPage < $scope.pages) {
       $scope.currentPage++;
@@ -125,8 +126,8 @@ AdService.getAds().then(function(data){
       shopparam.pageIndex = $scope.currentPage;
        Shops.getShops(shopparam).then(function(data){
              $scope.busy = false;
-              for (var i in data.result) {
-                $scope.shops.push(data.result[i]);
+              for (var i in data.result.result) {
+                $scope.shops.push(data.result.result[i]);
               }
           }, function(data){
             console.log(data);
