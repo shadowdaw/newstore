@@ -21,7 +21,7 @@
     <ion-scroll style="height:600px"  >
     <ion-list>
       <ion-item ng-repeat="shop in nearbyShops" type="item-text-wrap"  class="nopadding" >
-        <a class="item item-thumbnail-left"    href="#/shopdetail/{{shop.id}}">
+        <a class="item item-thumbnail-left"  ng-click="gotoshop({{shop.id}})">
           <img src="{{shop.logo}}">
           <h2>{{shop.name}}</h2>
           <p >{{shop.address}}</p>

@@ -35,7 +35,7 @@
     <ion-list>
 
       <ion-item ng-repeat="shop in shops" type="item-text-wrap"  class="nopadding" >
-        <a class="item shopItem-left"    href="#/shopdetail/{{shop.id}}">
+        <a class="item shopItem-left"    ng-click="gotoshop({{shop.id}})">
           <img src="{{shop.logo}}">
           <h2>{{shop.name}}</h2>
           <p style="white-space:normal">{{shop.address}}</p>

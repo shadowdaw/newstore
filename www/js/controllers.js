@@ -85,8 +85,8 @@ AdService.getAds().then(function(data){
    $scope.categoryId=$stateParams.categoryId;
    var shopparam=new Object();
    $scope.busy = false;
-   $scope.currentPage = 1;
-   $scope.pages = 1;
+   $scope.currentPage = 0;
+   $scope.pages = 0;
    if(Location.getAreaId()){
    shopparam.areaId=Location.getAreaId();
     }
@@ -144,9 +144,13 @@ AdService.getAds().then(function(data){
     }
   };
     $scope.refreshshops= function(categoryId) {
+       $scope.currentPage = 0;
+       $scope.pages = 0;
+      shopparam.pageIndex = $scope.currentPage;
       shopparam.categoryId=categoryId;
       Shops.getShops(shopparam).then(function(data){
-             $scope.shops = data.result;
+             $scope.shops = data.result.result;
+             $scope.pages = data.result.totalPages;
           }, function(data){
             console.log(data);
           });
@@ -154,6 +158,10 @@ AdService.getAds().then(function(data){
 
     $scope.backtoIndex = function() {
       window.location.href="#/tab/dash";
+    };
+    $scope.gotoshop= function(shopid) {
+      LocalData.setrediretfromUrl("#/shops/"+$stateParams.categoryId)
+      window.location.href="#/shopdetail/"+shopid;
     };
 
 
@@ -223,7 +231,7 @@ $scope.chosethisCity=function(cityName) {
       })
 
   $scope.closedetails= function() {
-   window.location.href="#/shops/"+LocalData.getshopcargory();
+    window.location.href=LocalData.getrediretfromUrl();
   };
 
 
@@ -452,7 +460,7 @@ $scope.submitpayinfo=function () {
 //         console.log(data);
 //       })
 // })
-.controller('NearByCtrl', function($scope,Shops,Location,IndexService) { 
+.controller('NearByCtrl', function($scope,Shops,Location,IndexService,LocalData) { 
   $scope.menus=IndexService.get();
   var pointParam = new Object();
   var geolocation = new BMap.Geolocation();
@@ -478,6 +486,12 @@ $scope.submitpayinfo=function () {
     });      
     }
 });
+
+
+      $scope.gotoshop= function(shopid) {
+      LocalData.setrediretfromUrl("#/tab/nearby");
+      window.location.href="#/shopdetail/"+shopid;
+    };
   //categoryId为0表示全部
   $scope.showNearbyByCategoryId = function(categoryId){
     pointParam.latitude = Location.getLongitude();
