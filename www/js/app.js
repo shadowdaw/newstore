@@ -91,6 +91,11 @@ angular.module('starter', ['ionic', 'starter.controllers', 'starter.services','s
       }
     })
 
+    .state('myprofile', {
+      url: '/myprofile',
+      controller: 'MyprofileCtrl',
+      templateUrl: "templates/myprofile.html"
+    })
     
     .state('setting', {
       url: "/setting",

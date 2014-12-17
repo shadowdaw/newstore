@@ -309,7 +309,7 @@ if(MemberService.getMember()){
         console.log(data);
       })
 }else{
-  LocalData.setrediretfromUrl("#/topay/"+productId);
+  LocalData.setrediretfromUrl("#/product/"+productId);
   window.location.href="#/login";
 
 }
@@ -561,6 +561,8 @@ $scope.tomydollarpage=function (){
 }
 
 
+})
+.controller('MyprofileCtrl', function($scope,Friends) {
 })
 
 .controller('MydollarCtrl', function($scope,$stateParams,Shops,MemberService) {

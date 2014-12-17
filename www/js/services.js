@@ -237,20 +237,19 @@ angular.module('starter.services', [])
       })
       return deferred.promise;
     },
-    // 接口未开发
-    //getNearbyShops: function(point){
-    //   var deferred = $q.defer();
-    //   $http({
-    //     method: 'JSONP',
-    //     params:point,
-    //     url: _url+'getNearbyShops?callbackName=JSON_CALLBACK'
-    //   }).success(function(data){
-    //     deferred.resolve(data);
-    //   }).error(function(data,status){
-    //     deferred.reject(status)
-    //   })
-    //   return deferred.promise;
-    // },
+    getNearbyShops: function(point){
+      var deferred = $q.defer();
+      $http({
+        method: 'JSONP',
+        params:point,
+        url: _url+'getNearbyShops?callbackName=JSON_CALLBACK'
+      }).success(function(data){
+        deferred.resolve(data);
+      }).error(function(data,status){
+        deferred.reject(status)
+      })
+      return deferred.promise;
+    }
   }
 })
 
