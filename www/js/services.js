@@ -485,12 +485,47 @@ angular.module('starter.services', [])
    {id: 14,name: '汽车摩托',logo:'img/temp/icon/icon-car.png' },
    {id: 15,name: '更多',logo:'img/temp/icon/icon-more.png' }
   ];
+
+var ads = [
+{advertisement: {
+ct: 1418029833133,
+ut: 1418029833133,
+id: 1
+},advertisementItem: {
+filePath: "http://image.53xsd.com/newshop/2014/12/8a63ddb1-3f0a-4c3c-8fa6-9567f12b849f.jpg"
+}
+},
+{
+advertisement: {
+ct: 1418029833133,
+ut: 1418029833133,
+id: 1
+},
+advertisementItem: {
+filePath: "http://image.53xsd.com/newshop/2014/12/c2638009-6ff5-4776-bda0-b08650cab1e3.jpg"
+}
+}
+];
+
   return {    
     get: function() {
       return menus;
     },
     setMember: function(data) {
       member=data;
+    },
+    getAds: function() {
+      if(localStorage.getItem("ads")){
+      ads=JSON.parse(localStorage.getItem("ads"));
+         return ads;
+      }else{
+      return ads;
+      }
+    },
+    setAds: function(data) {
+      ads=data;
+      localStorage.setItem("ads",JSON.stringify(member))
+
     }
   }
 })

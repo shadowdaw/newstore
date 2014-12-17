@@ -10,13 +10,14 @@
   </a>
 </ion-header-bar>
   <ion-content >
-<ion-slide-box on-slide-changed="slideHasChanged($index)">
-  <ion-slide ng-repeat="ad in ads">
-     <div class="item item-image" >
+<ion-slide-box on-slide-changed="slideHasChanged($index)" does-continue="true" auto-play="true">
+   <ion-slide ng-repeat="ad in ads">
+  <div class="item item-image">
     <img src="{{ad.advertisementItem.filePath}}">
   </div>
   </ion-slide>
 </ion-slide-box>
+
 
 
 <div class="item nopadding item-image mybutton"
