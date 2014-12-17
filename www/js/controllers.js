@@ -437,33 +437,32 @@ $scope.submitpayinfo=function () {
 
 
 //附近页面的controller
-.controller('NearByCtrl', function($scope,Friends) {
-   Friends.jsonp().then(function(data){
-        $scope.friends=data;
-      }, function(data){
-        console.log(data);
-      })
-})
-
-// .controller('NearByCtrl', function($scope,Shops,Location) { 
-//   var pointParam = new Object();
-//   var geolocation = new BMap.Geolocation();
-//   geolocation.getCurrentPosition(function(r){
-//       if(this.getStatus() == BMAP_STATUS_SUCCESS){
-//         alert(JSON.stringify(r.point));
-//         pointParam.x = r.point.lng;
-//         pointParam.y = r.point.lat;
-//       }else{
-//          alert("定位失败");
-//       }        
-//   },{enableHighAccuracy: true})
-//   pointParam.cityId = Location.getAreaId();
-//   Shops.getNearbyShops(pointParam).then(function(data){
-//         $scope.nearbyShops=data.result;
+// .controller('NearByCtrl', function($scope,Friends) {
+//    Friends.jsonp().then(function(data){
+//         $scope.friends=data;
 //       }, function(data){
 //         console.log(data);
 //       })
 // })
+.controller('NearByCtrl', function($scope,Shops,Location) { 
+  var pointParam = new Object();
+  var geolocation = new BMap.Geolocation();
+  geolocation.getCurrentPosition(function(r){
+      if(this.getStatus() == BMAP_STATUS_SUCCESS){
+        pointParam.latitude = r.point.lng;//后台参数名:latitude 经度 longitude 纬度 cityId 区ID
+        pointParam.longitude = r.point.lat;
+        pointParam.cityId = Location.getAreaId();
+        Shops.getNearbyShops(pointParam).then(function(data){
+        $scope.nearbyShops=data.result;
+      }, function(data){
+        console.log(data);
+      })
+      }else{
+         alert("定位失败");
+      }        
+  },{enableHighAccuracy: true})
+
+})
 
 .controller('FriendDetailCtrl', function($scope, $stateParams, Friends) {
   $scope.friend = Friends.get($stateParams.friendId);
