@@ -459,10 +459,10 @@ $scope.submitpayinfo=function () {
         $scope.nearbyCity=addComp.city;
         $scope.nearbyArea=addComp.district;
         //后台参数名:latitude 经度 longitude 纬度 cityId 区ID categoryId为0表示全部
-        pointParam.latitude = Location.getLongitude();
-        pointParam.longitude = Location.getLatitude();
         Location.setLatitude(r.point.lat);
         Location.setLongitude(r.point.lng);
+        pointParam.latitude = Location.getLongitude();
+        pointParam.longitude = Location.getLatitude();
         pointParam.cityId = Location.getAreaId();
         //pointParam.categoryId = 0; 接口未完成
         Shops.getNearbyShops(pointParam).then(function(data){
@@ -475,6 +475,9 @@ $scope.submitpayinfo=function () {
 });
   //categoryId为0表示全部
   $scope.showNearbyByCategoryId = function(categoryId){
+    pointParam.latitude = Location.getLongitude();
+    pointParam.longitude = Location.getLatitude();
+    pointParam.cityId = Location.getAreaId();
     pointParam.categoryId = categoryId;
     Shops.getNearbyShops(pointParam).then(function(data){
           $scope.nearbyShops=data.result;
