@@ -731,8 +731,5 @@ $scope.backtoMemberpage=function() {
 .controller('SettingCtrl', function($scope,Friends) {
 })
 
+
 ;
-
-
-
-  
