@@ -48,9 +48,6 @@ AdService.getAds().then(function(data){
   };
 
   $scope.showShops = function(categoryId) {
-    if(categoryId==15){
-      return;
-    }
     window.location.href="#/shops/"+categoryId;
   };
  $scope.chosecity = function() {
@@ -106,7 +103,7 @@ AdService.getAds().then(function(data){
         $scope.categorys = data.result;
           Shops.getShops(shopparam).then(function(data){
              $scope.busy = false;
-             $scope.shops = data.result;
+             $scope.shops = data.result.result;
              $scope.pages = 10;//模拟总页数
           }, function(data){
             console.log(data);
@@ -126,7 +123,7 @@ AdService.getAds().then(function(data){
        Shops.getShops(shopparam).then(function(data){
              $scope.busy = false;
               for (var i in data.result) {
-                $scope.shops.push(data.result[i]);
+                $scope.shops.push(data.result.result[i]);
               }
           }, function(data){
             console.log(data);

@@ -202,6 +202,9 @@ padding-left: 30px;
 padding-right: 0px;
 min-height: 40px;
 }
+.shopcategory:active{
+background-color: red;
+}
 .shopcategory div{
   position: absolute;
   left: 3px;
