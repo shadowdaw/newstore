@@ -461,8 +461,8 @@ $scope.submitpayinfo=function () {
         //后台参数名:latitude 经度 longitude 纬度 cityId 区ID categoryId为0表示全部
         Location.setLatitude(r.point.lat);
         Location.setLongitude(r.point.lng);
-        pointParam.latitude = Location.getLongitude();
-        pointParam.longitude = Location.getLatitude();
+        pointParam.latitude = r.point.lat;
+        pointParam.longitude = r.point.lng;
         pointParam.cityId = Location.getAreaId();
         //pointParam.categoryId = 0; 接口未完成
         Shops.getNearbyShops(pointParam).then(function(data){
