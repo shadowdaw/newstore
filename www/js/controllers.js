@@ -464,7 +464,7 @@ $scope.submitpayinfo=function () {
         pointParam.latitude = r.point.lat;
         pointParam.longitude = r.point.lng;
         pointParam.cityId = Location.getAreaId();
-        //pointParam.categoryId = 0; 接口未完成
+        pointParam.categoryId = 0; 
         Shops.getNearbyShops(pointParam).then(function(data){
             $scope.nearbyShops=data.result;
           }, function(data){
