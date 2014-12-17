@@ -8,9 +8,13 @@
         </button>
  </ion-header-bar>
   <ion-content >
+  <ion-slide-box on-slide-changed="slideHasChanged($index)" does-continue="true" auto-play="true">
+   <ion-slide ng-repeat="proimg in product.productImages">
   <div class="item nopadding" style="height:300px">
-    <img class="bgimage" src="{{product.product.detailImage}}" >
+    <img class="bgimage" src="{{proimg.imgPath}}" >
   </div>
+  </ion-slide>
+</ion-slide-box>
 
 <div class="row" style="background: #fff;">
   <div class="col">

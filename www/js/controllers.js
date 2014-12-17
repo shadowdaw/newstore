@@ -1,7 +1,7 @@
 angular.module('starter.controllers', [])
 
 //主页 商铺 商品详情等controller  开始位置
-.controller('IndexCtrl', function($scope, $ionicModal,$ionicPopover,$ionicBackdrop,Location,IndexService,AdService,Shops) {
+.controller('IndexCtrl', function($scope, $ionicModal,$ionicPopover,$ionicSlideBoxDelegate,$ionicBackdrop,Location,IndexService,AdService,Shops) {
     $scope.location="定位中";    
   if(Location.getCityName()){
    $scope.location=Location.getCityName();
@@ -32,10 +32,10 @@ $scope.menus=IndexService.get();
 
 $scope.areaName=Location.getAreaName();
 
-$scope.ads=IndexService.getAds();
 if(!IndexService.isLoded()){
 AdService.getAds().then(function(data){
-        IndexService.setAds(data.result)
+  $scope.ads=data.result;
+        $ionicSlideBoxDelegate.update();
       }, function(data){
         console.log(data);
 }); 
@@ -270,10 +270,11 @@ $scope.chosethisCity=function(cityName) {
 })
 
 
-.controller('ProductCtrl', function($scope,$stateParams,$sce,Shops,LocalData) {
+.controller('ProductCtrl', function($scope,$stateParams,$ionicSlideBoxDelegate,$sce,Shops,LocalData) {
 var productId=$stateParams.productId;
  Shops.getProductdetail(productId).then(function(data){
         $scope.product=data.result;
+        $ionicSlideBoxDelegate.update();
         LocalData.setproduct(data.result);
         $scope.deliberatelyTrustDangerousSnippet = function() {  
         return $sce.trustAsHtml($scope.product.productText.text);  
