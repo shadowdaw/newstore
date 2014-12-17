@@ -453,12 +453,13 @@ $scope.submitpayinfo=function () {
   var pointParam = new Object();
   var geolocation = new BMap.Geolocation();
   geolocation.getCurrentPosition(function(r){
+    var geoc = new BMap.Geocoder();    
     if(this.getStatus() == BMAP_STATUS_SUCCESS){
       geoc.getLocation(r.point, function(rs){
         var addComp = rs.addressComponents;
-        $scope.nearbyCity=addComp.city;
-        $scope.nearbyArea=addComp.district;
-        //后台参数名:latitude 经度 longitude 纬度 cityId 区ID categoryId为0表示全部
+        $scope.location=addComp.city;
+        $scope.areaName=addComp.district;
+        //cityId 区ID categoryId为0表示全部
         Location.setLatitude(r.point.lat);
         Location.setLongitude(r.point.lng);
         pointParam.latitude = r.point.lat;
