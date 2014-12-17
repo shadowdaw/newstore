@@ -445,8 +445,7 @@ $scope.submitpayinfo=function () {
       })
 })
 
-// 接口未开发
-//.controller('NearByCtrl', function($scope,Shops) { 
+// .controller('NearByCtrl', function($scope,Shops,Location) { 
 //   var pointParam = new Object();
 //   var geolocation = new BMap.Geolocation();
 //   geolocation.getCurrentPosition(function(r){
@@ -458,7 +457,7 @@ $scope.submitpayinfo=function () {
 //          alert("定位失败");
 //       }        
 //   },{enableHighAccuracy: true})
-
+//   pointParam.cityId = Location.getAreaId();
 //   Shops.getNearbyShops(pointParam).then(function(data){
 //         $scope.nearbyShops=data.result;
 //       }, function(data){
@@ -513,7 +512,14 @@ $scope.submitpayinfo=function () {
             window.location.href="#/login";
          }
   };
-
+ $scope.toMyprofile=function(){
+       if(MemberService.getMember()){
+           window.location.href="/#/myprofile";
+         }else{
+            LocalData.setrediretfromUrl("#/tab/member");
+            window.location.href="#/login";
+         }
+ };
  $scope.openlogin=function(shopId) {
     if(MemberService.getMember()){
              var confirmPopup = $ionicPopup.confirm({
@@ -562,7 +568,12 @@ $scope.tomydollarpage=function (){
 
 
 })
-.controller('MyprofileCtrl', function($scope,Friends) {
+.controller('MyprofileCtrl', function($scope,MemberService) {
+ $scope.Myprofile =MemberService.getMember();
+
+  $scope.backtomemberpage = function(){
+    window.location.href="#/tab/member";
+  }
 })
 
 .controller('MydollarCtrl', function($scope,$stateParams,Shops,MemberService) {
