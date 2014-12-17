@@ -134,10 +134,13 @@ AdService.getAds().then(function(data){
               for (var i in data.result.result) {
                 $scope.shops.push(data.result.result[i]);
               }
+              $scope.$broadcast('scroll.infiniteScrollComplete');
           }, function(data){
             console.log(data);
           });
       
+    }else{
+      $scope.$broadcast('scroll.infiniteScrollComplete');
     }
   };
     $scope.refreshshops= function(categoryId) {
