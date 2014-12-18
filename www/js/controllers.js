@@ -78,7 +78,7 @@ AdService.getAds().then(function(data){
 
 
 .controller('ShopsCtrl', function($scope,$ionicScrollDelegate,$stateParams,Shops,LocalData,Location) {
-  var height=window.screen.height-160;
+  var height=window.screen.height-200;
   $scope.leftstyle = {width:'33%',height:height+'px'};
   $scope.rightstyle = {width:'67%',height:height+'px'};
    $scope.categoryId=$stateParams.categoryId;
@@ -418,7 +418,6 @@ $scope.submitpayinfo=function () {
     Shops.pay($scope.payinfo).then(function(data){
         var code=data.code;
             if(code==0){
-              MemberService.setMember(data.result);
               var alertPopup = $ionicPopup.alert({
                        title: '支付成功！',
                        template: '返回店铺页面！'
@@ -427,7 +426,6 @@ $scope.submitpayinfo=function () {
                        window.location.href="#/shopdetail/"+$scope.shopinfo.shop.id;
                       });
             }else if(code==-5){
-              MemberService.setMember(data.result);
               var alertPopup = $ionicPopup.alert({
                        title: '余额不足！',
                        template: '请重新输入金额！'
