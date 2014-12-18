@@ -6,11 +6,10 @@ angular.module('starter.controllers', [])
   if(Location.getCityName()){
    $scope.location=Location.getCityName();
   }else{
-      var geolocation = new BMap.Geolocation();
-        geolocation.getCurrentPosition(function(r){
-      if(this.getStatus() == BMAP_STATUS_SUCCESS){
-        var geoc = new BMap.Geocoder();    
-        geoc.getLocation(r.point, function(rs){
+    var myCity = new BMap.LocalCity();
+    myCity.get(function(result){
+       var geoc = new BMap.Geocoder();    
+        geoc.getLocation(result.center, function(rs){
         var addComp = rs.addressComponents;
         $scope.location=addComp.city;
         Location.setCityName(addComp.city);
@@ -22,11 +21,8 @@ angular.module('starter.controllers', [])
           console.log(data);
         });
        });     
-      }
-    else {
-      $scope.location='定位失败';
-    }        
-     },{enableHighAccuracy: true})
+
+    });
   }
 $scope.menus=IndexService.get();
 
@@ -160,7 +156,7 @@ AdService.getAds().then(function(data){
       window.location.href="#/tab/dash";
     };
     $scope.gotoshop= function(shopid) {
-      LocalData.setrediretfromUrl("#/shops/"+$stateParams.categoryId)
+      LocalData.setreserveRediretfromUrl("#/shops/"+$stateParams.categoryId)
       window.location.href="#/shopdetail/"+shopid;
     };
 
@@ -231,7 +227,7 @@ $scope.chosethisCity=function(cityName) {
       })
 
   $scope.closedetails= function() {
-    window.location.href=LocalData.getrediretfromUrl();
+    window.location.href=LocalData.getreserveRediretfromUrl();
   };
 
 
@@ -354,7 +350,6 @@ $scope.submitpayinfo=function () {
     Shops.pay($scope.payinfo).then(function(data){
         var code=data.code;
             if(code==0){
-              MemberService.setMember(data.result);
               var alertPopup = $ionicPopup.alert({
                        title: '支付成功！',
                        template: '返回店铺页面！'

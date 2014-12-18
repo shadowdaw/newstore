@@ -12,6 +12,7 @@ angular.module('starter.services', [])
   var shopcargory;
   var shop;
   var rediretfromUrl;
+  var reserveRediretfromUrl;
   return {    
     getproduct: function() {
       return product;
@@ -36,6 +37,12 @@ angular.module('starter.services', [])
     },
     setrediretfromUrl: function(data) {
       rediretfromUrl=data;
+    },
+    getreserveRediretfromUrl:function(){
+      return reserveRediretfromUrl?reserveRediretfromUrl:"#/tab/member";
+    },
+    setreserveRediretfromUrl: function(data) {
+      reserveRediretfromUrl=data;
     }
   }
 })
