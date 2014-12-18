@@ -43,23 +43,23 @@ angular.module('starter.controllers', [])
     }else{
       alert("手机不支持定位功能");
     }
-    var myCity = new BMap.LocalCity();
-    myCity.get(function(result){
-       var geoc = new BMap.Geocoder();    
-        geoc.getLocation(result.center, function(rs){
-        var addComp = rs.addressComponents;
-        $scope.location=addComp.city;
-        Location.setCityName(addComp.city);
-        $scope.areaName=addComp.district;
-        Location.setAreaName(addComp.district);
-        Location.getAreaIdByCityArea(addComp.city,addComp.district).then(function(data){
-        Location.setAreaId(data.result);
-        }, function(data){
-          console.log(data);
-        });
-       });     
+    // var myCity = new BMap.LocalCity();
+    // myCity.get(function(result){
+    //    var geoc = new BMap.Geocoder();    
+    //     geoc.getLocation(result.center, function(rs){
+    //     var addComp = rs.addressComponents;
+    //     $scope.location=addComp.city;
+    //     Location.setCityName(addComp.city);
+    //     $scope.areaName=addComp.district;
+    //     Location.setAreaName(addComp.district);
+    //     Location.getAreaIdByCityArea(addComp.city,addComp.district).then(function(data){
+    //     Location.setAreaId(data.result);
+    //     }, function(data){
+    //       console.log(data);
+    //     });
+    //    });     
 
-    });
+    // });
   }
 $scope.menus=IndexService.get();
 
