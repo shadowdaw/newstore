@@ -10,7 +10,7 @@
   <ion-content >
   <ion-slide-box on-slide-changed="slideHasChanged($index)" does-continue="true" auto-play="true">
    <ion-slide ng-repeat="proimg in product.productImages">
-  <div class="item nopadding" style="height:300px">
+  <div class="item nopadding" style="max-height:300px">
     <img class="bgimage" src="{{proimg.imgPath}}" >
   </div>
   </ion-slide>
