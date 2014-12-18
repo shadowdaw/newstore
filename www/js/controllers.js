@@ -6,60 +6,23 @@ angular.module('starter.controllers', [])
   if(Location.getCityName()){
    $scope.location=Location.getCityName();
   }else{
-    if (navigator.geolocation){
-        navigator.geolocation.getCurrentPosition(function(position){
-            var xx = position.coords.latitude;
-            var yy = position.coords.longitude;
-            var gpsPoint = new BMap.Point(xx,yy);
-            BMap.Convertor.translate(gpsPoint,0,function(result){
-                var geoc = new BMap.Geocoder();
-                geoc.getLocation(result, function(rs){
-                    var addComp = rs.addressComponents;
-                    $scope.location=addComp.city;
-                    Location.setCityName(addComp.city);
-                    $scope.areaName=addComp.district;
-                    Location.setAreaName(addComp.district);
-                    Location.getAreaIdByCityArea(addComp.city,addComp.district).then(function(data){
-                    Location.setAreaId(data.result);
-                    }, function(data){
-                      console.log(data);
-                   });
-               });     
-            });
-       //  var geoc = new BMap.Geocoder();
-       //  geoc.getLocation(result.center, function(rs){
-       //  var addComp = rs.addressComponents;
-       //  $scope.location=addComp.city;
-       //  Location.setCityName(addComp.city);
-       //  $scope.areaName=addComp.district;
-       //  Location.setAreaName(addComp.district);
-       //  Location.getAreaIdByCityArea(addComp.city,addComp.district).then(function(data){
-       //  Location.setAreaId(data.result);
-       //  }, function(data){
-       //    console.log(data);
-       //  });
-       // });     
-      });
-    }else{
-      alert("手机不支持定位功能");
-    }
-    // var myCity = new BMap.LocalCity();
-    // myCity.get(function(result){
-    //    var geoc = new BMap.Geocoder();    
-    //     geoc.getLocation(result.center, function(rs){
-    //     var addComp = rs.addressComponents;
-    //     $scope.location=addComp.city;
-    //     Location.setCityName(addComp.city);
-    //     $scope.areaName=addComp.district;
-    //     Location.setAreaName(addComp.district);
-    //     Location.getAreaIdByCityArea(addComp.city,addComp.district).then(function(data){
-    //     Location.setAreaId(data.result);
-    //     }, function(data){
-    //       console.log(data);
-    //     });
-    //    });     
+    var myCity = new BMap.LocalCity();
+    myCity.get(function(result){
+       var geoc = new BMap.Geocoder();    
+        geoc.getLocation(result.center, function(rs){
+        var addComp = rs.addressComponents;
+        $scope.location=addComp.city;
+        Location.setCityName(addComp.city);
+        $scope.areaName=addComp.district;
+        Location.setAreaName(addComp.district);
+        Location.getAreaIdByCityArea(addComp.city,addComp.district).then(function(data){
+        Location.setAreaId(data.result);
+        }, function(data){
+          console.log(data);
+        });
+       });     
 
-    // });
+    });
   }
 $scope.menus=IndexService.get();
 
@@ -387,6 +350,7 @@ $scope.submitpayinfo=function () {
     Shops.pay($scope.payinfo).then(function(data){
         var code=data.code;
             if(code==0){
+              MemberService.setMember(data.result);
               var alertPopup = $ionicPopup.alert({
                        title: '支付成功！',
                        template: '返回店铺页面！'
@@ -495,11 +459,10 @@ $scope.submitpayinfo=function () {
 .controller('NearByCtrl', function($scope,Shops,Location,IndexService,LocalData) { 
   $scope.menus=IndexService.get();
   var pointParam = new Object();
-  var geolocation = new BMap.Geolocation();
-  geolocation.getCurrentPosition(function(r){
-    var geoc = new BMap.Geocoder();    
-    if(this.getStatus() == BMAP_STATUS_SUCCESS){
-      geoc.getLocation(r.point, function(rs){
+  var myCity = new BMap.LocalCity();
+  myCity.get(function(result){
+    var geoc = new BMap.Geocoder();
+    geoc.getLocation(result.center, function(rs){
         var addComp = rs.addressComponents;
         $scope.location=addComp.city;
         $scope.areaName=addComp.district;
@@ -508,33 +471,23 @@ $scope.submitpayinfo=function () {
         Location.setLongitude(r.point.lng);
         pointParam.latitude = r.point.lat;
         pointParam.longitude = r.point.lng;
-        pointParam.cityId = Location.getAreaId();
         pointParam.categoryId = 0; 
-        Location.getAreaIdByCityArea(addComp.city,addComp.district).then(function(aeardata){
-            Location.setAreaId(aeardata.result);
-            pointParam.cityId = aeardata.result;
-          Shops.getNearbyShops(pointParam).then(function(data){
-              $scope.nearbyShops=data.result;
-            }, function(data){
-              console.log(data);
-          });
-        }, function(data){
-          console.log(data);
+        Shops.getNearbyShops(pointParam).then(function(data){
+            $scope.nearbyShops=data.result;
+          }, function(data){
+            console.log(data);
         });
     });      
-    }
-});
-
-
-      $scope.gotoshop= function(shopid) {
-      LocalData.setrediretfromUrl("#/tab/nearby");
-      window.location.href="#/shopdetail/"+shopid;
-    };
+  });
+  
+$scope.gotoshop= function(shopid) {
+  LocalData.setrediretfromUrl("#/tab/nearby");
+  window.location.href="#/shopdetail/"+shopid;
+};
   //categoryId为0表示全部
   $scope.showNearbyByCategoryId = function(categoryId){
     pointParam.latitude = Location.getLongitude();
     pointParam.longitude = Location.getLatitude();
-    pointParam.cityId = Location.getAreaId();
     pointParam.categoryId = categoryId;
     Shops.getNearbyShops(pointParam).then(function(data){
           $scope.nearbyShops=data.result;
