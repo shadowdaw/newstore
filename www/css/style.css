@@ -257,3 +257,6 @@ min-height: 30px;
     width: 65px;
     height: 32px;
 }
+#productdetail img{
+    width: 100%;
+}
