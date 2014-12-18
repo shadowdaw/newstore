@@ -15,7 +15,7 @@
   <div class="item item-image">
     <img src="img/temp/shops/shops_01.png">
   </div>
- <ion-scroll style="width:33%;height:500px" class="fl"  delegate-handle="categoryScroll">
+ <ion-scroll  ng-style="{{leftstyle}}" class="fl"  delegate-handle="categoryScroll" has-bouncing>
 <ion-list >
  <a class="item shopcategory" ng-click="refreshshops({{categoryId}})">
           <div ><img src="img/temp/shops/all.png" style="width:80%"></div>
@@ -31,7 +31,7 @@
     </ion-list>
 </ion-list>
      </ion-scroll>
-    <ion-scroll style="width:67%;height:500px" class="fr" delegate-handle="shopsScroll">
+    <ion-scroll ng-style="{{rightstyle}}" class="fr" delegate-handle="shopsScroll">
     <ion-list>
 
       <ion-item ng-repeat="shop in shops" type="item-text-wrap"  class="nopadding" >

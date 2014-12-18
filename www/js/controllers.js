@@ -77,7 +77,10 @@ AdService.getAds().then(function(data){
 
 
 
-.controller('ShopsCtrl', function($scope,$stateParams,Shops,LocalData,Location) {
+.controller('ShopsCtrl', function($scope,$ionicScrollDelegate,$stateParams,Shops,LocalData,Location) {
+  var height=window.screen.height-160;
+  $scope.leftstyle = {width:'33%',height:height+'px'};
+  $scope.rightstyle = {width:'67%',height:height+'px'};
    $scope.categoryId=$stateParams.categoryId;
    var shopparam=new Object();
    $scope.busy = false;
@@ -147,6 +150,7 @@ AdService.getAds().then(function(data){
       Shops.getShops(shopparam).then(function(data){
              $scope.shops = data.result.result;
              $scope.pages = data.result.totalPages;
+             $ionicScrollDelegate.$getByHandle('shopsScroll').scrollTop();
           }, function(data){
             console.log(data);
           });
