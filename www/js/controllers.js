@@ -78,7 +78,7 @@ AdService.getAds().then(function(data){
 
 
 .controller('ShopsCtrl', function($scope,$ionicScrollDelegate,$stateParams,Shops,LocalData,Location) {
-  var height=window.screen.height-200;
+  var height=window.screen.height-180;
   $scope.leftstyle = {width:'33%',height:height+'px'};
   $scope.rightstyle = {width:'67%',height:height+'px'};
    $scope.categoryId=$stateParams.categoryId;

@@ -259,4 +259,5 @@ min-height: 30px;
 }
 #productdetail img{
     width: 100%;
+    display: block;
 }
