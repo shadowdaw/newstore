@@ -5,7 +5,7 @@ angular.module('starter.controllers', [])
     $scope.location="定位中";    
   if(Location.getCityName()){
    $scope.location=Location.getCityName();
-  }else{
+  }else{       
     var myCity = new BMap.LocalCity();
     myCity.get(function(result){
        var geoc = new BMap.Geocoder();    
@@ -456,7 +456,7 @@ $scope.submitpayinfo=function () {
 //         console.log(data);
 //       })
 // })
-.controller('NearByCtrl', function($scope,Shops,Location,IndexService,LocalData) { 
+.controller('NearByCtrl', function($scope,$ionicPopup,Shops,Location,IndexService,LocalData) { 
   $scope.menus=IndexService.get();
   var pointParam = new Object();
   var myCity = new BMap.LocalCity();
@@ -467,13 +467,21 @@ $scope.submitpayinfo=function () {
         $scope.location=addComp.city;
         $scope.areaName=addComp.district;
         //cityId 区ID categoryId为0表示全部
-        Location.setLatitude(r.point.lat);
-        Location.setLongitude(r.point.lng);
-        pointParam.latitude = r.point.lat;
-        pointParam.longitude = r.point.lng;
+        Location.setLatitude(result.center.lat);
+        Location.setLongitude(result.center.lng);
+        pointParam.latitude = result.center.lat;
+        pointParam.longitude = result.center.lng;
         pointParam.categoryId = 0; 
         Shops.getNearbyShops(pointParam).then(function(data){
+          if(JSON.stringify(data.result)=='[]'){
+             var alertPopup = $ionicPopup.alert({
+                   title: '附近店铺',
+                   okText: '确定',
+                   template: '抱歉,10公里以内没有店铺！'
+                 });
+          }else{
             $scope.nearbyShops=data.result;
+          }
           }, function(data){
             console.log(data);
         });
@@ -481,7 +489,7 @@ $scope.submitpayinfo=function () {
   });
   
 $scope.gotoshop= function(shopid) {
-  LocalData.setrediretfromUrl("#/tab/nearby");
+  LocalData.setreserveRediretfromUrl("#/tab/nearby");
   window.location.href="#/shopdetail/"+shopid;
 };
   //categoryId为0表示全部
