@@ -52,7 +52,7 @@ marketParam1.cityId = Location.getAreaId();
 marketParam1.type = 0;
 Markets.getMarkets(marketParam1).then(function(data){
   if(JSON.stringify(data.result.data)=='[]'){
-     $scope.marketData = Markets.markets();
+     $scope.marketData = Markets.markets1();
   }else{
      $scope.marketData = data.result.data;
   }
@@ -106,6 +106,27 @@ Markets.getMarkets(marketParam2).then(function(data){
         }, function(data){
           console.log(data);
         });
+      marketParam1.cityId = Location.getAreaId();
+      Markets.getMarkets(marketParam1).then(function(data){
+        if(JSON.stringify(data.result.data)=='[]'){
+           $scope.marketData = Markets.markets1();
+        }else{
+           $scope.marketData = data.result.data;
+        }
+      }, function(data){
+          console.log(data);
+      });
+      marketParam2.cityId = Location.getAreaId();
+      Markets.getMarkets(marketParam2).then(function(data){
+        if(JSON.stringify(data.result.data)=='[]'){
+           $scope.marketData1 = Markets.markets2();
+        }else{
+           $scope.marketData1 = data.result.data;
+        }
+      }, function(data){
+            console.log(data);
+      });
+
   };
   $scope.goMarket = function(marketId){
     window.location.href = "#/market/"+marketId;
