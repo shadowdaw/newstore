@@ -1,0 +1,41 @@
+<ion-view  >
+<ion-header-bar  class="bar-assertive">
+           <button class="button button-clear" ng-click="backtoIndex()">
+           <i class="icon ion-chevron-left"></i>
+        </button>
+        <h1 class="title">{{market.name}}</h1>
+ </ion-header-bar>
+
+
+
+<ion-content >
+	  <ion-slide-box on-slide-changed="slideHasChanged($index)" does-continue="true" auto-play="true">
+	   <!-- <ion-slide ng-repeat="proimg in product.productImages"> -->
+	    <ion-slide>
+			  <div class="item nopadding" style="max-height:300px">
+			    <!-- <img class="bgimage" src="{{proimg.imgPath}}" > -->
+			    <img class="bgimage" src="{{market.image}}" >
+			  </div>
+	    </ion-slide>
+	  </ion-slide-box>
+ 	<a class="item" style="border-style:none;padding: 5px;">
+    <img class="mineButtonImg" src="img/temp/market2.png">{{market.address}}
+   </a>
+	<a class="item" style="background: #ddd;padding: 8px;">
+    <img width="50%" src="img/temp/market3.png"> <img width="50%" src="img/temp/market4.png">
+   </a>
+    <ion-list>
+      <ion-item type="item-text-wrap" ng-repeat="marketshop in marketShops" class="nopadding" >
+        <a class="item shopItem-left"  ng-click="gotoshop({{marketshop.id}})">
+          <img src="{{marketshop.logo}}">
+          <h2>{{marketshop.name}}</h2>
+          <p >{{marketshop.address}}</p>
+       </a>
+      </ion-item>
+    </ion-list>
+    <ion-infinite-scroll
+    on-infinite="loadMore()"
+    distance="2%">
+  </ion-infinite-scroll>
+  </ion-content>
+</ion-view>

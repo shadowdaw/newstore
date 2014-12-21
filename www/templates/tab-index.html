@@ -35,153 +35,39 @@
 </ion-slide-box>
 <div class="card">
 <div class="item bar padding-top " style="border:none">
-  <div class="title title-left ">本地商场</div>
+  <div class="title title-left ">本地市场</div>
    <button class="button button-clear">更多
     </button>
  </div>
-
 </div>
-<div class="row">
-  <div class="col">
-  <div class="item item-image product">
-    <div class="producttitle" >
-      <strong>卡西欧旗舰店</strong>
-      <br>
-      <span>一元秒杀</span>
+<div class="list" style="margin-left: 2%;margin-right: 2%;">
+  <div ng-repeat="market in marketData" class="item item-image market" style="width: 32%;display: inline-block;border: none;" ng-click="goMarket({{market.id}})">
+    <img src="{{market.logo}}">
+    <br/>
+     <div>
+      <span>{{market.name}}</span>
     </div>
-    <img src="img/temp/product1.png">
-  </div>
-  </div>
-
-  <div class="col">
-    <div class="item item-image product">
-    <div class="producttitle" >
-      <strong>爱他美品牌直营</strong>
-      <br>
-    </div>
-    <img src="img/temp/product2.png">
   </div>
 </div>
- <div class="col">
-   <div class="item item-image product">
-    <div class="producttitle" >
-      <strong>CHARLESKEITH箱包</strong>
-      <br>
-    </div>
-    <img src="img/temp/product3.png">
-  </div>
-</div>
-</div>
-
-<div class="row">
-  <div class="col"> 
-  <div class="item item-image product">
-    <div class="producttitle" >
-      <strong>苏泊尔</strong>
-      <br>
-      <span>谁与争锋</span>
-    </div>
-    <img src="img/temp/product4.png">
-  </div>
-  </div>
-  <div class="col">
-<div class="item item-image product">
-    <div class="producttitle" >
-      <strong>星月居</strong>
-      <br>
-      <span>将美丽融入生活</span>
-    </div>
-    <img src="img/temp/product5.png">
-  </div>
-  </div>
-  <div class="col">
-<div class="item item-image product">
-    <div class="producttitle" >
-      <strong>HTC</strong>
-      <br>
-      <span>领跑千元4G</span>
-    </div>
-    <img src="img/temp/product6.png">
-  </div>
-  </div>
-</div>
-
   <div class="item item-image paddding-top">
     <img src="img/temp/index03.png">
   </div>
 
 <div class="card">
 <div class="item bar padding-top " style="border:none">
-  <div class="title title-left ">本地市场</div>
+  <div class="title title-left ">本地商场</div>
    <button class="button button-clear">更多
     </button>
  </div>
 
 </div>
-<div class="row">
-  <div class="col">
-  <div class="item item-image market">
-    <div class="producttitle" >
-      <strong>潮流女装</strong>
-      <br>
-      <span>新品首发疯抢</span>
+<div class="list" style="margin-left: 2%;margin-right: 2%;">
+  <div ng-repeat="market in marketData1" class="item item-image market" style="width: 32%;display: inline-block;border: none;">
+    <img src="{{market.logo}}">
+    <br/>
+     <div>
+      <span>{{market.name}}</span>
     </div>
-    <img src="img/temp/product21.png">
-  </div>
-  </div>
-
-  <div class="col">
-    <div class="item item-image market">
-    <div class="producttitle" >
-      <strong>家具生活</strong>
-      <br>
-      <span>99疯抢中</span>
-    </div>
-    <img src="img/temp/product22.png">
-  </div>
-</div>
- <div class="col">
-   <div class="item item-image market">
-    <div class="producttitle" >
-      <strong>母婴童装</strong>
-      <br>
-      <span>妈妈温暖的爱</span>
-    </div>
-    <img src="img/temp/product23.png">
-  </div>
-</div>
-</div>
-
-<div class="row">
-  <div class="col"> 
-  <div class="item item-image market">
-    <div class="producttitle" >
-      <strong>品质男装</strong>
-      <br>
-      <span>冬款特惠来袭</span>
-    </div>
-    <img src="img/temp/product31.png">
-  </div>
-  </div>
-  <div class="col">
-<div class="item item-image market">
-    <div class="producttitle" >
-      <strong>护肤彩妆</strong>
-      <br>
-      <span>绝色倾城/活色生香</span>
-    </div>
-    <img src="img/temp/product32.png">
-  </div>
-  </div>
-  <div class="col">
-<div class="item item-image market">
-    <div class="producttitle" >
-      <strong>餐饮美食</strong>
-      <br>
-      <span>美食新食尚！</span>
-    </div>
-    <img src="img/temp/product33.png">
-  </div>
   </div>
 </div>
   </ion-content>

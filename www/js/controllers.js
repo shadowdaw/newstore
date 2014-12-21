@@ -1,8 +1,14 @@
 angular.module('starter.controllers', [])
 
 //主页 商铺 商品详情等controller  开始位置
-.controller('IndexCtrl', function($scope, $ionicModal,$ionicPopover,$ionicSlideBoxDelegate,$ionicBackdrop,Location,IndexService,AdService,Shops) {
-    $scope.location="定位中";    
+.controller('IndexCtrl', function($scope, $ionicModal,$ionicPopover,$ionicSlideBoxDelegate,$ionicBackdrop,Location,IndexService,AdService,Shops,Markets) {
+    $scope.location="定位中";  
+    var marketParam1=new Object();
+    var marketParam2=new Object();
+    $scope.busy = false;
+    $scope.page = 1;
+    $scope.rows = 10;
+    $scope.pages = 1;  
   if(Location.getCityName()){
    $scope.location=Location.getCityName();
   }else{       
@@ -24,6 +30,7 @@ angular.module('starter.controllers', [])
 
     });
   }
+
 $scope.menus=IndexService.get();
 
 $scope.areaName=Location.getAreaName();
@@ -36,6 +43,32 @@ AdService.getAds().then(function(data){
         console.log(data);
 }); 
 }
+marketParam1.page = $scope.page;
+marketParam1.rows = 6;
+marketParam1.cityId = Location.getAreaId();
+marketParam1.type = 0;
+Markets.getMarkets(marketParam1).then(function(data){
+  if(JSON.stringify(data.result.data)=='[]'){
+     $scope.marketData = Markets.markets();
+  }else{
+     $scope.marketData = data.result.data;
+  }
+}, function(data){
+    console.log(data);
+});
+marketParam2.page = $scope.page;
+marketParam2.rows = 6;
+marketParam2.cityId = Location.getAreaId();
+marketParam2.type = 1;
+Markets.getMarkets(marketParam2).then(function(data){
+  if(JSON.stringify(data.result.data)=='[]'){
+     $scope.marketData1 = Markets.markets2();
+  }else{
+     $scope.marketData1 = data.result.data;
+  }
+}, function(data){
+      console.log(data);
+});
 //分享
  $ionicPopover.fromTemplateUrl('templates/region.html', {
     scope: $scope,
@@ -70,12 +103,65 @@ AdService.getAds().then(function(data){
         }, function(data){
           console.log(data);
         });
-  }
+  };
+  $scope.goMarket = function(marketId){
+    window.location.href = "#/market/"+marketId;
+  };
 
   
 })
 
+.controller('MarketCtrl', function($scope,$ionicPopup,$stateParams,Markets,LocalData,Location) {
+  var marketParam = new Object();
+  $scope.busy = false;
+  $scope.page = 1;
+  $scope.rows = 10;
+  $scope.pages = 1;
+  $scope.marketId=$stateParams.marketId;
+  Markets.getMarketsById($scope.marketId).then(function(data){
+             $scope.market = data.result;
+          }, function(data){
+            console.log(data);
+          });
+  marketParam.id = $scope.marketId;
+  marketParam.page = $scope.page;
+  marketParam.rows = $scope.rows;
+  Markets.getShopByMarket(marketParam).then(function(data){
+  $scope.marketShops = data.result.data;
+  $scope.pages = data.result.totalPages;
+    
+  });
+   $scope.loadMore = function() {
+    if ($scope.page < $scope.pages) {
+      $scope.page++;
+      if ($scope.busy) {
+        return false;
+      }
+      $scope.busy = true;
+      marketParam.page = $scope.page;
+      Markets.getShopByMarket(marketParam).then(function(data){
+             $scope.busy = false;
+              for (var i in data.result.result) {
+                $scope.marketShops.push(data.result.result[i]);
+              }
+              $scope.$broadcast('scroll.infiniteScrollComplete');
+          }, function(data){
+            console.log(data);
+          });
+      
+    }else{
+      $scope.$broadcast('scroll.infiniteScrollComplete');
+    }
+  };
+  $scope.backtoIndex = function() {
+      window.location.href="#/tab/dash";
+  };
+  $scope.gotoshop= function(shopid) {
+    LocalData.setreserveRediretfromUrl("#/market/"+$stateParams.marketId);
+    window.location.href="#/shopdetail/"+shopid;
+  };
 
+})
 
 .controller('ShopsCtrl', function($scope,$ionicScrollDelegate,$stateParams,Shops,LocalData,Location) {
   var height=window.screen.height-180;

@@ -260,6 +260,70 @@ angular.module('starter.services', [])
   }
 })
 
+.factory('Markets', function($http, $q) {
+  var markets1 = [
+    { id: 0, name: '菜市场',logo:'img/temp/pic1.png' },
+    { id: 0, name: '灯具市场',logo:'img/temp/pic2.png' },
+    { id: 0, name: '电器市场',logo:'img/temp/pic3.png' },
+    { id: 0, name: '家居市场',logo:'img/temp/pic4.png' },
+    { id: 0, name: '建材市场',logo:'img/temp/pic5.png' },
+    { id: 0, name: '数码市场',logo:'img/temp/pic6.png' }
+  ];
+   var markets2 = [
+    { id: 0, name: '万达广场',logo:'img/temp/sc1.png' },
+    { id: 0, name: '沃尔玛',logo:'img/temp/sc2.png' },
+    { id: 0, name: '家乐福',logo:'img/temp/sc3.png' },
+    { id: 0, name: '苏宁易购',logo:'img/temp/sc4.png' },
+    { id: 0, name: '银泰百货',logo:'img/temp/sc5.png' },
+    { id: 0, name: '万象城',logo:'img/temp/sc6.png' }
+  ];
+return {
+  markets1: function() {
+      return markets1;
+    },
+  markets2: function() {
+      return markets2;
+    },
+  getMarkets: function(data) {
+      var deferred = $q.defer();
+      $http({
+        method: 'JSONP',
+        params:data,
+        url: 'http://admin.53xsd.com/market/list?callbackName=JSON_CALLBACK'
+      }).success(function(data){
+        deferred.resolve(data);
+      }).error(function(data,status){
+        deferred.reject(status)
+      })
+      return deferred.promise;
+    },
+    getMarketsById:function(id){
+      var deferred = $q.defer();
+      $http({
+        method: 'JSONP',
+        url: 'http://admin.53xsd.com/market/getMarket?callbackName=JSON_CALLBACK&id='+id
+      }).success(function(data){
+        deferred.resolve(data);
+      }).error(function(data,status){
+        deferred.reject(status)
+      })
+      return deferred.promise;
+    },
+    getShopByMarket:function(data){
+       var deferred = $q.defer();
+      $http({
+        method: 'JSONP',
+        params:data,
+        url: 'http://admin.53xsd.com/market/getShopByMarket?callbackName=JSON_CALLBACK'
+      }).success(function(data){
+        deferred.resolve(data);
+      }).error(function(data,status){
+        deferred.reject(status)
+      })
+      return deferred.promise;
+    }
+  }
+})
 
 
 .factory('Shopdetail', function() {
