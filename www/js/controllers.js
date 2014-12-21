@@ -11,24 +11,27 @@ angular.module('starter.controllers', [])
     $scope.pages = 1;  
   if(Location.getCityName()){
    $scope.location=Location.getCityName();
-  }else{       
-    var myCity = new BMap.LocalCity();
-    myCity.get(function(result){
-       var geoc = new BMap.Geocoder();    
-        geoc.getLocation(result.center, function(rs){
-        var addComp = rs.addressComponents;
-        $scope.location=addComp.city;
-        Location.setCityName(addComp.city);
-        $scope.areaName=addComp.district;
-        Location.setAreaName(addComp.district);
-        Location.getAreaIdByCityArea(addComp.city,addComp.district).then(function(data){
-        Location.setAreaId(data.result);
+  }else{     
+    var geolocation = new BMap.Geolocation();  
+    geolocation.getCurrentPosition(function(r){
+      if(this.getStatus() == BMAP_STATUS_SUCCESS){
+          var geoc = new BMap.Geocoder();    
+          geoc.getLocation(r.point, function(rs){
+          var addComp = rs.addressComponents;
+          $scope.location=addComp.city;
+          Location.setCityName(addComp.city);
+          $scope.areaName=addComp.district;
+          Location.setAreaName(addComp.district);
+          Location.getAreaIdByCityArea(addComp.city,addComp.district).then(function(data){
+          Location.setAreaId(data.result);
         }, function(data){
           console.log(data);
         });
-       });     
-
-    });
+       });   
+      }else{
+          alert('failed'+this.getStatus());
+      }   
+    },{enableHighAccuracy: true})
   }
 
 $scope.menus=IndexService.get();
@@ -254,6 +257,8 @@ Markets.getMarkets(marketParam2).then(function(data){
 })
 
 .controller('CitysCtrl', function($scope,$ionicScrollDelegate,LocalData,Location) {
+  var height=window.screen.height-200;
+  $scope.leftstyle = {height:height+'px'};
  Location.getLocation().then(function(data){
           $scope.realLocation=data.content.address_detail.city;
         }, function(data){
@@ -545,18 +550,19 @@ $scope.submitpayinfo=function () {
 .controller('NearByCtrl', function($scope,$ionicPopup,Shops,Location,IndexService,LocalData) { 
   $scope.menus=IndexService.get();
   var pointParam = new Object();
-  var myCity = new BMap.LocalCity();
-  myCity.get(function(result){
-    var geoc = new BMap.Geocoder();
-    geoc.getLocation(result.center, function(rs){
+  var geolocation = new BMap.Geolocation(); 
+  geolocation.getCurrentPosition(function(r){
+    if(this.getStatus() == BMAP_STATUS_SUCCESS){
+        var geoc = new BMap.Geocoder();
+      geoc.getLocation(r.point, function(rs){
         var addComp = rs.addressComponents;
         $scope.location=addComp.city;
         $scope.areaName=addComp.district;
         //cityId 区ID categoryId为0表示全部
-        Location.setLatitude(result.center.lat);
-        Location.setLongitude(result.center.lng);
-        pointParam.latitude = result.center.lat;
-        pointParam.longitude = result.center.lng;
+        Location.setLatitude(r.point.lat);
+        Location.setLongitude(r.point.lng);
+        pointParam.latitude = r.point.lat;
+        pointParam.longitude = r.point.lng;
         pointParam.categoryId = 0; 
         Shops.getNearbyShops(pointParam).then(function(data){
           if(JSON.stringify(data.result)=='[]'){
@@ -571,8 +577,12 @@ $scope.submitpayinfo=function () {
           }, function(data){
             console.log(data);
         });
-    });      
-  });
+    });   
+    }else{
+      alert('failed'+this.getStatus());
+    }
+     
+  },{enableHighAccuracy: true});
   
 $scope.gotoshop= function(shopid) {
   LocalData.setreserveRediretfromUrl("#/tab/nearby");
@@ -638,6 +648,14 @@ $scope.gotoshop= function(shopid) {
             window.location.href="#/login";
          }
   };
+  $scope.tomystore=function(){
+         if(MemberService.getMember()){
+           window.location.href="#/mystore";
+         }else{
+            LocalData.setrediretfromUrl("#/tab/member");
+            window.location.href="#/login";
+         }
+  };
  $scope.toMyprofile=function(){
        if(MemberService.getMember()){
            window.location.href="/#/myprofile";
@@ -694,6 +712,16 @@ $scope.tomydollarpage=function (){
 
 
 })
+
+.controller('MystoreCtrl', function($scope,MemberService) {
+ $scope.Myprofile =MemberService.getMember();
+
+  $scope.backtomemberpage = function(){
+    window.location.href="#/tab/member";
+  }
+})
+
+
 .controller('MyprofileCtrl', function($scope,MemberService) {
  $scope.Myprofile =MemberService.getMember();
 
