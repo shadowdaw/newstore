@@ -164,7 +164,7 @@ Markets.getMarkets(marketParam2).then(function(data){
 })
 
 .controller('ShopsCtrl', function($scope,$ionicScrollDelegate,$stateParams,Shops,LocalData,Location) {
-  var height=window.screen.height-180;
+  var height=window.screen.height-200;
   $scope.leftstyle = {width:'33%',height:height+'px'};
   $scope.rightstyle = {width:'67%',height:height+'px'};
    $scope.categoryId=$stateParams.categoryId;
@@ -173,7 +173,7 @@ Markets.getMarkets(marketParam2).then(function(data){
    $scope.currentPage = 0;
    $scope.pages = 0;
    if(Location.getAreaId()){
-   shopparam.areaId=Location.getAreaId();
+   shopparam.cityId=Location.getAreaId();
     }
    if(Location.getCityName()){
     shopparam.cityName=Location.getCityName();
