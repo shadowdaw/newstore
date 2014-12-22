@@ -19,9 +19,8 @@
 
    <div class="row">
   <div class="col col-33 nopadding" >
-
     <ion-scroll ng-style="{{leftstyle}}">
-<ion-list >
+<ion-list>
   <ion-item ng-repeat="category in categorys" type="item-text-wrap"  class="nopadding" 
   ng-click="refreshCitys({{category.id}})">
           <a class="item ">
@@ -31,14 +30,27 @@
     </ion-list>
       </ion-scroll >
 </div>
-  <div class="col col-67 nopadding">
+  <div class="col col-33 nopadding">
+    <ion-scroll ng-style="{{leftstyle}}">
     <ion-list>
       <ion-item ng-repeat="city in citys" type="item-text-wrap"  class="nopadding" >
-        <a class="item"   ng-click="chosethisCity('{{city.name}}')">
+        <a class="item"   ng-click="refreshAreas('{{city.name}}')">
           <p>{{city.name}}</p>
        </a>
       </ion-item>
     </ion-list>
+    </ion-scroll >
+  </div>
+   <div class="col col-33 nopadding">
+    <ion-scroll ng-style="{{leftstyle}}">
+    <ion-list>
+      <ion-item ng-repeat="area in areas" type="item-text-wrap"  class="nopadding" >
+        <a class="item"   ng-click="chosethisArea('{{area.name}}')">
+          <p>{{area.name}}</p>
+       </a>
+      </ion-item>
+    </ion-list>
+    </ion-scroll >
   </div>
 </div>
   

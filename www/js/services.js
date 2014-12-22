@@ -377,7 +377,23 @@ return {
   var areaName;
   var longitude;
   var latitude;
+  var locationMode;
   return {
+    setLocationMode:function(type){
+     locationMode=type;
+     localStorage.setItem("locationMode",locationMode);
+    },
+    getLocationMode:function(){
+      if(locationMode){
+      return locationMode;
+      }else{
+       return localStorage.getItem("locationMode");
+      }
+    },
+     clearLocationMode:function(){
+      locationMode=null;
+      localStorage.removeItem("locationMode");
+    },
     setCityName:function(city){
      cityName=city;
      localStorage.setItem("cityName",cityName);

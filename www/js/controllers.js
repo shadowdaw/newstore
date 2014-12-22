@@ -1,17 +1,16 @@
 angular.module('starter.controllers', [])
 
 //主页 商铺 商品详情等controller  开始位置
-.controller('IndexCtrl', function($scope, $ionicModal,$ionicPopover,$ionicSlideBoxDelegate,$ionicBackdrop,Location,IndexService,AdService,Shops,Markets) {
-    $scope.location="定位中";  
+.controller('IndexCtrl', function($scope, $ionicModal,$ionicPopover,$ionicSlideBoxDelegate,$ionicBackdrop,Location,IndexService,AdService,Shops,Markets) { 
     var marketParam1=new Object();
     var marketParam2=new Object();
     $scope.busy = false;
     $scope.page = 1;
     $scope.rows = 10;
-    $scope.pages = 1;  
-  if(Location.getCityName()){
-   $scope.location=Location.getCityName();
-  }else{     
+    $scope.pages = 1; 
+    $scope.location = Location.getCityName();
+    $scope.areaName = Location.getAreaName(); 
+    if(Location.getLocationMode() !=0){
     var geolocation = new BMap.Geolocation();  
     geolocation.getCurrentPosition(function(r){
       if(this.getStatus() == BMAP_STATUS_SUCCESS){
@@ -32,6 +31,8 @@ angular.module('starter.controllers', [])
           alert('failed'+this.getStatus());
       }   
     },{enableHighAccuracy: true})
+  }else{
+    Location.clearLocationMode();
   }
 
 $scope.menus=IndexService.get();
@@ -279,6 +280,7 @@ Markets.getMarkets(marketParam2).then(function(data){
 
 .controller('CitysCtrl', function($scope,$ionicScrollDelegate,LocalData,Location) {
   var height=window.screen.height-200;
+  $scope.cityName = "北京市";
   $scope.leftstyle = {height:height+'px'};
  Location.getLocation().then(function(data){
           $scope.realLocation=data.content.address_detail.city;
@@ -292,6 +294,11 @@ Markets.getMarkets(marketParam2).then(function(data){
         $scope.categorys = data.result;
            Location.getCitys(data.result[0].id).then(function(data){
              $scope.citys = data.result;
+             Location.getAreas(data.result[0].name).then(function(data){
+             $scope.areas = data.result;
+             },function(data){
+                console.log(data);
+            });
           }, function(data){
             console.log(data);
           });
@@ -302,14 +309,29 @@ Markets.getMarkets(marketParam2).then(function(data){
 $scope.refreshCitys =function(cityId) {
        Location.getCitys(cityId).then(function(data){
             $scope.citys = data.result;
+            Location.getAreas(data.result[0].name).then(function(data){
+             $scope.areas = data.result;
+             },function(data){
+                console.log(data);
+            });
            $ionicScrollDelegate.scrollTop();
           }, function(data){
             console.log(data);
           });
     };
-$scope.chosethisCity=function(cityName) {
-      Location.setCityName(cityName);
-      Location.clearAreaName();
+$scope.refreshAreas = function(cityName){
+  Location.setCityName(cityName);
+  Location.getAreas(cityName).then(function(data){
+            $scope.areas = data.result;
+            Location.setAreaName(data.result[0].name);
+           $ionicScrollDelegate.scrollTop();
+          }, function(data){
+            console.log(data);
+          });
+}
+$scope.chosethisArea=function(areaName) {
+      Location.setAreaName(areaName);
+      Location.setLocationMode(0);
       window.location.href="#/tab/dash";
 }
 
@@ -611,6 +633,8 @@ $scope.submitpayinfo=function () {
   $ionicLoading.show({
     template:'定位中'
   });
+  $scope.location = Location.getCityName();
+  $scope.areaName = Location.getAreaName();  
   $scope.menus=IndexService.get();
   var pointParam = new Object();
   var geolocation = new BMap.Geolocation(); 
@@ -627,7 +651,6 @@ $scope.submitpayinfo=function () {
         pointParam.latitude = r.point.lat;
         pointParam.longitude = r.point.lng;
         pointParam.categoryId = 0; 
-        $ionicLoading.hide();
         $ionicLoading.show({
           template:'正在加载'
         });
@@ -775,10 +798,7 @@ $scope.tomydollarpage=function (){
       LocalData.setrediretfromUrl("#/tab/member");
       window.location.href="#/login";
    }
-
-}
-
-
+  }
 })
 
 .controller('MystoreCtrl', function($scope) {
@@ -907,7 +927,6 @@ window.location.href="#/tab/member";
 $scope.backtoMemberpage=function() {
       window.location.href="#/tab/member";
  };
-
   $scope.quitlogin=function() {
     if(MemberService.getMember()){
              var confirmPopup = $ionicPopup.confirm({
