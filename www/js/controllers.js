@@ -419,7 +419,6 @@ var productId=$stateParams.productId;
 
 .controller('ToPayCtrl', function($scope,$stateParams,$ionicPopup,LocalData,Shops,MemberService) {
   $scope.date=new Date();
-  $scope.balance = 0;
   $scope.payinfo= {};
 var productId=$stateParams.productId;
 
