@@ -433,6 +433,7 @@ if(MemberService.getMember()){
   $scope.member=MemberService.getMember();
       Shops.getUserblance($scope.member.id).then(function(data){
         $scope.memberblance=data.result;
+        $scope.balance = data.result.balance;
       }, function(data){
         console.log(data);
       })
@@ -460,6 +461,18 @@ if(LocalData.getshop()){
 };
 
 $scope.submitpayinfo=function () {
+   if($scope.balance==0){
+       $ionicPopup.alert({
+         title: '余额不足！',
+         template: '抱歉,余额不能为零！'
+       });
+  }
+    if($scope.payinfo.amount==0){
+       $ionicPopup.alert({
+         title: '付款额错误！',
+         template: '付款额不能为零！'
+       });
+  }
   $scope.payinfo.userName=$scope.member.userName;
   $scope.payinfo.shopId=$scope.shopinfo.shop.id;
 
@@ -530,6 +543,12 @@ $scope.submitpayinfo=function () {
        $ionicPopup.alert({
          title: '余额不足！',
          template: '抱歉,余额不能为零！'
+       });
+  }
+    if($scope.payinfo.amount==0){
+       $ionicPopup.alert({
+         title: '付款额错误！',
+         template: '付款额不能为零！'
        });
   }
   $scope.payinfo.userName=$scope.member.userName;
