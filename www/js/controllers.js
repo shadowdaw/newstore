@@ -188,7 +188,7 @@ Markets.getMarkets(marketParam2).then(function(data){
 
 })
 
-.controller('ShopsCtrl', function($scope,$ionicScrollDelegate,$stateParams,Shops,LocalData,Location) {
+.controller('ShopsCtrl', function($scope,$ionicScrollDelegate,$stateParams,Shops,LocalData,Location,Session) {
   var height=window.screen.height-200;
   $scope.leftstyle = {width:'33%',height:height+'px'};
   $scope.rightstyle = {width:'67%',height:height+'px'};
@@ -219,9 +219,11 @@ Markets.getMarkets(marketParam2).then(function(data){
         }
         $scope.busy = true;
         $scope.categorys = data.result;
+        Session.setCategorys($scope.categorys);
           Shops.getShops(shopparam).then(function(data){
              $scope.busy = false;
              $scope.shops = data.result.result;
+             Session.setCategorys($scope.shops);
              $scope.pages = data.result.totalPages;
           }, function(data){
             console.log(data);
@@ -363,7 +365,6 @@ $scope.chosethisArea=function(areaName) {
       }, function(data){
         console.log(data);
       })
-
   $scope.closedetails= function() {
     window.location.href=LocalData.getreserveRediretfromUrl();
   };
@@ -414,8 +415,15 @@ $scope.chosethisArea=function(areaName) {
 
 .controller('ProductCtrl', function($scope,$stateParams,$ionicSlideBoxDelegate,$sce,Shops,LocalData) {
 var productId=$stateParams.productId;
+$scope.shopId = 0;
  Shops.getProductdetail(productId).then(function(data){
         $scope.product=data.result;
+        $scope.shopId = data.result.product.shopId;
+          Shops.getRecProduct($scope.shopId).then(function(data){
+            $scope.recproducts=data.result;
+          }, function(data){
+            console.log(data);
+          })
         $ionicSlideBoxDelegate.update();
         LocalData.setproduct(data.result);
         $scope.deliberatelyTrustDangerousSnippet = function() {  
@@ -424,6 +432,10 @@ var productId=$stateParams.productId;
       }, function(data){
         console.log(data);
       })
+ 
+ $scope.showProductDetail=function(productId) {
+   window.location.href="#/product/"+productId;
+  };
   $scope.closeProductDetail=function(){
    window.location.href="#/shopdetail/"+LocalData.getshop().shop.id;
   };

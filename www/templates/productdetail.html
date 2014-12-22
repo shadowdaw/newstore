@@ -93,71 +93,35 @@
   <img class="bgimage" src="img/temp/product/pss4.png" >
   </div>
 </div>
-
+-->
 <div class="item bar" style="border:none">
   <div class="title">同店推荐</div>
  </div>
- <div class="row" style="background: #fff;">
-  <div class="col">
-  <div class="item item-image product-big">
-    <img src="img/temp/product/pss5.png">
+ <!-- <div class="list" style="margin-left: 2%;margin-right: 2%;">
+  <div ng-repeat="market in marketData" class="item item-image market" style="width: 32%;display: inline-block;border: none;" ng-click="goMarket({{market.id}})">
+    <img src="{{market.logo}}">
+    <br/>
+     <div>
+      <span>{{market.name}}</span>
+    </div>
   </div>
-    <span class="padding-left padding-right product-desc">
-      无印良品 女士 短袖 强捻巴里纱短袖罩衫
-    </span>
-  <div class="padding-left padding-right">
-    <span class="price fl" style="color: #DF0024;font-size: 16px;">
-      ￥ 270.00
-    </span>
-  </div>
-  </div>
-
-  <div class="col">
-  <div class="item item-image product-big">
-    <img src="img/temp/product/pss6.png">
-  </div>
-    <span class="padding-left padding-right product-desc">
-      无印良品 MUJI 玻璃杯
-    </span>
-  <div class="padding-left padding-right">
-    <span class="price fl" style="color: #DF0024;font-size: 16px;">
-      ￥ 14.00
-    </span>
-  </div>
+</div> -->
+<div style="background: #fff;">
+<div class="list" style="background: #fff;margin-left: 5%;">
+  <div ng-repeat="recproduct in recproducts" class="item item-image product-big" style="width: 46%;display: inline-block;border: none;" ng-click="showProductDetail({{recproduct.id}});">
+    <img src="{{recproduct.detailImage}}">
+     <div>
+      <span class="padding-left padding-right product-desc">{{recproduct.name}}</span>
+    </div>
+     <div class="padding-left padding-right">
+      <span class="price fl" style="color: #DF0024;font-size: 16px;">{{recproduct.discountPrice}}</span>
+    </div>
   </div>
 </div>
-<div class="row" style="background: #fff;">
-  <div class="col">
-  <div class="item item-image product-big">
-    <img src="img/temp/product/pss7.png">
-  </div>
-    <span class="padding-left padding-right product-desc">
-      无印良品 女士 短袖 强捻巴里纱短袖罩衫
-    </span>
-  <div class="padding-left padding-right">
-    <span class="price fl" style="color: #DF0024;font-size: 16px;">
-      ￥ 270.00
-    </span>
-  </div>
-  </div>
-
-  <div class="col">
-  <div class="item item-image product-big">
-    <img src="img/temp/product/pss8.png">
-  </div>
-    <span class="padding-left padding-right product-desc">
-      无印良品 MUJI 玻璃杯
-    </span>
-  <div class="padding-left padding-right">
-    <span class="price fl" style="color: #DF0024;font-size: 16px;">
-      ￥ 14.00
-    </span>
-  </div>
-  </div>
 </div>
+ 
 </div>
 <div style="display:block;height:50px;">
--->
 </div>
   </ion-content>
 <div class="mineBgColor" style="height:80px;">

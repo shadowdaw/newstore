@@ -256,6 +256,18 @@ angular.module('starter.services', [])
         deferred.reject(status)
       })
       return deferred.promise;
+    },
+    getRecProduct: function(shopId){
+       var deferred = $q.defer();
+      $http({
+        method: 'JSONP',
+        url: _url+'getRecProduct?callbackName=JSON_CALLBACK&shopId='+shopId
+      }).success(function(data){
+        deferred.resolve(data);
+      }).error(function(data,status){
+        deferred.reject(status)
+      })
+      return deferred.promise;
     }
   }
 })
@@ -513,6 +525,35 @@ return {
         deferred.reject(status)
       })
       return deferred.promise;
+    }
+  }
+})
+
+.factory('Session', function($http, $q) {
+  var categorys;
+  var shops;
+  return {    
+    setCategorys:function(data){
+     categorys=data;
+     sessionStorage.setItem("categorys",categorys);
+    },
+    getCategorys:function(){
+      if(categorys){
+      return categorys;
+      }else{
+       return sessionStorage.getItem("categorys");
+      }
+    },
+    setShops:function(data){
+     shops=data;
+     sessionStorage.setItem("shops",shops);
+    },
+    getShops:function(){
+      if(shops){
+      return shops;
+      }else{
+       return sessionStorage.getItem("shops");
+      }
     }
   }
 })
