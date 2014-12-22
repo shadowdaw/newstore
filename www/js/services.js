@@ -532,7 +532,23 @@ return {
 .factory('Session', function($http, $q) {
   var categorys;
   var shops;
+  var locationMode;
   return {    
+    setLocationMode:function(type){
+     locationMode=type;
+     sessionStorage.setItem("locationMode",locationMode);
+    },
+    getLocationMode:function(){
+      if(locationMode){
+      return locationMode;
+      }else{
+       return sessionStorage.getItem("locationMode");
+      }
+    },
+     clearLocationMode:function(){
+      locationMode=null;
+      sessionStorage.removeItem("locationMode");
+    },
     setCategorys:function(data){
      categorys=data;
      sessionStorage.setItem("categorys",categorys);

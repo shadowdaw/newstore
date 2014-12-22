@@ -33,6 +33,11 @@ angular.module('starter.controllers', [])
     },{enableHighAccuracy: true})
   }else{
     Location.clearLocationMode();
+    Location.getAreaIdByCityArea($scope.location,$scope.areaName).then(function(data){
+          Location.setAreaId(data.result);
+        }, function(data){
+          console.log(data);
+        });
   }
 
 $scope.menus=IndexService.get();
@@ -326,12 +331,14 @@ $scope.refreshAreas = function(cityName){
   Location.getAreas(cityName).then(function(data){
             $scope.areas = data.result;
             Location.setAreaName(data.result[0].name);
+            Location.setAreaId(data.result[0].id);
            $ionicScrollDelegate.scrollTop();
           }, function(data){
             console.log(data);
           });
 }
-$scope.chosethisArea=function(areaName) {
+$scope.chosethisArea=function(areaName,areaId) {
+      Location.setAreaId(areaId);
       Location.setAreaName(areaName);
       Location.setLocationMode(0);
       window.location.href="#/tab/dash";

@@ -45,7 +45,7 @@
     <ion-scroll ng-style="{{leftstyle}}">
     <ion-list>
       <ion-item ng-repeat="area in areas" type="item-text-wrap"  class="nopadding" >
-        <a class="item"   ng-click="chosethisArea('{{area.name}}')">
+        <a class="item"   ng-click="chosethisArea('{{area.name}}','{{area.id}}')">
           <p>{{area.name}}</p>
        </a>
       </ion-item>
