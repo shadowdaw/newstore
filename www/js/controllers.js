@@ -316,6 +316,7 @@ Markets.getMarkets(marketParam2).then(function(data){
 $scope.refreshCitys =function(cityId) {
        Location.getCitys(cityId).then(function(data){
             $scope.citys = data.result;
+            Location.setCityName(data.result[0].name);
             Location.getAreas(data.result[0].name).then(function(data){
              $scope.areas = data.result;
              },function(data){
