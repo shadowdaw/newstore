@@ -607,7 +607,10 @@ $scope.submitpayinfo=function () {
 //         console.log(data);
 //       })
 // })
-.controller('NearByCtrl', function($scope,$ionicPopup,Shops,Location,IndexService,LocalData) { 
+.controller('NearByCtrl', function($scope,$ionicPopup,$ionicLoading,Shops,Location,IndexService,LocalData) { 
+  $ionicLoading.show({
+    template:'定位中'
+  });
   $scope.menus=IndexService.get();
   var pointParam = new Object();
   var geolocation = new BMap.Geolocation(); 
@@ -624,6 +627,10 @@ $scope.submitpayinfo=function () {
         pointParam.latitude = r.point.lat;
         pointParam.longitude = r.point.lng;
         pointParam.categoryId = 0; 
+        $ionicLoading.hide();
+        $ionicLoading.show({
+          template:'正在加载'
+        });
         Shops.getNearbyShops(pointParam).then(function(data){
           if(JSON.stringify(data.result)=='[]'){
              var alertPopup = $ionicPopup.alert({
@@ -633,6 +640,7 @@ $scope.submitpayinfo=function () {
                  });
           }else{
             $scope.nearbyShops=data.result;
+            $ionicLoading.hide();
           }
           }, function(data){
             console.log(data);
@@ -773,10 +781,10 @@ $scope.tomydollarpage=function (){
 
 })
 
-.controller('MystoreCtrl', function($scope,MemberService) {
- $scope.Myprofile =MemberService.getMember();
-
-  $scope.backtomemberpage = function(){
+.controller('MystoreCtrl', function($scope) {
+  var height=window.screen.height-100;
+  $scope.liststyle = {height:height+'px'};
+  $scope.backtoMember = function(){
     window.location.href="#/tab/member";
   }
 })
