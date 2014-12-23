@@ -535,7 +535,31 @@ return {
   var nearbyShops;
   var locationMode;
   var backMode;
-  return {    
+  var scrollLeftHeight;
+  var scrollRightHeight;
+  return {   
+    setScrollLeftHeight:function(type){
+     scrollLeftHeight=type;
+     sessionStorage.setItem("scrollLeftHeight",scrollLeftHeight);
+    },
+    getScrollLeftHeight:function(){
+      if(scrollLeftHeight){
+      return scrollLeftHeight;
+      }else{
+       return sessionStorage.getItem("scrollLeftHeight");
+      }
+    }, 
+    setScrollRightHeight:function(type){
+     scrollRightHeight=type;
+     sessionStorage.setItem("scrollRightHeight",scrollRightHeight);
+    },
+    getScrollRightHeight:function(){
+      if(scrollRightHeight){
+      return scrollRightHeight;
+      }else{
+       return sessionStorage.getItem("scrollRightHeight");
+      }
+    }, 
     setLocationMode:function(type){
      locationMode=type;
      sessionStorage.setItem("locationMode",locationMode);

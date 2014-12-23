@@ -225,12 +225,12 @@ AdService.getAds().then(function(data){
 
 })
 
-.controller('ShopsCtrl', function($scope,$ionicScrollDelegate,$stateParams,Shops,LocalData,Location,Session,CommonService) {
+.controller('ShopsCtrl', function($scope,$timeout,$ionicScrollDelegate,$stateParams,Shops,LocalData,Location,Session,CommonService) {
   var judge = true;
   var height=window.innerHeight?window.innerHeight-180:500;
   $scope.leftstyle = {width:'33%',height:height+'px'};
   $scope.rightstyle = {width:'67%',height:height+'px'};
-   $scope.categoryId=$stateParams.categoryId;
+  $scope.categoryId=$stateParams.categoryId;
    var shopparam=new Object();
    $scope.busy = false;
    $scope.currentPage = 0;
@@ -248,10 +248,14 @@ AdService.getAds().then(function(data){
           console.log(data);
           });
     }
-   if(Session.getLocationMode()==0){
+   if(Session.getBackMode()==0){
       $scope.categorys = Session.getCategorys();
       $scope.shops = Session.getShops();
-      Session.clearLocationMode();
+      $timeout(function(){
+        $ionicScrollDelegate.$getByHandle('shopsScroll').scrollTo(0,Session.getScrollRightHeight(),false);
+      },100);
+      
+      Session.clearBackMode();
    }else{
      shopparam.categoryId=$stateParams.categoryId;
      Shops.getcategorys($stateParams.categoryId).then(function(data){
@@ -266,6 +270,7 @@ AdService.getAds().then(function(data){
              $scope.shops = data.result.result;
              Session.setShops($scope.shops);
              $scope.pages = data.result.totalPages;
+             $ionicScrollDelegate.$getByHandle('shopsScroll').scrollTo(0,Session.getScrollLeftHeight(),false);
           }, function(data){
             judge = CommonService.error(judge);
           console.log(data);
@@ -322,11 +327,11 @@ AdService.getAds().then(function(data){
       window.location.href="#/tab/dash";
     };
     $scope.gotoshop= function(shopid) {
+      var scrollRightHeight = $ionicScrollDelegate.$getByHandle('shopsScroll').getScrollPosition().top;
+      Session.setScrollRightHeight(scrollRightHeight);
       LocalData.setreserveRediretfromUrl("#/shops/"+$stateParams.categoryId)
       window.location.href="#/shopdetail/"+shopid;
     };
-
-
 })
 
 .controller('CitysCtrl', function($scope,$ionicScrollDelegate,LocalData,Location,Session,CommonService) {
