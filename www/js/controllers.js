@@ -365,6 +365,7 @@ AdService.getAds().then(function(data){
 $scope.refreshCitys =function(cityId) {
        Location.getCitys(cityId).then(function(data){
             $scope.citys = data.result;
+            $scope.cityName = data.result[0].name;
             Location.setCityName(data.result[0].name);
             Session.setLocationMode(0);
             Location.getAreas(data.result[0].name).then(function(data){
@@ -382,6 +383,7 @@ $scope.refreshCitys =function(cityId) {
           });
     };
 $scope.refreshAreas = function(cityName){
+  $scope.cityName = cityName;
   Location.setCityName(cityName);
   Location.getAreas(cityName).then(function(data){
             $scope.areas = data.result;
@@ -395,6 +397,7 @@ $scope.refreshAreas = function(cityName){
           });
 }
 $scope.chosethisArea=function(areaName,areaId) {
+      Location.setCityName($scope.cityName); 
       Location.setAreaId(areaId);
       Location.setAreaName(areaName);
       Session.setLocationMode(0);
