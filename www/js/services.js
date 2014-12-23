@@ -656,6 +656,19 @@ return {
   quitLogin:function() {
       member=null;
       localStorage.removeItem("member");
+    },
+    getRecordAsPage:function(data){
+      var deferred = $q.defer();
+      $http({
+        method: 'JSONP',
+        params:data,
+        url: _url+'getRecordAsPage?callbackName=JSON_CALLBACK'
+      }).success(function(data){
+        deferred.resolve(data);
+      }).error(function(data,status){
+        deferred.reject(status)
+      })
+      return deferred.promise;
     }
   }
 })
@@ -735,6 +748,20 @@ filePath: "http://image.53xsd.com/newshop/2014/12/8a63ddb1-3f0a-4c3c-8fa6-9567f1
         deferred.reject(status)
       })
       return deferred.promise;
+    }
+  }
+})
+
+.factory('CommonService', function($ionicPopup) {
+  return {    
+    error: function(judge) {
+      if(judge){
+        var alertPopup = $ionicPopup.alert({
+         title: '网络异常！',
+         template: '抱歉,当前网络不可用！'
+       });
+      }
+      return false;
     }
   }
 })

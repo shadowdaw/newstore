@@ -13,6 +13,7 @@
   <div class="item item-divider">
     最近收支明细
   </div>
+  <ion-scroll ng-style="{{liststyle}}">
 <ion-list >
   <ion-item ng-repeat="recode in Recodes" type="item-text-wrap"  class="nopadding" >
           <div class="item"> 
@@ -25,11 +26,17 @@
               <div class="input-label">
                  消费类型：<span>{{recode.objType| orderTypeFilter}}</span>
              </div>
-             
+             <div class="input-label">
+                 店铺名称：<span>{{recode.shopName}}</span>
+             </div>
           </div>
       </ion-item>
     </ion-list>
-</ion-list>
+    <ion-infinite-scroll
+    on-infinite="loadMore()"
+    distance="2%">
+  </ion-infinite-scroll>
+</ion-scroll>
 
   </ion-content>
 
