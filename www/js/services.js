@@ -534,6 +534,7 @@ return {
   var shops;
   var nearbyShops;
   var locationMode;
+  var backMode;
   return {    
     setLocationMode:function(type){
      locationMode=type;
@@ -550,37 +551,55 @@ return {
       locationMode=null;
       sessionStorage.removeItem("locationMode");
     },
+    setBackMode:function(type){
+     backMode=type;
+     sessionStorage.setItem("backMode",backMode);
+    },
+    getBackMode:function(){
+      if(backMode){
+      return backMode;
+      }else{
+       return sessionStorage.getItem("backMode");
+      }
+    },
+     clearBackMode:function(){
+      backMode=null;
+      sessionStorage.removeItem("backMode");
+    },
     setCategorys:function(data){
      categorys=data;
-     sessionStorage.setItem("categorys",categorys);
+     sessionStorage.setItem("categorys",JSON.stringify(categorys));
     },
     getCategorys:function(){
       if(categorys){
-      return categorys;
+       return categorys;
       }else{
-       return sessionStorage.getItem("categorys");
+       categorys=JSON.parse(sessionStorage.getItem("categorys"));
+       return categorys;
       }
     },
     setShops:function(data){
      shops=data;
-     sessionStorage.setItem("shops",shops);
+     sessionStorage.setItem("shops",JSON.stringify(shops));
     },
     getShops:function(){
       if(shops){
       return shops;
       }else{
-       return sessionStorage.getItem("shops");
+        shops=JSON.parse(sessionStorage.getItem("shops"));
+       return shops;
       }
     },
     setNearbyShops:function(data){
      nearbyShops=data;
-     sessionStorage.setItem("nearbyShops",nearbyShops);
+     sessionStorage.setItem("nearbyShops",JSON.stringify(nearbyShops));
     },
     getNearbyShops:function(){
       if(nearbyShops){
       return nearbyShops;
       }else{
-       return sessionStorage.getItem("nearbyShops");
+         nearbyShops=JSON.parse(sessionStorage.getItem("nearbyShops"));
+       return nearbyShops;
       }
     }
   }

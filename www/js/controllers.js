@@ -122,6 +122,7 @@ AdService.getAds().then(function(data){
   };
 
   $scope.showShops = function(categoryId) {
+    Session.clearLocationMode();
     window.location.href="#/shops/"+categoryId;
   };
  $scope.chosecity = function() {
@@ -226,7 +227,7 @@ AdService.getAds().then(function(data){
 
 .controller('ShopsCtrl', function($scope,$ionicScrollDelegate,$stateParams,Shops,LocalData,Location,Session,CommonService) {
   var judge = true;
-  var height=window.screen.height-200;
+  var height=window.innerHeight?window.innerHeight-180:500;
   $scope.leftstyle = {width:'33%',height:height+'px'};
   $scope.rightstyle = {width:'67%',height:height+'px'};
    $scope.categoryId=$stateParams.categoryId;
@@ -289,6 +290,7 @@ AdService.getAds().then(function(data){
               for (var i in data.result.result) {
                 $scope.shops.push(data.result.result[i]);
               }
+              Session.setShops($scope.shops);
               $scope.$broadcast('scroll.infiniteScrollComplete');
           }, function(data){
             judge = CommonService.error(judge);
@@ -307,6 +309,7 @@ AdService.getAds().then(function(data){
       Shops.getShops(shopparam).then(function(data){
              $scope.shops = data.result.result;
              $scope.pages = data.result.totalPages;
+             Session.setShops($scope.shops);
              $ionicScrollDelegate.$getByHandle('shopsScroll').scrollTop();
           }, function(data){
             judge = CommonService.error(judge);
@@ -328,7 +331,7 @@ AdService.getAds().then(function(data){
 
 .controller('CitysCtrl', function($scope,$ionicScrollDelegate,LocalData,Location,Session,CommonService) {
   var judge = true;
-  var height=window.screen.height-200;
+  var height=window.innerHeight?window.innerHeight-180:500;
   $scope.cityName = "北京市";
   $scope.leftstyle = {height:height+'px'};
  Location.getLocation().then(function(data){
@@ -433,7 +436,7 @@ $scope.backtoIndex = function() {
           console.log(data);
       })
   $scope.closedetails= function() {
-    Session.setLocationMode(0);
+    Session.setBackMode(0);
     window.location.href=LocalData.getreserveRediretfromUrl();
   };
 
@@ -726,7 +729,7 @@ $scope.submitpayinfo=function () {
   $scope.location = Location.getCityName();
   $scope.areaName = Location.getAreaName();  
   $scope.menus=IndexService.get();
-  if(Session.getLocationMode()==0){
+  if(Session.getBackMode()==0){
     $scope.nearbyShops=Session.getNearbyShops();
     Session.clearLocationMode();
   }else{
@@ -907,7 +910,7 @@ $scope.tomydollarpage=function (){
 })
 
 .controller('MystoreCtrl', function($scope) {
-  var height=window.screen.height-100;
+  var height=window.innerHeight?window.innerHeight-180:500;
   $scope.liststyle = {height:height+'px'};
   $scope.backtoMember = function(){
     window.location.href="#/tab/member";
@@ -924,7 +927,7 @@ $scope.tomydollarpage=function (){
 })
 
 .controller('MydollarCtrl', function($scope,$stateParams,Shops,MemberService,CommonService) {
-  var height=window.screen.height-120;
+  var height=window.innerHeight?window.innerHeight-120:500;
   $scope.liststyle = {height:height+'px'};
   var dollarParam=new Object();
   var judge = true;
