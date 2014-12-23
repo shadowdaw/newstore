@@ -270,7 +270,6 @@ AdService.getAds().then(function(data){
              $scope.shops = data.result.result;
              Session.setShops($scope.shops);
              $scope.pages = data.result.totalPages;
-             $ionicScrollDelegate.$getByHandle('shopsScroll').scrollTo(0,Session.getScrollLeftHeight(),false);
           }, function(data){
             judge = CommonService.error(judge);
           console.log(data);
