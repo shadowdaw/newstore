@@ -1,7 +1,7 @@
 angular.module('starter.controllers', [])
 
 //主页 商铺 商品详情等controller  开始位置
-.controller('IndexCtrl', function($scope, $ionicModal,$ionicPopover,$ionicSlideBoxDelegate,$ionicBackdrop,Location,IndexService,AdService,Shops,Markets) { 
+.controller('IndexCtrl', function($scope, $ionicModal,$ionicPopover,$ionicSlideBoxDelegate,$ionicBackdrop,Location,IndexService,AdService,Shops,Markets,Session) { 
     var marketParam1=new Object();
     var marketParam2=new Object();
     $scope.busy = false;
@@ -10,7 +10,7 @@ angular.module('starter.controllers', [])
     $scope.pages = 1; 
     $scope.location = Location.getCityName();
     $scope.areaName = Location.getAreaName(); 
-    if(Location.getLocationMode() !=0){
+    if(Session.getLocationMode() !=0){
     var geolocation = new BMap.Geolocation();  
     geolocation.getCurrentPosition(function(r){
       if(this.getStatus() == BMAP_STATUS_SUCCESS){
@@ -23,6 +23,32 @@ angular.module('starter.controllers', [])
           Location.setAreaName(addComp.district);
           Location.getAreaIdByCityArea(addComp.city,addComp.district).then(function(data){
           Location.setAreaId(data.result);
+          marketParam1.page = $scope.page;
+          marketParam1.rows = 6;
+          marketParam1.cityId = Location.getAreaId();
+          marketParam1.type = 0;
+          Markets.getMarkets(marketParam1).then(function(data){
+            if(JSON.stringify(data.result.data)=='[]'){
+               $scope.marketData = Markets.markets1();
+            }else{
+               $scope.marketData = data.result.data;
+            }
+          }, function(data){
+              console.log(data);
+          });
+          marketParam2.page = $scope.page;
+          marketParam2.rows = 6;
+          marketParam2.cityId = Location.getAreaId();
+          marketParam2.type = 1;
+Markets.getMarkets(marketParam2).then(function(data){
+  if(JSON.stringify(data.result.data)=='[]'){
+     $scope.marketData1 = Markets.markets2();
+  }else{
+     $scope.marketData1 = data.result.data;
+  }
+}, function(data){
+      console.log(data);
+});
         }, function(data){
           console.log(data);
         });
@@ -32,7 +58,6 @@ angular.module('starter.controllers', [])
       }   
     },{enableHighAccuracy: true})
   }else{
-    Location.clearLocationMode();
     Location.getAreaIdByCityArea($scope.location,$scope.areaName).then(function(data){
           Location.setAreaId(data.result);
         }, function(data){
@@ -52,32 +77,33 @@ AdService.getAds().then(function(data){
         console.log(data);
 }); 
 }
-marketParam1.page = $scope.page;
-marketParam1.rows = 6;
-marketParam1.cityId = Location.getAreaId();
-marketParam1.type = 0;
-Markets.getMarkets(marketParam1).then(function(data){
-  if(JSON.stringify(data.result.data)=='[]'){
-     $scope.marketData = Markets.markets1();
-  }else{
-     $scope.marketData = data.result.data;
-  }
-}, function(data){
-    console.log(data);
-});
-marketParam2.page = $scope.page;
-marketParam2.rows = 6;
-marketParam2.cityId = Location.getAreaId();
-marketParam2.type = 1;
-Markets.getMarkets(marketParam2).then(function(data){
-  if(JSON.stringify(data.result.data)=='[]'){
-     $scope.marketData1 = Markets.markets2();
-  }else{
-     $scope.marketData1 = data.result.data;
-  }
-}, function(data){
-      console.log(data);
-});
+
+ marketParam1.page = $scope.page;
+          marketParam1.rows = 6;
+          marketParam1.cityId = Location.getAreaId();
+          marketParam1.type = 0;
+          Markets.getMarkets(marketParam1).then(function(data){
+            if(JSON.stringify(data.result.data)=='[]'){
+               $scope.marketData = Markets.markets1();
+            }else{
+               $scope.marketData = data.result.data;
+            }
+          }, function(data){
+              console.log(data);
+          });
+          marketParam2.page = $scope.page;
+          marketParam2.rows = 6;
+          marketParam2.cityId = Location.getAreaId();
+          marketParam2.type = 1;
+          Markets.getMarkets(marketParam2).then(function(data){
+            if(JSON.stringify(data.result.data)=='[]'){
+               $scope.marketData1 = Markets.markets2();
+            }else{
+               $scope.marketData1 = data.result.data;
+            }
+          }, function(data){
+                console.log(data);
+          });
 //分享
  $ionicPopover.fromTemplateUrl('templates/region.html', {
     scope: $scope,
@@ -288,7 +314,7 @@ Markets.getMarkets(marketParam2).then(function(data){
 
 })
 
-.controller('CitysCtrl', function($scope,$ionicScrollDelegate,LocalData,Location) {
+.controller('CitysCtrl', function($scope,$ionicScrollDelegate,LocalData,Location,Session) {
   var height=window.screen.height-200;
   $scope.cityName = "北京市";
   $scope.leftstyle = {height:height+'px'};
@@ -320,8 +346,11 @@ $scope.refreshCitys =function(cityId) {
        Location.getCitys(cityId).then(function(data){
             $scope.citys = data.result;
             Location.setCityName(data.result[0].name);
+            Session.setLocationMode(0);
             Location.getAreas(data.result[0].name).then(function(data){
              $scope.areas = data.result;
+             Location.setAreaName(data.result[0].name);
+             Location.setAreaId(data.result[0].id);
              },function(data){
                 console.log(data);
             });
@@ -336,6 +365,7 @@ $scope.refreshAreas = function(cityName){
             $scope.areas = data.result;
             Location.setAreaName(data.result[0].name);
             Location.setAreaId(data.result[0].id);
+            Session.setLocationMode(0);
            $ionicScrollDelegate.scrollTop();
           }, function(data){
             console.log(data);
@@ -344,13 +374,16 @@ $scope.refreshAreas = function(cityName){
 $scope.chosethisArea=function(areaName,areaId) {
       Location.setAreaId(areaId);
       Location.setAreaName(areaName);
-      Location.setLocationMode(0);
+      Session.setLocationMode(0);
       window.location.href="#/tab/dash";
 }
-
-    $scope.backtoIndex = function() {
-      window.location.href="#/tab/dash";
-    };
+$scope.autoLocation=function(){
+  Session.setLocationMode(1);
+  window.location.href="#/tab/dash";
+}
+$scope.backtoIndex = function() {
+  window.location.href="#/tab/dash";
+};
 
 
 })
