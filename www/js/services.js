@@ -532,6 +532,7 @@ return {
 .factory('Session', function($http, $q) {
   var categorys;
   var shops;
+  var nearbyShops;
   var locationMode;
   return {    
     setLocationMode:function(type){
@@ -569,6 +570,17 @@ return {
       return shops;
       }else{
        return sessionStorage.getItem("shops");
+      }
+    },
+    setNearbyShops:function(data){
+     nearbyShops=data;
+     sessionStorage.setItem("nearbyShops",nearbyShops);
+    },
+    getNearbyShops:function(){
+      if(nearbyShops){
+      return nearbyShops;
+      }else{
+       return sessionStorage.getItem("nearbyShops");
       }
     }
   }

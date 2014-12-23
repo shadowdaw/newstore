@@ -214,11 +214,13 @@ Markets.getMarkets(marketParam2).then(function(data){
             console.log(data);
           });
     }
-
-
-  
-   shopparam.categoryId=$stateParams.categoryId;
-    Shops.getcategorys($stateParams.categoryId).then(function(data){
+   if(Session.getLocationMode()==0){
+      $scope.categorys = Session.getCategorys();
+      $scope.shops = Session.getShops();
+      Session.clearLocationMode();
+   }else{
+     shopparam.categoryId=$stateParams.categoryId;
+     Shops.getcategorys($stateParams.categoryId).then(function(data){
         if ($scope.busy) {
               return false;
         }
@@ -228,7 +230,7 @@ Markets.getMarkets(marketParam2).then(function(data){
           Shops.getShops(shopparam).then(function(data){
              $scope.busy = false;
              $scope.shops = data.result.result;
-             Session.setCategorys($scope.shops);
+             Session.setShops($scope.shops);
              $scope.pages = data.result.totalPages;
           }, function(data){
             console.log(data);
@@ -236,6 +238,7 @@ Markets.getMarkets(marketParam2).then(function(data){
       }, function(data){
         console.log(data);
       });
+   }
     LocalData.setshopcargory($stateParams.categoryId);
     //分页函数
     $scope.loadMore = function() {
@@ -352,7 +355,7 @@ $scope.chosethisArea=function(areaName,areaId) {
 
 })
 
-.controller('ShopdetailCtrl', function($scope,$ionicPopover,$stateParams,Shopdetail,Shops,LocalData) {
+.controller('ShopdetailCtrl', function($scope,$ionicPopover,$stateParams,Shopdetail,Shops,LocalData,Session) {
   var shopId=$stateParams.shopId
 
 //商铺详情的获取
@@ -374,6 +377,7 @@ $scope.chosethisArea=function(areaName,areaId) {
         console.log(data);
       })
   $scope.closedetails= function() {
+    Session.setLocationMode(0);
     window.location.href=LocalData.getreserveRediretfromUrl();
   };
 
@@ -649,19 +653,23 @@ $scope.submitpayinfo=function () {
 //         console.log(data);
 //       })
 // })
-.controller('NearByCtrl', function($scope,$ionicPopup,$ionicLoading,Shops,Location,IndexService,LocalData) { 
-  $ionicLoading.show({
-    template:'定位中'
-  });
+.controller('NearByCtrl', function($scope,$ionicPopup,$ionicLoading,Shops,Location,IndexService,LocalData,Session) { 
   $scope.location = Location.getCityName();
   $scope.areaName = Location.getAreaName();  
   $scope.menus=IndexService.get();
+  if(Session.getLocationMode()==0){
+    $scope.nearbyShops=Session.getNearbyShops();
+    Session.clearLocationMode();
+  }else{
+   $ionicLoading.show({
+    template:'定位中'
+  });
   var pointParam = new Object();
   var geolocation = new BMap.Geolocation(); 
   geolocation.getCurrentPosition(function(r){
     if(this.getStatus() == BMAP_STATUS_SUCCESS){
         var geoc = new BMap.Geocoder();
-      geoc.getLocation(r.point, function(rs){
+        geoc.getLocation(r.point, function(rs){
         var addComp = rs.addressComponents;
         $scope.location=addComp.city;
         $scope.areaName=addComp.district;
@@ -683,6 +691,7 @@ $scope.submitpayinfo=function () {
                  });
           }else{
             $scope.nearbyShops=data.result;
+            Session.setNearbyShops($scope.nearbyShops);
             $ionicLoading.hide();
           }
           }, function(data){
@@ -693,8 +702,8 @@ $scope.submitpayinfo=function () {
       alert('failed'+this.getStatus());
     }
      
-  },{enableHighAccuracy: true});
-  
+    },{enableHighAccuracy: true});
+  } 
 $scope.gotoshop= function(shopid) {
   LocalData.setreserveRediretfromUrl("#/tab/nearby");
   window.location.href="#/shopdetail/"+shopid;
