@@ -1,8 +1,7 @@
 angular.module('starter.controllers', [])
 
 //主页 商铺 商品详情等controller  开始位置
-.controller('IndexCtrl', function($scope, $ionicModal,$ionicPopover,$ionicSlideBoxDelegate,$ionicBackdrop,Location,IndexService,AdService,Shops,Markets,Session,CommonService) { 
-    var judge = true;
+.controller('IndexCtrl', function($scope, $ionicModal,$ionicPopover,$ionicSlideBoxDelegate,$ionicBackdrop,Location,IndexService,AdService,Shops,Markets,Session) { 
     var marketParam1=new Object();
     var marketParam2=new Object();
     $scope.busy = false;
@@ -35,7 +34,6 @@ angular.module('starter.controllers', [])
                $scope.marketData = data.result.data;
             }
           }, function(data){
-            judge = CommonService.error(judge);
             console.log(data);
           });
           marketParam2.page = $scope.page;
@@ -49,10 +47,8 @@ angular.module('starter.controllers', [])
                $scope.marketData1 = data.result.data;
             }
           }, function(data){
-            judge=CommonService.error(judge);
           });
         }, function(data){
-          judge=CommonService.error(judge);
         });
        });   
       }else{
@@ -63,7 +59,6 @@ angular.module('starter.controllers', [])
     Location.getAreaIdByCityArea($scope.location,$scope.areaName).then(function(data){
           Location.setAreaId(data.result);
         }, function(data){
-          judge=CommonService.error(judge);
         });
   }
 
@@ -76,7 +71,6 @@ AdService.getAds().then(function(data){
   $scope.ads=data.result;
         $ionicSlideBoxDelegate.update();
       }, function(data){
-        judge=CommonService.error(judge);
 }); 
 }
 
@@ -91,7 +85,6 @@ AdService.getAds().then(function(data){
                $scope.marketData = data.result.data;
             }
           }, function(data){
-            judge=CommonService.error(judge);
           });
           marketParam2.page = $scope.page;
           marketParam2.rows = 6;
@@ -104,7 +97,6 @@ AdService.getAds().then(function(data){
                $scope.marketData1 = data.result.data;
             }
           }, function(data){
-            judge=CommonService.error(judge);
           });
 //分享
  $ionicPopover.fromTemplateUrl('templates/region.html', {
@@ -117,7 +109,6 @@ AdService.getAds().then(function(data){
      Location.getAreas($scope.location).then(function(data){
         $scope.regionoptions =data.result;
       }, function(data){
-        judge=CommonService.error(judge);
       });
   };
 
@@ -139,7 +130,6 @@ AdService.getAds().then(function(data){
       Shops.getShops(id).then(function(data){
           $scope.shops=data.result;
         }, function(data){
-          judge=CommonService.error(judge);
         });
       marketParam1.cityId = Location.getAreaId();
       Markets.getMarkets(marketParam1).then(function(data){
@@ -149,7 +139,6 @@ AdService.getAds().then(function(data){
            $scope.marketData = data.result.data;
         }
       }, function(data){
-        judge=CommonService.error(judge);
       });
       marketParam2.cityId = Location.getAreaId();
       Markets.getMarkets(marketParam2).then(function(data){
@@ -159,7 +148,6 @@ AdService.getAds().then(function(data){
            $scope.marketData1 = data.result.data;
         }
       }, function(data){
-        judge=CommonService.error(judge);
       });
 
   };
@@ -170,9 +158,8 @@ AdService.getAds().then(function(data){
   
 })
 
-.controller('MarketCtrl', function($scope,$ionicPopup,$stateParams,Markets,LocalData,Location,CommonService) {
+.controller('MarketCtrl', function($scope,$ionicPopup,$stateParams,Markets,LocalData,Location) {
   var marketParam = new Object();
-  var judge = true;
   $scope.busy = false;
   $scope.page = 1;
   $scope.rows = 10;
@@ -182,7 +169,6 @@ AdService.getAds().then(function(data){
   Markets.getMarketsById($scope.marketId).then(function(data){
              $scope.market = data.result;
           }, function(data){
-            judge = CommonService.error(judge);
           console.log(data);
           });
   marketParam.id = $scope.marketId;
@@ -208,7 +194,6 @@ AdService.getAds().then(function(data){
               }
               $scope.$broadcast('scroll.infiniteScrollComplete');
           }, function(data){
-            judge = CommonService.error(judge);
           console.log(data);
           });
       
@@ -226,8 +211,64 @@ AdService.getAds().then(function(data){
 
 })
 
-.controller('ShopsCtrl', function($scope,$timeout,$ionicScrollDelegate,$stateParams,Shops,LocalData,Location,Session,CommonService) {
-  var judge = true;
+.controller('MarketsCtrl', function($scope,$ionicPopup,$stateParams,Markets,LocalData,Location) {
+  var type = $stateParams.markettype;
+  if(type==0){
+    $scope.title = "本地市场";
+  }else if(type==1){
+    $scope.title = "本地商场";
+  }
+  var marketParam = new Object();
+  $scope.busy = false;
+  $scope.page = 1;
+  $scope.rows = 10;
+  $scope.pages = 1;
+  marketParam.page = $scope.page;
+  marketParam.rows = $scope.rows;
+  marketParam.cityId = Location.getAreaId();
+  marketParam.type = type;
+  Markets.getMarkets(marketParam).then(function(data){
+    if(JSON.stringify(data.result.data)=='[]'){
+       $scope.marketData = Markets.markets1();
+    }else{
+       $scope.marketData = data.result.data;
+    }
+  }, function(data){
+    console.log(data);
+  });
+   $scope.loadMore = function() {
+    if ($scope.page < $scope.pages) {
+      $scope.page++;
+      if ($scope.busy) {
+        return false;
+      }
+      $scope.busy = true;
+      marketParam.page = $scope.page;
+      Markets.getShopByMarket(marketParam).then(function(data){
+             $scope.busy = false;
+              for (var i in data.result.result) {
+                $scope.marketShops.push(data.result.result[i]);
+              }
+              $scope.$broadcast('scroll.infiniteScrollComplete');
+          }, function(data){
+          console.log(data);
+          });
+      
+    }else{
+      $scope.$broadcast('scroll.infiniteScrollComplete');
+    }
+  };
+  $scope.backtoIndex = function() {
+      window.location.href="#/tab/dash";
+  };
+  $scope.gotoshop= function(shopid) {
+    LocalData.setreserveRediretfromUrl("#/market/"+$stateParams.marketId);
+    window.location.href="#/shopdetail/"+shopid;
+  };
+
+})
+
+.controller('ShopsCtrl', function($scope,$timeout,$ionicScrollDelegate,$stateParams,Shops,LocalData,Location,Session) {
   var height=window.innerHeight?window.innerHeight-180:500;
   $scope.leftstyle = {width:'33%',height:height+'px'};
   $scope.rightstyle = {width:'67%',height:height+'px'};
@@ -245,7 +286,6 @@ AdService.getAds().then(function(data){
         Location.getLocation().then(function(data){
           shopparam.cityName=Location.getCityName();
           }, function(data){
-            judge = CommonService.error(judge);
           console.log(data);
           });
     }
@@ -272,11 +312,9 @@ AdService.getAds().then(function(data){
              Session.setShops($scope.shops);
              $scope.pages = data.result.totalPages;
           }, function(data){
-            judge = CommonService.error(judge);
           console.log(data);
           });
       }, function(data){
-        judge = CommonService.error(judge);
           console.log(data);
       });
    }
@@ -298,7 +336,6 @@ AdService.getAds().then(function(data){
               Session.setShops($scope.shops);
               $scope.$broadcast('scroll.infiniteScrollComplete');
           }, function(data){
-            judge = CommonService.error(judge);
           console.log(data);
           });
       
@@ -317,7 +354,6 @@ AdService.getAds().then(function(data){
              Session.setShops($scope.shops);
              $ionicScrollDelegate.$getByHandle('shopsScroll').scrollTop();
           }, function(data){
-            judge = CommonService.error(judge);
           console.log(data);
           });
     };
@@ -334,15 +370,13 @@ AdService.getAds().then(function(data){
     };
 })
 
-.controller('CitysCtrl', function($scope,$ionicScrollDelegate,LocalData,Location,Session,CommonService) {
-  var judge = true;
+.controller('CitysCtrl', function($scope,$ionicScrollDelegate,LocalData,Location,Session) {
   var height=window.innerHeight?window.innerHeight-180:500;
   $scope.cityName = "北京市";
   $scope.leftstyle = {height:height+'px'};
  Location.getLocation().then(function(data){
           $scope.realLocation=data.content.address_detail.city;
         }, function(data){
-          judge = CommonService.error(judge);
           console.log(data);
   });
 
@@ -355,15 +389,12 @@ AdService.getAds().then(function(data){
              Location.getAreas(data.result[0].name).then(function(data){
              $scope.areas = data.result;
              },function(data){
-                judge = CommonService.error(judge);
           console.log(data);
             });
           }, function(data){
-            judge = CommonService.error(judge);
           console.log(data);
           });
       }, function(data){
-        judge = CommonService.error(judge);
           console.log(data);
       });
 
@@ -378,12 +409,10 @@ $scope.refreshCitys =function(cityId) {
              Location.setAreaName(data.result[0].name);
              Location.setAreaId(data.result[0].id);
              },function(data){
-                judge = CommonService.error(judge);
           console.log(data);
             });
            $ionicScrollDelegate.scrollTop();
           }, function(data){
-            judge = CommonService.error(judge);
           console.log(data);
           });
     };
@@ -397,7 +426,6 @@ $scope.refreshAreas = function(cityName){
             Session.setLocationMode(0);
            $ionicScrollDelegate.scrollTop();
           }, function(data){
-            judge = CommonService.error(judge);
           console.log(data);
           });
 }
@@ -419,8 +447,7 @@ $scope.backtoIndex = function() {
 
 })
 
-.controller('ShopdetailCtrl', function($scope,$ionicPopover,$stateParams,Shopdetail,Shops,LocalData,Session,CommonService) {
-  var judge = true;
+.controller('ShopdetailCtrl', function($scope,$ionicPopover,$stateParams,Shopdetail,Shops,LocalData,Session) {
   var shopId=$stateParams.shopId
 
 //商铺详情的获取
@@ -433,14 +460,12 @@ $scope.backtoIndex = function() {
         $scope.shopinfo=data.result;
         LocalData.setshop(data.result);
       }, function(data){
-        judge = CommonService.error(judge);
           console.log(data);
       });
 
   Shops.getShopProducts(shopId).then(function(data){
         $scope.products=data.result;
       }, function(data){
-        judge = CommonService.error(judge);
           console.log(data);
       })
   $scope.closedetails= function() {
@@ -460,7 +485,7 @@ $scope.backtoIndex = function() {
 
   $scope.SharePage = function() {
     try{
-    window.plugins.socialsharing.share('我在使用新商店购物，获取新商币，购物更便利', null, null, 'http://admin.o2o2m.com/app/download?appcode=xsd');
+    window.plugins.socialsharing.share('我在使用新商店购物，获取新商币，购物更便利', null, null, 'http://app.53xsd.com/#/shopdetail/'+shopId);
     }catch(err){
     };
   }
@@ -492,8 +517,7 @@ $scope.backtoIndex = function() {
 })
 
 
-.controller('ProductCtrl', function($scope,$stateParams,$ionicSlideBoxDelegate,$sce,Shops,LocalData,CommonService) {
-  var judge = true;
+.controller('ProductCtrl', function($scope,$stateParams,$ionicSlideBoxDelegate,$sce,Shops,LocalData) {
 var productId=$stateParams.productId;
 $scope.shopId = 0;
  Shops.getProductdetail(productId).then(function(data){
@@ -502,7 +526,6 @@ $scope.shopId = 0;
           Shops.getRecProduct($scope.shopId).then(function(data){
             $scope.recproducts=data.result;
           }, function(data){
-            judge = CommonService.error(judge);
           console.log(data);
           })
         $ionicSlideBoxDelegate.update();
@@ -511,7 +534,6 @@ $scope.shopId = 0;
         return $sce.trustAsHtml($scope.product.productText.text);  
         };  
       }, function(data){
-        judge = CommonService.error(judge);
           console.log(data);
       })
  
@@ -533,8 +555,7 @@ $scope.shopId = 0;
 
 
 
-.controller('ToPayCtrl', function($scope,$stateParams,$ionicPopup,LocalData,Shops,MemberService,CommonService) {
-  var judge = true;
+.controller('ToPayCtrl', function($scope,$stateParams,$ionicPopup,LocalData,Shops,MemberService) {
   $scope.date=new Date();
   $scope.balance = 0;
   $scope.payinfo= {};
@@ -545,7 +566,6 @@ var productId=$stateParams.productId;
         LocalData.setproduct(data.result);
         loadshop();
       }, function(data){
-        judge = CommonService.error(judge);
           console.log(data);
       })
 if(MemberService.getMember()){
@@ -554,7 +574,6 @@ if(MemberService.getMember()){
         $scope.memberblance=data.result;
         $scope.balance = data.result.balance;
       }, function(data){
-        judge = CommonService.error(judge);
           console.log(data);
       })
 }else{
@@ -573,7 +592,6 @@ if(LocalData.getshop()){
         $scope.shopinfo=data.result;
         LocalData.setshop(data.result);
       }, function(data){
-        judge = CommonService.error(judge);
           console.log(data);
       })
 
@@ -621,7 +639,6 @@ $scope.submitpayinfo=function () {
                       });
             };
         }, function(data){
-        judge = CommonService.error(judge);
           console.log(data);
         })
 }
@@ -639,7 +656,7 @@ $scope.product=LocalData.getproduct();
 
 
 
-.controller('ShoptoPayCtrl', function($scope,$stateParams,$ionicPopup,LocalData,Shops,MemberService,CommonService) {
+.controller('ShoptoPayCtrl', function($scope,$stateParams,$ionicPopup,LocalData,Shops,MemberService) {
   var judge = true;
   $scope.date=new Date();
   $scope.payinfo= {};
@@ -649,7 +666,6 @@ Shops.getShopDetail(shopId).then(function(data){
         $scope.shopinfo=data.result;
         LocalData.setshop(data.result);
       }, function(data){
-        judge = CommonService.error(judge);
           console.log(data);
       })
 
@@ -659,7 +675,6 @@ if(MemberService.getMember()){
         $scope.memberblance=data.result;
         $scope.balance = data.result.balance;
       }, function(data){
-        judge = CommonService.error(judge);
           console.log(data);
       })
 }else{
@@ -708,7 +723,6 @@ $scope.submitpayinfo=function () {
                       });
             };
         }, function(data){
-        judge = CommonService.error(judge);
           console.log(data);
         })
 }
@@ -732,8 +746,7 @@ $scope.submitpayinfo=function () {
 //         console.log(data);
 //       })
 // })
-.controller('NearByCtrl', function($scope,$ionicPopup,$ionicLoading,Shops,Location,IndexService,LocalData,Session,CommonService) { 
-  var judge = true;
+.controller('NearByCtrl', function($scope,$ionicPopup,$ionicLoading,Shops,Location,IndexService,LocalData,Session) { 
   $scope.location = Location.getCityName();
   $scope.areaName = Location.getAreaName();  
   $scope.menus=IndexService.get();
@@ -743,7 +756,7 @@ $scope.submitpayinfo=function () {
   }else{
    $ionicLoading.show({
     template:'定位中',
-    showBackdrop: false
+    noBackdrop :false,
   });
   var pointParam = new Object();
   var geolocation = new BMap.Geolocation(); 
@@ -778,7 +791,6 @@ $scope.submitpayinfo=function () {
           }
           }, function(data){
             $ionicLoading.hide();
-            judge = CommonService.error(judge);
             console.log(data);
         });
     });   
@@ -801,7 +813,6 @@ $scope.gotoshop= function(shopid) {
           $scope.nearbyShops=data.result;
         }, function(data){
           $ionicLoading.hide();
-          judge = CommonService.error(judge);
           console.log(data);
         })
   };
@@ -811,14 +822,12 @@ $scope.gotoshop= function(shopid) {
   $scope.friend = Friends.get($stateParams.friendId);
 })
 //团购页面的controller
-.controller('GroupCtrl', function($scope,Friends,Location,$http, $q,CommonService) {
-  var judge = true;
+.controller('GroupCtrl', function($scope,Friends,Location,$http, $q) {
 
   //方案一 可行 需要等待网络响应
       var friends  = Friends.all();
   //Show a backdrop for one second
   $scope.Factory = function() {
-    judge = CommonService.error(judge);
     console.log(friends);
   };
 
@@ -829,7 +838,6 @@ $scope.gotoshop= function(shopid) {
     try{
     window.plugins.socialsharing.share('Message and link', null, null, 'http://www.x-services.nl');
     }catch(err){
-      judge = CommonService.error(judge);
       console.log(err);
     }
   };
@@ -840,7 +848,6 @@ $scope.gotoshop= function(shopid) {
     Location.getAreas("杭州市").then(function(data){
         console.log(JSON.stringify(data));
       }, function(data){
-        judge = CommonService.error(judge);
         console.log(data);
       })
   };
@@ -849,8 +856,7 @@ $scope.gotoshop= function(shopid) {
 })
 
 //会员页面的controller
-.controller('MemberCtrl', function($scope, $ionicPopup,$ionicModal,MemberService,LocalData,CommonService) {
-  var judge = true;
+.controller('MemberCtrl', function($scope, $ionicPopup,$ionicModal,MemberService,LocalData) {
   $scope.opensetting=function(){
          if(MemberService.getMember()){
            window.location.href="#/setting";
@@ -978,11 +984,10 @@ $scope.tomydollarpage=function (){
   }
 })
 
-.controller('MydollarCtrl', function($scope,$stateParams,Shops,MemberService,CommonService) {
+.controller('MydollarCtrl', function($scope,$stateParams,Shops,MemberService) {
   var height=window.innerHeight?window.innerHeight-120:500;
   $scope.liststyle = {height:height+'px'};
   var dollarParam=new Object();
-  var judge = true;
   $scope.busy = false;
   $scope.pageNo = 0;
   $scope.pages = 0;
@@ -997,14 +1002,12 @@ window.location.href="#/tab/member";
  Shops.getUserblance(memberId).then(function(data){
         $scope.memberblance=data.result;
       }, function(data){
-        judge = CommonService.error(judge);
         console.log(data);
       })
  MemberService.getRecordAsPage(dollarParam).then(function(data){
         $scope.Recodes=data.result.result;
         $scope.pages = data.result.totalPages;
       }, function(data){
-        judge = CommonService.error(judge);
         console.log(data);
       })
  $scope.loadMore = function(){
@@ -1021,7 +1024,6 @@ window.location.href="#/tab/member";
           $scope.Recodes.push(data.result.result[i]);
         }
       }, function(data){
-        judge = CommonService.error(judge);
         console.log(data);
       })
     }else{
@@ -1031,7 +1033,7 @@ window.location.href="#/tab/member";
 })
 
 //会员页面的controller
-.controller('LoginCtrl', function($scope, $ionicModal,$ionicPopup, MemberService,LocalData,CommonService) {
+.controller('LoginCtrl', function($scope, $ionicModal,$ionicPopup, MemberService,LocalData) {
   var judge = true;
    $scope.closelogin= function() {
     window.location.href=LocalData.getrediretfromUrl();
@@ -1055,7 +1057,6 @@ window.location.href="#/tab/member";
                  });
                };
         }, function(data){
-          judge = CommonService.error(judge);
           console.log(data);
         })
 
@@ -1063,8 +1064,7 @@ window.location.href="#/tab/member";
 
 })
 
-.controller('RegisterCtrl', function($scope,$ionicPopup, MemberService,CommonService) {
-  var judge = true;
+.controller('RegisterCtrl', function($scope,$ionicPopup, MemberService) {
    $scope.closeregister= function() {
     window.history.go(-1);
   };
@@ -1083,7 +1083,6 @@ window.location.href="#/tab/member";
                  });
                };
         }, function(data){
-          judge = CommonService.error(judge);
         console.log(data);
         })
   };
@@ -1102,7 +1101,6 @@ window.location.href="#/tab/member";
                  });
                };
         }, function(data){
-          judge = CommonService.error(judge);
           console.log(data);
         })
   };
