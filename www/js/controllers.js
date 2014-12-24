@@ -867,6 +867,14 @@ $scope.gotoshop= function(shopid) {
             window.location.href="#/login";
          }
   };
+  $scope.tomyrecommend=function(){
+         if(MemberService.getMember()){
+           window.location.href="#/myrecommend";
+         }else{
+            LocalData.setrediretfromUrl("#/tab/member");
+            window.location.href="#/login";
+         }
+  };
  $scope.toMyprofile=function(){
        if(MemberService.getMember()){
            window.location.href="/#/myprofile";
@@ -944,6 +952,23 @@ $scope.tomydollarpage=function (){
   
 })
 
+.controller('MyrecommendCtrl', function($scope) {
+  $scope.backtoMember = function(){
+    window.location.href="#/tab/member";
+  }
+})
+
+.controller('RecommendMemCtrl', function($scope) {
+  $scope.backtoRecommend = function(){
+    window.location.href="#/myrecommend";
+  }
+})
+
+.controller('RecommendPerCtrl', function($scope) {
+  $scope.backtoRecommend = function(){
+    window.location.href="#/myrecommend";
+  }
+})
 
 .controller('MyprofileCtrl', function($scope,MemberService) {
  $scope.Myprofile =MemberService.getMember();

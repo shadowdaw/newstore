@@ -97,6 +97,23 @@ angular.module('starter', ['ionic', 'starter.controllers', 'starter.services','s
       templateUrl: "templates/mystore.html"
     })
 
+    .state('recommendMember', {
+      url: '/recommendMember',
+      controller: 'RecommendMemCtrl',
+      templateUrl: "templates/recommendMember.html"
+    })
+
+     .state('recommendPerformance', {
+      url: '/recommendPerformance',
+      controller: 'RecommendPerCtrl',
+      templateUrl: "templates/recommendPerformance.html"
+    })
+
+    .state('myrecommend', {
+      url: '/myrecommend',
+      controller: 'MyrecommendCtrl',
+      templateUrl: "templates/myrecommend.html"
+    })
 
     .state('myprofile', {
       url: '/myprofile',
