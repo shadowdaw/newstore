@@ -1,0 +1,129 @@
+<ion-view  >
+<ion-header-bar  class="bar-assertive">
+           <button class="button button-clear" ng-click="backtoMember()">
+           <i class="icon ion-chevron-left"></i>
+        </button>
+        <h1 class="title">我的收藏</h1>
+ </ion-header-bar>
+
+<ion-content >
+	<div class="item item-divider button-bar" style="background: #ddd;padding: 8px;">
+	  <a class="button {{assertive1}}" ng-click="getStoreShop()">收藏的店铺</a>
+	  <a class="button {{assertive2}}" ng-click="getStoreProduct()">收藏的商品</a>
+	</div>
+  <div class="{{hide1}}">
+    <ion-list>
+        <a class="item shopItem-left" style="padding-right:10px;"   ng-click="gotoshop({{shop.id}})">
+          <img ng-src="http://image.53xsd.com/newshop/2014/12/cc44b91b-bea6-4d7b-82b3-f33b74593a62.jpg">
+          <h2>Hello World</h2>
+          <p style="white-space:normal">浙江西湖区银泰城</p>
+          <div class="button fr" style="position: absolute;right: 10px;top: 24px;">取消收藏</div>
+        </a>
+       <a class="item shopItem-left"    ng-click="gotoshop({{shop.id}})">
+          <img ng-src="http://image.53xsd.com/newshop/2014/12/cc44b91b-bea6-4d7b-82b3-f33b74593a62.jpg">
+          <h2>Hello World</h2>
+          <p style="white-space:normal">浙江西湖区银泰城</p>
+          <div class="button fr" style="position: absolute;right: 10px;top: 24px;">取消收藏</div>
+       </a>
+       <a class="item shopItem-left"    ng-click="gotoshop({{shop.id}})">
+          <img ng-src="http://image.53xsd.com/newshop/2014/12/cc44b91b-bea6-4d7b-82b3-f33b74593a62.jpg">
+          <h2>Hello World</h2>
+          <p style="white-space:normal">浙江西湖区银泰城</p>
+          <div class="button fr" style="position: absolute;right: 10px;top: 24px;">取消收藏</div>
+       </a>
+       <a class="item shopItem-left"    ng-click="gotoshop({{shop.id}})">
+          <img ng-src="http://image.53xsd.com/newshop/2014/12/cc44b91b-bea6-4d7b-82b3-f33b74593a62.jpg">
+          <h2>Hello World</h2>
+          <p style="white-space:normal">浙江西湖区银泰城</p>
+          <div class="button fr" style="position: absolute;right: 10px;top: 24px;">取消收藏</div>
+       </a>
+        <a class="item shopItem-left"    ng-click="gotoshop({{shop.id}})">
+          <img ng-src="http://image.53xsd.com/newshop/2014/12/cc44b91b-bea6-4d7b-82b3-f33b74593a62.jpg">
+          <h2>Hello World</h2>
+          <p style="white-space:normal">浙江西湖区银泰城</p>
+          <div class="button fr" style="position: absolute;right: 10px;top: 24px;">取消收藏</div>
+       </a>
+        <a class="item shopItem-left"    ng-click="gotoshop({{shop.id}})">
+          <img ng-src="http://image.53xsd.com/newshop/2014/12/cc44b91b-bea6-4d7b-82b3-f33b74593a62.jpg">
+          <h2>Hello World</h2>
+          <p style="white-space:normal">浙江西湖区银泰城</p>
+          <div class="button fr" style="position: absolute;right: 10px;top: 24px;">取消收藏</div>
+       </a>
+        <a class="item shopItem-left"    ng-click="gotoshop({{shop.id}})">
+          <img ng-src="http://image.53xsd.com/newshop/2014/12/cc44b91b-bea6-4d7b-82b3-f33b74593a62.jpg">
+          <h2>Hello World</h2>
+          <p style="white-space:normal">浙江西湖区银泰城</p>
+          <div class="button fr" style="position: absolute;right: 10px;top: 24px;">取消收藏</div>
+       </a>
+    </ion-list>
+    <ion-infinite-scroll
+    on-infinite="loadMore()" >
+  </ion-infinite-scroll>
+</div>
+<div class="{{hide2}}">
+ <div class="item nopadding" style="width:48%;display:inline-block;margin-left:1%;" ng-click="showProductDetail({{product.id}});">
+  <div style="width:100%;height:200px;overflow:hidden">
+   <img ng-src="http://image.53xsd.com/newshop/2014/12/8bb4f54c-6327-4240-8dde-144ddb40fd18.jpg" style="width:100%;">
+    </div>
+    <div class="padding-left padding-right product-desc">
+      Hello world!!!! <br>
+      <p>编号:MA144ORS45</p>
+  </div>
+  <div class="padding-left padding-right price">
+    <span class=" fl">
+      ￥ 999.000
+    </span>
+     <i class="icon ion-android-close fr assertive"></i>
+  </div>
+ </div> 
+ <div class="item nopadding" style="width:48%;display:inline-block;margin-left:1%;" ng-click="showProductDetail({{product.id}});">
+  <div style="width:100%;height:200px;overflow:hidden">
+   <img ng-src="http://image.53xsd.com/newshop/2014/12/8bb4f54c-6327-4240-8dde-144ddb40fd18.jpg" style="width:100%;">
+    </div>
+    <div class="padding-left padding-right product-desc">
+      Hello world!!!! <br>
+      <p>编号:MA144ORS45</p>
+  </div>
+  <div class="padding-left padding-right price">
+    <span class=" fl">
+      ￥ 999.000
+    </span>
+     <i class="icon ion-android-close fr assertive"></i>
+  </div>
+ </div> 
+ <div class="item nopadding" style="width:48%;display:inline-block;margin-left:1%;" ng-click="showProductDetail({{product.id}});">
+  <div style="width:100%;height:200px;overflow:hidden">
+   <img ng-src="http://image.53xsd.com/newshop/2014/12/8bb4f54c-6327-4240-8dde-144ddb40fd18.jpg" style="width:100%;">
+    </div>
+    <div class="padding-left padding-right product-desc">
+      Hello world!!!! <br>
+      <p>编号:MA144ORS45</p>
+  </div>
+  <div class="padding-left padding-right price">
+    <span class=" fl">
+      ￥ 999.000
+    </span>
+     <i class="icon ion-android-close fr assertive"></i>
+  </div>
+ </div> 
+ <div class="item nopadding" style="width:48%;display:inline-block;margin-left:1%;" ng-click="showProductDetail({{product.id}});">
+  <div style="width:100%;height:200px;overflow:hidden">
+   <img ng-src="http://image.53xsd.com/newshop/2014/12/8bb4f54c-6327-4240-8dde-144ddb40fd18.jpg" style="width:100%;">
+    </div>
+    <div class="padding-left padding-right product-desc">
+      Hello world!!!! <br>
+      <p>编号:MA144ORS45</p>
+  </div>
+  <div class="padding-left padding-right price">
+    <span class=" fl">
+      ￥ 999.000
+    </span>
+    <i class="icon ion-android-close fr assertive"></i>
+  </div>
+ </div> 
+    <ion-infinite-scroll
+    on-infinite="loadMore()">
+  </ion-infinite-scroll>
+ </div>
+  </ion-content>
+</ion-view>

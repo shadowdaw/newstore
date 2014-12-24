@@ -90,6 +90,13 @@ angular.module('starter', ['ionic', 'starter.controllers', 'starter.services','s
         }
       }
     })
+  
+    .state('mystore', {
+      url: '/mystore',
+      controller: 'MystoreCtrl',
+      templateUrl: "templates/mystore.html"
+    })
+
 
     .state('myprofile', {
       url: '/myprofile',

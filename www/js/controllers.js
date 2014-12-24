@@ -922,11 +922,26 @@ $scope.tomydollarpage=function (){
 })
 
 .controller('MystoreCtrl', function($scope) {
-  var height=window.innerHeight?window.innerHeight-180:500;
-  $scope.liststyle = {height:height+'px'};
+  $scope.hide1 ="";
+  $scope.hide2 ="hide";
+  $scope.assertive1 = "button-assertive";
+  $scope.assertive2 = "";
   $scope.backtoMember = function(){
     window.location.href="#/tab/member";
   }
+  $scope.getStoreShop = function(){
+    $scope.hide1 = "";
+    $scope.hide2 ="hide";
+    $scope.assertive1 = "button-assertive";
+    $scope.assertive2 = "";
+  }
+  $scope.getStoreProduct = function(){
+    $scope.hide1 = "hide"
+    $scope.hide2 = "";
+    $scope.assertive1 = "";
+    $scope.assertive2 = "button-assertive"
+  }
+  
 })
 
 
