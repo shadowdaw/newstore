@@ -178,6 +178,7 @@ AdService.getAds().then(function(data){
   $scope.rows = 10;
   $scope.pages = 1;
   $scope.marketId=$stateParams.marketId;
+  $scope.marketCategorys = Markets.marketCategory();
   Markets.getMarketsById($scope.marketId).then(function(data){
              $scope.market = data.result;
           }, function(data){
@@ -741,7 +742,8 @@ $scope.submitpayinfo=function () {
     Session.clearLocationMode();
   }else{
    $ionicLoading.show({
-    template:'定位中'
+    template:'定位中',
+    showBackdrop: false
   });
   var pointParam = new Object();
   var geolocation = new BMap.Geolocation(); 
@@ -775,6 +777,7 @@ $scope.submitpayinfo=function () {
             $ionicLoading.hide();
           }
           }, function(data){
+            $ionicLoading.hide();
             judge = CommonService.error(judge);
             console.log(data);
         });
@@ -797,6 +800,7 @@ $scope.gotoshop= function(shopid) {
     Shops.getNearbyShops(pointParam).then(function(data){
           $scope.nearbyShops=data.result;
         }, function(data){
+          $ionicLoading.hide();
           judge = CommonService.error(judge);
           console.log(data);
         })

@@ -14,20 +14,26 @@
 	    <ion-slide>
 			  <div class="item nopadding" style="max-height:300px">
 			    <!-- <img class="bgimage" src="{{proimg.imgPath}}" > -->
-			    <img class="bgimage" src="{{market.image}}" >
+			    <img class="bgimage" ng-src="{{market.image}}" >
 			  </div>
 	    </ion-slide>
 	  </ion-slide-box>
  	<a class="item" style="border-style:none;padding: 5px;">
-    <img class="mineButtonImg" src="img/temp/market2.png">{{market.address}}
+    <img class="mineButtonImg" ng-src="img/temp/market2.png">{{market.address}}
    </a>
+    <div style="background: #ddd;">
 	<a class="item" style="background: #ddd;padding: 8px;">
-    <img width="50%" src="img/temp/market3.png"> <img width="50%" src="img/temp/market4.png">
+    <img width="50%" ng-src="img/temp/market3.png"> <img width="50%" ng-src="img/temp/market4.png">
    </a>
+  
+   <div ng-repeat="market in marketCategorys" class="item nopadding item-image mybutton" style="width:25%" ng-click="showMarkets({{market.id}});">
+    <img ng-src="{{market.logo}}">
+  </div>
     <ion-list>
+    <h2>商城店铺</h2>
       <ion-item type="item-text-wrap" ng-repeat="marketshop in marketShops" class="nopadding" >
         <a class="item shopItem-left"  ng-click="gotoshop({{marketshop.id}})">
-          <img src="{{marketshop.logo}}">
+          <img ng-src="{{marketshop.logo}}">
           <h2>{{marketshop.name}}</h2>
           <p >{{marketshop.address}}</p>
        </a>
@@ -37,5 +43,6 @@
     on-infinite="loadMore()"
     distance="2%">
   </ion-infinite-scroll>
+    </div>
   </ion-content>
 </ion-view>

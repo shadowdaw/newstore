@@ -289,12 +289,25 @@ angular.module('starter.services', [])
     { id: 0, name: '银泰百货',logo:'img/temp/sc5.png' },
     { id: 0, name: '万象城',logo:'img/temp/sc6.png' }
   ];
+  var marketCategory =[
+    { id: 1, logo:'img/temp/icon/market_fen1.png' },
+    { id: 2, logo:'img/temp/icon/market_fen2.png' },
+    { id: 3, logo:'img/temp/icon/market_fen3.png' },
+    { id: 4, logo:'img/temp/icon/market_fen4.png' },
+    { id: 5, logo:'img/temp/icon/market_fen5.png' },
+    { id: 6, logo:'img/temp/icon/market_fen6.png' },
+    { id: 7, logo:'img/temp/icon/market_fen7.png' },
+    { id: 8, logo:'img/temp/icon/market_fen8.png' }
+  ];
 return {
   markets1: function() {
       return markets1;
     },
   markets2: function() {
       return markets2;
+    },
+  marketCategory: function() {
+      return marketCategory;
     },
   getMarkets: function(data) {
       var deferred = $q.defer();
