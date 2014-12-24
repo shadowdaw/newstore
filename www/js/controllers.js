@@ -763,6 +763,7 @@ $scope.submitpayinfo=function () {
         });
         Shops.getNearbyShops(pointParam).then(function(data){
           if(JSON.stringify(data.result)=='[]'){
+             $ionicLoading.hide();
              var alertPopup = $ionicPopup.alert({
                    title: '附近店铺',
                    okText: '确定',
