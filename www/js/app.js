@@ -156,6 +156,13 @@ angular.module('starter', ['ionic', 'starter.controllers', 'starter.services','s
       animation: 'slide-left-right-ios7'
     })
 
+    .state('markets', {
+      url: "/markets/:markettype",
+      controller: 'MarketsCtrl',
+      templateUrl: "templates/markets.html",
+      animation: 'slide-left-right-ios7'
+    })
+
     .state('shopdetail', {
       url: "/shopdetail/:shopId",
       controller: 'ShopdetailCtrl',

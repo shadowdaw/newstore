@@ -8,41 +8,38 @@
 
 
 
-<ion-content >
+<ion-content>
 	  <ion-slide-box on-slide-changed="slideHasChanged($index)" does-continue="true" auto-play="true">
-	   <!-- <ion-slide ng-repeat="proimg in product.productImages"> -->
-	    <ion-slide>
+	   <ion-slide ng-repeat="image in images">
 			  <div class="item nopadding" style="max-height:300px">
-			    <!-- <img class="bgimage" src="{{proimg.imgPath}}" > -->
-			    <img class="bgimage" ng-src="{{market.image}}" >
+			    <img class="bgimage" ng-src="{{image.imgPath}}" >
 			  </div>
 	    </ion-slide>
 	  </ion-slide-box>
  	<a class="item" style="border-style:none;padding: 5px;">
     <img class="mineButtonImg" ng-src="img/temp/market2.png">{{market.address}}
    </a>
-    <div style="background: #ddd;">
 	<a class="item" style="background: #ddd;padding: 8px;">
     <img width="50%" ng-src="img/temp/market3.png"> <img width="50%" ng-src="img/temp/market4.png">
    </a>
-  
-   <div ng-repeat="market in marketCategorys" class="item nopadding item-image mybutton" style="width:25%" ng-click="showMarkets({{market.id}});">
-    <img ng-src="{{market.logo}}">
+   <div class="item nopadding item-image mybutton" style="width:24%" ng-click="showShops({{marketId}});">
+    <img ng-src="img/temp/icon/market_fen0.png">
   </div>
-    <ion-list>
-    <h2>商城店铺</h2>
-      <ion-item type="item-text-wrap" ng-repeat="marketshop in marketShops" class="nopadding" >
-        <a class="item shopItem-left"  ng-click="gotoshop({{marketshop.id}})">
-          <img ng-src="{{marketshop.logo}}">
-          <h2>{{marketshop.name}}</h2>
-          <p >{{marketshop.address}}</p>
-       </a>
-      </ion-item>
-    </ion-list>
-    <ion-infinite-scroll
-    on-infinite="loadMore()"
-    distance="2%">
+   <div ng-repeat="child in children" class="item nopadding item-image mybutton" style="width:24%" ng-click="getShopByMarketCat({{child.id}},{{child.parentId}});">
+    <img ng-src="{{child.logo}}">
+  </div>
+  <ion-list>
+  <h2>商城店铺</h2>
+    <ion-item type="item-text-wrap" ng-repeat="marketshop in marketShops" class="nopadding" >
+      <a class="item shopItem-left"  ng-click="gotoshop({{marketshop.id}})">
+        <img ng-src="{{marketshop.logo}}">
+        <h2>{{marketshop.name}}</h2>
+        <p >{{marketshop.address}}</p>
+     </a>
+    </ion-item>
+  </ion-list>
+  <ion-infinite-scroll
+    on-infinite="loadMore()">
   </ion-infinite-scroll>
-    </div>
   </ion-content>
 </ion-view>

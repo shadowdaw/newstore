@@ -1,7 +1,7 @@
 angular.module('starter.controllers', [])
 
 //主页 商铺 商品详情等controller  开始位置
-.controller('IndexCtrl', function($scope, $ionicModal,$ionicPopover,$ionicSlideBoxDelegate,$ionicBackdrop,Location,IndexService,AdService,Shops,Markets,Session) { 
+.controller('IndexCtrl', function($scope, $ionicModal,$ionicPopover,$ionicSlideBoxDelegate,$ionicPopup,$ionicBackdrop,Location,IndexService,AdService,Shops,Markets,Session) { 
     var marketParam1=new Object();
     var marketParam2=new Object();
     $scope.busy = false;
@@ -152,22 +152,36 @@ AdService.getAds().then(function(data){
 
   };
   $scope.goMarket = function(marketId){
+    if(marketId==0){
+      $ionicPopup.alert({
+         title: '关联信息！',
+         okText: '确定',
+         template: '抱歉,尚未录入信息！'
+       });
+      return;
+    }
     window.location.href = "#/market/"+marketId;
   };
 
   
 })
 
-.controller('MarketCtrl', function($scope,$ionicPopup,$stateParams,Markets,LocalData,Location) {
+.controller('MarketCtrl', function($scope,$ionicPopup,$stateParams,$ionicSlideBoxDelegate,Markets,LocalData,Location) {
   var marketParam = new Object();
   $scope.busy = false;
   $scope.page = 1;
   $scope.rows = 10;
   $scope.pages = 1;
   $scope.marketId=$stateParams.marketId;
-  $scope.marketCategorys = Markets.marketCategory();
   Markets.getMarketsById($scope.marketId).then(function(data){
-             $scope.market = data.result;
+             $scope.market = data.result.shopMarket;
+             $scope.children = data.result.children;
+             if(JSON.stringify(data.result.images)=='[]'){
+              $scope.images = Markets.images();
+             }else{
+              $scope.images = data.result.images;
+             }
+             $ionicSlideBoxDelegate.update();
           }, function(data){
           console.log(data);
           });
@@ -177,9 +191,42 @@ AdService.getAds().then(function(data){
   Markets.getShopByMarket(marketParam).then(function(data){
   $scope.marketShops = data.result.data;
   $scope.pages = data.result.totalPages;
-    
   });
-   $scope.loadMore = function() {
+  $scope.showShops = function(id){
+       $scope.page = 1;
+       $scope.pages = 1;
+       marketParam.id = id;
+       marketParam.page = $scope.page;
+       marketParam.rows = $scope.rows;
+       Markets.getMarketsById(id).then(function(data){
+           $scope.market = data.result.shopMarket;
+           $scope.children = data.result.children;
+           $scope.images = data.result.images;
+           $ionicSlideBoxDelegate.update();
+       });
+        Markets.getShopByMarket(marketParam).then(function(data){
+          $scope.marketShops = data.result.data;
+          $scope.pages = data.result.totalPages;
+        });
+  };
+  $scope.getShopByMarketCat = function(id,parentId){
+       $scope.page = 1;
+       $scope.pages = 1;
+       marketParam.id = id;
+       marketParam.page = $scope.page;
+       marketParam.rows = $scope.rows;
+       Markets.getMarketsById(parentId).then(function(data){
+           $scope.market = data.result.shopMarket;
+           $scope.children = data.result.children;
+           $scope.images = data.result.images;
+           $ionicSlideBoxDelegate.update();
+       });
+        Markets.getShopByMarketCat(marketParam).then(function(data){
+          $scope.marketShops = data.result.data;
+          $scope.pages = data.result.totalPages;
+        });
+  };
+   $scope.loadMore = function(){
     if ($scope.page < $scope.pages) {
       $scope.page++;
       if ($scope.busy) {
@@ -189,8 +236,8 @@ AdService.getAds().then(function(data){
       marketParam.page = $scope.page;
       Markets.getShopByMarket(marketParam).then(function(data){
              $scope.busy = false;
-              for (var i in data.result.result) {
-                $scope.marketShops.push(data.result.result[i]);
+              for (var i in data.result.data) {
+                $scope.marketShops.push(data.result.data[i]);
               }
               $scope.$broadcast('scroll.infiniteScrollComplete');
           }, function(data){
@@ -211,7 +258,7 @@ AdService.getAds().then(function(data){
 
 })
 
-.controller('MarketsCtrl', function($scope,$ionicPopup,$stateParams,Markets,LocalData,Location) {
+.controller('MarketsCtrl', function($scope,$ionicPopup,$stateParams,Markets,LocalData,Location,Session) {
   var type = $stateParams.markettype;
   if(type==0){
     $scope.title = "本地市场";
@@ -221,7 +268,7 @@ AdService.getAds().then(function(data){
   var marketParam = new Object();
   $scope.busy = false;
   $scope.page = 1;
-  $scope.rows = 10;
+  $scope.rows = 12;
   $scope.pages = 1;
   marketParam.page = $scope.page;
   marketParam.rows = $scope.rows;
@@ -259,6 +306,7 @@ AdService.getAds().then(function(data){
     }
   };
   $scope.backtoIndex = function() {
+      Session.setLocationMode(0);
       window.location.href="#/tab/dash";
   };
   $scope.gotoshop= function(shopid) {
@@ -935,7 +983,9 @@ $scope.tomydollarpage=function (){
   }
 })
 
-.controller('MystoreCtrl', function($scope) {
+.controller('MystoreCtrl', function($scope,StoreService) {
+  var height=window.innerHeight?window.innerHeight-120:500;
+  $scope.liststyle = {height:height+'px'};
   $scope.hide1 ="";
   $scope.hide2 ="hide";
   $scope.assertive1 = "button-assertive";

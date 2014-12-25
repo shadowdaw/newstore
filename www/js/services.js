@@ -299,7 +299,13 @@ angular.module('starter.services', [])
     { id: 7, logo:'img/temp/icon/market_fen7.png' },
     { id: 8, logo:'img/temp/icon/market_fen8.png' }
   ];
+  var images = [
+  {imgPath:'img/temp/morenmarket.png'}
+  ];
 return {
+  images: function(){
+    return images;
+  },
   markets1: function() {
       return markets1;
     },
@@ -346,7 +352,21 @@ return {
         deferred.reject(status)
       })
       return deferred.promise;
+    },
+    getShopByMarketCat:function(data){
+       var deferred = $q.defer();
+      $http({
+        method: 'JSONP',
+        params:data,
+        url: 'http://admin.53xsd.com/market/getShopByMarketCat?callbackName=JSON_CALLBACK'
+      }).success(function(data){
+        deferred.resolve(data);
+      }).error(function(data,status){
+        deferred.reject(status)
+      })
+      return deferred.promise;
     }
+
   }
 })
 
@@ -719,6 +739,24 @@ return {
         method: 'JSONP',
         params:data,
         url: _url+'getRecordAsPage?callbackName=JSON_CALLBACK'
+      }).success(function(data){
+        deferred.resolve(data);
+      }).error(function(data,status){
+        deferred.reject(status)
+      })
+      return deferred.promise;
+    }
+  }
+})
+
+.factory('StoreService', function($http, $q) {
+  return {    
+    getFavList:function(data){
+      var deferred = $q.defer();
+      $http({
+        method: 'JSONP',
+        params:data,
+        url: 'http://admin.53xsd.com/favorite/getFavList?callbackName=JSON_CALLBACK'
       }).success(function(data){
         deferred.resolve(data);
       }).error(function(data,status){

@@ -12,6 +12,7 @@
 	  <a class="button {{assertive2}}" ng-click="getStoreProduct()">收藏的商品</a>
 	</div>
   <div class="{{hide1}}">
+    <ion-scroll ng-style="{{liststyle}}">
     <ion-list>
         <a class="item shopItem-left" style="padding-right:10px;"   ng-click="gotoshop({{shop.id}})">
           <img ng-src="http://image.53xsd.com/newshop/2014/12/cc44b91b-bea6-4d7b-82b3-f33b74593a62.jpg">
@@ -59,8 +60,10 @@
     <ion-infinite-scroll
     on-infinite="loadMore()" >
   </ion-infinite-scroll>
+</ion-scroll>
 </div>
 <div class="{{hide2}}">
+<ion-scroll ng-style="{{liststyle}}">
  <div class="item nopadding" style="width:48%;display:inline-block;margin-left:1%;" ng-click="showProductDetail({{product.id}});">
   <div style="width:100%;height:200px;overflow:hidden">
    <img ng-src="http://image.53xsd.com/newshop/2014/12/8bb4f54c-6327-4240-8dde-144ddb40fd18.jpg" style="width:100%;">
@@ -124,6 +127,7 @@
     <ion-infinite-scroll
     on-infinite="loadMore()">
   </ion-infinite-scroll>
+</ion-scroll>
  </div>
   </ion-content>
 </ion-view>
