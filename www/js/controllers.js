@@ -209,6 +209,7 @@ AdService.getAds(1).then(function(data){
        marketParam.page = $scope.page;
        marketParam.rows = $scope.rows;
     if(id==-1){
+        marketParam.id = $scope.marketId;
         Markets.getShopByMarket(marketParam).then(function(data){
           $scope.marketShops = data.result.data;
           $scope.pages = data.result.totalPages;
