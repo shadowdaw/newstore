@@ -13,7 +13,7 @@
 <ion-slide-box on-slide-changed="slideHasChanged($index)" does-continue="true" auto-play="true" class="padding-bottom">
    <ion-slide ng-repeat="ad in ads">
   <div class="item item-image">
-    <img src="{{ad.advertisementItem.filePath}}">
+    <img ng-src="{{ad.advertisementItem.filePath}}">
   </div>
   </ion-slide>
 </ion-slide-box>
@@ -22,7 +22,7 @@
 
 <div class="item nopadding item-image mybutton"
     ng-repeat="menu in menus" style="width:25%" ng-click="showShops({{menu.id}});">
-    <img src="{{menu.logo}}"  style="width:50%">
+    <img ng-src="{{menu.logo}}"  style="width:50%">
     <p>{{menu.name}}</p>
   </div>
 </div>
@@ -42,7 +42,7 @@
 </div>
 <div class="list" style="margin-left: 2%;margin-right: 2%;">
   <div ng-repeat="market in marketData" class="item item-image market" style="width: 32%;display: inline-block;border: none;" ng-click="goMarket({{market.id}})">
-    <img src="{{market.logo}}">
+    <img ng-src="{{market.logo}}">
     <br/>
      <div>
       <span>{{market.name}}</span>
@@ -63,7 +63,7 @@
 </div>
 <div class="list" style="margin-left: 2%;margin-right: 2%;">
   <div ng-repeat="market in marketData1" class="item item-image market" style="width: 32%;display: inline-block;border: none;" ng-click="goMarket({{market.id}})">
-    <img src="{{market.logo}}">
+    <img ng-src="{{market.logo}}">
     <br/>
      <div>
       <span>{{market.name}}</span>
