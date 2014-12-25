@@ -40,8 +40,8 @@
     </a>
  </div>
 </div>
-<div class="list" style="margin-left: 2%;margin-right: 2%;">
-  <div ng-repeat="market in marketData" class="item item-image market" style="width: 32%;display: inline-block;border: none;" ng-click="goMarket({{market.id}})">
+<div class="list">
+  <div class="card item item-image market" ng-repeat="market in marketData" style="width: 33%;display: inline-block;padding: 8px;" ng-click="goMarket({{market.id}})">
     <img ng-src="{{market.logo}}">
     <br/>
      <div>
@@ -61,8 +61,8 @@
  </div>
 
 </div>
-<div class="list" style="margin-left: 2%;margin-right: 2%;">
-  <div ng-repeat="market in marketData1" class="item item-image market" style="width: 32%;display: inline-block;border: none;" ng-click="goMarket({{market.id}})">
+<div class="list">
+   <div class="card item item-image market" ng-repeat="market in marketData1" style="width: 33%;display: inline-block;padding: 8px;" ng-click="goMarket({{market.id}})">
     <img ng-src="{{market.logo}}">
     <br/>
      <div>

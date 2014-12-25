@@ -204,7 +204,7 @@ AdService.getAds(1).then(function(data){
           $scope.pages = data.result.totalPages;
         });
   };
-  $scope.getShopByMarketCat = function(id,parentId){
+  $scope.getShopByMarketCat = function(id){
        $scope.page = 1;
        $scope.pages = 1;
        marketParam.id = id;

@@ -25,7 +25,7 @@
    <div class="item nopadding item-image mybutton" style="width:24%" ng-click="showShops({{marketId}});">
     <img ng-src="img/temp/icon/market_fen0.png">
   </div>
-   <div ng-repeat="child in children" class="item nopadding item-image mybutton" style="width:24%" ng-click="getShopByMarketCat({{child.id}},{{child.parentId}});">
+   <div ng-repeat="child in children" class="item nopadding item-image mybutton" style="width:24%" ng-click="getShopByMarketCat({{child.id}});">
     <img ng-src="{{child.logo}}">
   </div>
   <ion-list>
