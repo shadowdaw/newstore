@@ -173,13 +173,19 @@ AdService.getAds(1).then(function(data){
   $scope.page = 1;
   $scope.rows = 10;
   $scope.pages = 1;
-  $scope.children = Markets.children();
   $scope.marketId=$stateParams.marketId;
   Markets.getMarketsById($scope.marketId).then(function(data){
+            var child = [{ct: 0,ut: 0,id: -1,name: "全部",orgId: 3,contact: null,mobile: null,phone: null,provinceId: null,
+                districtId: null,cityId: null,code: null,address: null,logo: "img/temp/icon/market_fen0.png",image: null,
+                desc: "",latitude: null,longitude: null,creator: 19,updater: 19,type: null,createTime: "2014-12-24 17:51:08",
+                updateTime: "2014-12-24 18:02:58",parentId: 3,isDeleted: 0,_parentId: 3}
+              ];
              $scope.market = data.result.shopMarket;
-              for (var i in data.result.children) {
-                $scope.children.push(data.result.children[i]);
-              }
+             for (var i in data.result.children) {
+                child.push(data.result.children[i]);
+             }
+             $scope.children = child;
+             $ionicSlideBoxDelegate.update();
              if(JSON.stringify(data.result.images)=='[]'){
               $scope.images = Markets.images();
              }else{
@@ -307,6 +313,17 @@ AdService.getAds(1).then(function(data){
       $scope.$broadcast('scroll.infiniteScrollComplete');
     }
   };
+  $scope.goMarket = function(marketId){
+    if(marketId==0){
+      $ionicPopup.alert({
+         title: '关联信息！',
+         okText: '确定',
+         template: '抱歉,尚未录入信息！'
+       });
+      return;
+    }
+    window.location.href = "#/market/"+marketId;
+  }
   $scope.backtoIndex = function() {
       Session.setLocationMode(0);
       window.location.href="#/tab/dash";
