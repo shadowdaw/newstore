@@ -302,9 +302,15 @@ angular.module('starter.services', [])
   var images = [
   {imgPath:'img/temp/morenmarket.png'}
   ];
+  var images1 = [
+  {advertisement: {ct: 1418029833133,ut: 1418029833133,id: 1},advertisementItem: {filePath: "img/temp/morenmarket.png"}
+}];
 return {
   images: function(){
     return images;
+  },
+  images1: function(){
+    return images1;
   },
   markets1: function() {
       return markets1;
@@ -831,11 +837,11 @@ filePath: "http://image.53xsd.com/newshop/2014/12/8a63ddb1-3f0a-4c3c-8fa6-9567f1
 
 .factory('AdService', function($http, $q) {
   return {    
-    getAds: function() {
+    getAds: function(id) {
        var deferred = $q.defer();
       $http({
         method: 'JSONP',
-        url: _url+'getAdv?callbackName=JSON_CALLBACK'
+        url: _url+'getAdv?callbackName=JSON_CALLBACK&typeId='+id
       }).success(function(data){
         deferred.resolve(data);
       }).error(function(data,status){

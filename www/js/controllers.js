@@ -68,7 +68,7 @@ $scope.menus=IndexService.get();
 $scope.areaName=Location.getAreaName();
 
 if(!IndexService.isLoded()){
-AdService.getAds().then(function(data){
+AdService.getAds(1).then(function(data){
   $scope.ads=data.result;
         $ionicSlideBoxDelegate.update();
       }, function(data){
@@ -199,12 +199,6 @@ AdService.getAds().then(function(data){
        marketParam.id = id;
        marketParam.page = $scope.page;
        marketParam.rows = $scope.rows;
-       Markets.getMarketsById(id).then(function(data){
-           $scope.market = data.result.shopMarket;
-           $scope.children = data.result.children;
-           $scope.images = data.result.images;
-           $ionicSlideBoxDelegate.update();
-       });
         Markets.getShopByMarket(marketParam).then(function(data){
           $scope.marketShops = data.result.data;
           $scope.pages = data.result.totalPages;
@@ -216,12 +210,6 @@ AdService.getAds().then(function(data){
        marketParam.id = id;
        marketParam.page = $scope.page;
        marketParam.rows = $scope.rows;
-       Markets.getMarketsById(parentId).then(function(data){
-           $scope.market = data.result.shopMarket;
-           $scope.children = data.result.children;
-           $scope.images = data.result.images;
-           $ionicSlideBoxDelegate.update();
-       });
         Markets.getShopByMarketCat(marketParam).then(function(data){
           $scope.marketShops = data.result.data;
           $scope.pages = data.result.totalPages;
@@ -259,12 +247,15 @@ AdService.getAds().then(function(data){
 
 })
 
-.controller('MarketsCtrl', function($scope,$ionicPopup,$stateParams,Markets,LocalData,Location,Session) {
+.controller('MarketsCtrl', function($scope,$stateParams,$ionicSlideBoxDelegate,Markets,AdService,LocalData,Location,Session) {
   var type = $stateParams.markettype;
+  var typeId = 0;
   if(type==0){
     $scope.title = "本地市场";
+    typeId = 4;
   }else if(type==1){
     $scope.title = "本地商场";
+    typeId = 5;
   }
   var marketParam = new Object();
   $scope.busy = false;
@@ -275,6 +266,15 @@ AdService.getAds().then(function(data){
   marketParam.rows = $scope.rows;
   marketParam.cityId = Location.getAreaId();
   marketParam.type = type;
+  AdService.getAds(typeId).then(function(data){
+    if(JSON.stringify(data.result)=='[]'){
+      $scope.ads = Markets.images1();
+     }else{
+      $scope.ads = data.result;
+     }
+    $ionicSlideBoxDelegate.update();
+        }, function(data){
+    }); 
   Markets.getMarkets(marketParam).then(function(data){
     if(JSON.stringify(data.result.data)=='[]'){
        $scope.marketData = Markets.markets1();
@@ -293,11 +293,11 @@ AdService.getAds().then(function(data){
       $scope.busy = true;
       marketParam.page = $scope.page;
       Markets.getShopByMarket(marketParam).then(function(data){
-             $scope.busy = false;
-              for (var i in data.result.result) {
-                $scope.marketShops.push(data.result.result[i]);
-              }
-              $scope.$broadcast('scroll.infiniteScrollComplete');
+            $scope.busy = false;
+            for (var i in data.result.data) {
+              $scope.marketShops.push(data.result.data[i]);
+            }
+            $scope.$broadcast('scroll.infiniteScrollComplete');
           }, function(data){
           console.log(data);
           });
