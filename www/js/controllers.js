@@ -804,7 +804,7 @@ $scope.submitpayinfo=function () {
     Session.clearLocationMode();
   }else{
    $ionicLoading.show({
-    template:'正在加载',
+    template:'定位中',
     showBackdrop: false
   });
   var pointParam = new Object();
@@ -822,6 +822,9 @@ $scope.submitpayinfo=function () {
         pointParam.latitude = r.point.lat;
         pointParam.longitude = r.point.lng;
         pointParam.categoryId = 0; 
+        $ionicLoading.show({
+          template:'正在加载'
+        });
         Shops.getNearbyShops(pointParam).then(function(data){
           if(JSON.stringify(data.result)=='[]'){
              $ionicLoading.hide();
