@@ -1,7 +1,8 @@
 angular.module('starter.controllers', [])
 
 //主页 商铺 商品详情等controller  开始位置
-.controller('IndexCtrl', function($scope, $ionicModal,$ionicPopover,$ionicSlideBoxDelegate,$ionicPopup,$ionicBackdrop,Location,IndexService,AdService,Shops,Markets,Session) { 
+.controller('IndexCtrl', function($scope, $ionicModal,$ionicPopover,$ionicLoading,$ionicSlideBoxDelegate,$ionicPopup,$ionicBackdrop,Location,IndexService,AdService,Shops,Markets,Session) { 
+    $ionicLoading.hide();
     var marketParam1=new Object();
     var marketParam2=new Object();
     $scope.busy = false;
@@ -803,8 +804,8 @@ $scope.submitpayinfo=function () {
     Session.clearLocationMode();
   }else{
    $ionicLoading.show({
-    template:'定位中',
-    noBackdrop :false,
+    template:'正在加载',
+    showBackdrop: false
   });
   var pointParam = new Object();
   var geolocation = new BMap.Geolocation(); 
@@ -821,9 +822,6 @@ $scope.submitpayinfo=function () {
         pointParam.latitude = r.point.lat;
         pointParam.longitude = r.point.lng;
         pointParam.categoryId = 0; 
-        $ionicLoading.show({
-          template:'正在加载'
-        });
         Shops.getNearbyShops(pointParam).then(function(data){
           if(JSON.stringify(data.result)=='[]'){
              $ionicLoading.hide();
@@ -870,8 +868,8 @@ $scope.gotoshop= function(shopid) {
   $scope.friend = Friends.get($stateParams.friendId);
 })
 //团购页面的controller
-.controller('GroupCtrl', function($scope,Friends,Location,$http, $q) {
-
+.controller('GroupCtrl', function($scope,$ionicLoading,Friends,Location,$http, $q) {
+  $ionicLoading.hide();
   //方案一 可行 需要等待网络响应
       var friends  = Friends.all();
   //Show a backdrop for one second
@@ -904,7 +902,8 @@ $scope.gotoshop= function(shopid) {
 })
 
 //会员页面的controller
-.controller('MemberCtrl', function($scope, $ionicPopup,$ionicModal,MemberService,LocalData) {
+.controller('MemberCtrl', function($scope, $ionicPopup,$ionicLoading,$ionicModal,MemberService,LocalData) {
+  $ionicLoading.hide();
   $scope.opensetting=function(){
          if(MemberService.getMember()){
            window.location.href="#/setting";
