@@ -22,10 +22,7 @@
 	<a class="item" style="background: #ddd;padding: 8px;">
     <img width="50%" ng-src="img/temp/market3.png"> <img width="50%" ng-src="img/temp/market4.png">
    </a>
-   <div class="item nopadding item-image mybutton" style="width:24%" ng-click="showShops({{marketId}});">
-    <img ng-src="img/temp/icon/market_fen0.png">
-  </div>
-   <div ng-repeat="child in children" class="item nopadding item-image mybutton" style="width:24%" ng-click="getShopByMarketCat({{child.id}});">
+   <div ng-repeat="child in children" class="item nopadding item-image mybutton" style="width:25%" ng-click="getShopByMarketCat({{child.id}});">
     <img ng-src="{{child.logo}}">
   </div>
   <ion-list>

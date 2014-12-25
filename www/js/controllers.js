@@ -167,16 +167,19 @@ AdService.getAds(1).then(function(data){
   
 })
 
-.controller('MarketCtrl', function($scope,$ionicPopup,$stateParams,$ionicSlideBoxDelegate,Markets,LocalData,Location) {
+.controller('MarketCtrl', function($scope,$ionicPopup,$stateParams,$ionicSlideBoxDelegate,Markets,LocalData,Location,Session) {
   var marketParam = new Object();
   $scope.busy = false;
   $scope.page = 1;
   $scope.rows = 10;
   $scope.pages = 1;
+  $scope.children = Markets.children();
   $scope.marketId=$stateParams.marketId;
   Markets.getMarketsById($scope.marketId).then(function(data){
              $scope.market = data.result.shopMarket;
-             $scope.children = data.result.children;
+              for (var i in data.result.children) {
+                $scope.children.push(data.result.children[i]);
+              }
              if(JSON.stringify(data.result.images)=='[]'){
               $scope.images = Markets.images();
              }else{
@@ -193,27 +196,24 @@ AdService.getAds(1).then(function(data){
   $scope.marketShops = data.result.data;
   $scope.pages = data.result.totalPages;
   });
-  $scope.showShops = function(id){
-       $scope.page = 1;
-       $scope.pages = 1;
-       marketParam.id = id;
-       marketParam.page = $scope.page;
-       marketParam.rows = $scope.rows;
-        Markets.getShopByMarket(marketParam).then(function(data){
-          $scope.marketShops = data.result.data;
-          $scope.pages = data.result.totalPages;
-        });
-  };
   $scope.getShopByMarketCat = function(id){
        $scope.page = 1;
        $scope.pages = 1;
        marketParam.id = id;
        marketParam.page = $scope.page;
        marketParam.rows = $scope.rows;
-        Markets.getShopByMarketCat(marketParam).then(function(data){
+    if(id==-1){
+        Markets.getShopByMarket(marketParam).then(function(data){
           $scope.marketShops = data.result.data;
           $scope.pages = data.result.totalPages;
         });
+    }else{
+       Markets.getShopByMarketCat(marketParam).then(function(data){
+          $scope.marketShops = data.result.data;
+          $scope.pages = data.result.totalPages;
+        });
+    }
+       
   };
    $scope.loadMore = function(){
     if ($scope.page < $scope.pages) {
@@ -238,6 +238,7 @@ AdService.getAds(1).then(function(data){
     }
   };
   $scope.backtoIndex = function() {
+      Session.setLocationMode(0);
       window.location.href="#/tab/dash";
   };
   $scope.gotoshop= function(shopid) {

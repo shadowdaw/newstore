@@ -303,14 +303,21 @@ angular.module('starter.services', [])
   {imgPath:'img/temp/morenmarket.png'}
   ];
   var images1 = [
-  {advertisement: {ct: 1418029833133,ut: 1418029833133,id: 1},advertisementItem: {filePath: "img/temp/morenmarket.png"}
-}];
+  {advertisement: {ct: 1418029833133,ut: 1418029833133,id: 1},advertisementItem: {filePath: "img/temp/morenmarket.png"}}];
+  var children = [{ct: 0,ut: 0,id: -1,name: "全部",orgId: 3,contact: null,mobile: null,phone: null,provinceId: null,
+                districtId: null,cityId: null,code: null,address: null,logo: "img/temp/icon/market_fen0.png",image: null,
+                desc: "",latitude: null,longitude: null,creator: 19,updater: 19,type: null,createTime: "2014-12-24 17:51:08",
+                updateTime: "2014-12-24 18:02:58",parentId: 3,isDeleted: 0,_parentId: 3}
+      ];
 return {
   images: function(){
     return images;
   },
   images1: function(){
     return images1;
+  },
+  children: function(){
+    return children;
   },
   markets1: function() {
       return markets1;
