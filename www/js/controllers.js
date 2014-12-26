@@ -517,7 +517,7 @@ $scope.backtoIndex = function() {
 
 })
 
-.controller('ShopdetailCtrl', function($scope,$ionicPopover,$stateParams,Shopdetail,Shops,LocalData,Session) {
+.controller('ShopdetailCtrl', function($scope,$ionicModal,$ionicPopover,$stateParams,Shopdetail,Shops,LocalData,Session) {
   var shopId=$stateParams.shopId
 
 //商铺详情的获取
@@ -584,6 +584,27 @@ $scope.backtoIndex = function() {
   $scope.$on('popover.removed', function() {
     // Execute action
   });
+
+
+  $ionicModal.fromTemplateUrl('templates/connet.html', {
+    scope: $scope,
+    animation: 'slide-in-up'
+  }).then(function(modal) {
+    $scope.connetModal = modal;
+  });
+  $scope.openconnetModal = function() {
+  $scope.connetModal.show();
+  };
+  $scope.closeconnetModal = function() {
+  $scope.connetModal.hide();
+  };
+  //Cleanup the modal when we're done with it!
+  $scope.$on('$destroy', function() {
+    $scope.modal.remove();
+  });
+
+
+
 })
 
 
@@ -1215,6 +1236,39 @@ $scope.backtoMemberpage=function() {
   };
 
 })
+.controller('ShopprofileCtrl', function($scope,$stateParams,Friends,LocalData,Shops) {
+    var shopId=$stateParams.shopId
+    if(LocalData.getshop()){
+    $scope.shopinfo=LocalData.getshop();
+    createMap($scope.shopinfo.shop.latitude,$scope.shopinfo.shop.longitude);
+    }else{
+        Shops.getShopDetail(shopId).then(function(data){
+        $scope.shopinfo=data.result;
+        LocalData.setshop(data.result);
+        createMap($scope.shopinfo.shop.latitude,$scope.shopinfo.shop.longitude);
+      }, function(data){
+          console.log(data);
+      });
+    }
+
+
+  $scope.closeshopprofileModal = function() {
+   window.location.href="#/shopdetail/"+shopId;
+  };
+
+    function  createMap(lat,lon){
+      var map = new BMap.Map("shopMap");
+      var point=new BMap.Point(lon,lat)
+      map.centerAndZoom(point,14);
+      map.enableScrollWheelZoom(true);
+      var mk = new BMap.Marker(point);
+      map.addOverlay(mk);
+      map.panTo(point);
+    }
+
+})
+
+
 .controller('SettingCtrl', function($scope,Friends) {
 })
 ;

@@ -203,6 +203,11 @@ angular.module('starter', ['ionic', 'starter.controllers', 'starter.services','s
       controller: 'RegisterCtrl',
       templateUrl: "templates/register.html"
     })
+    .state('shopprofile', {
+      url: "/shopprofile/:shopId",
+      controller: 'ShopprofileCtrl',
+      templateUrl: "templates/shopprofile.html"
+    })
 
     .state('test', {
       url: "/test",
