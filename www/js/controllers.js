@@ -1,7 +1,7 @@
 angular.module('starter.controllers', [])
 
 //主页 商铺 商品详情等controller  开始位置
-.controller('IndexCtrl', function($scope, $ionicModal,$ionicPopover,$ionicLoading,$ionicSlideBoxDelegate,$ionicPopup,$ionicBackdrop,Location,IndexService,AdService,Shops,Markets,Session) { 
+.controller('IndexCtrl', function($scope, $ionicModal,$ionicPopover,$ionicLoading,$ionicSlideBoxDelegate,$ionicPopup,$ionicBackdrop,Location,IndexService,AdService,Shops,Markets,LocalData,Session) { 
     $ionicLoading.hide();
     var marketParam1=new Object();
     var marketParam2=new Object();
@@ -161,6 +161,7 @@ AdService.getAds(1).then(function(data){
        });
       return;
     }
+    LocalData.setrediretfromUrl("#/tab/dash");
     window.location.href = "#/market/"+marketId;
   };
 
@@ -246,7 +247,7 @@ AdService.getAds(1).then(function(data){
   };
   $scope.backtoIndex = function() {
       Session.setLocationMode(0);
-      window.location.href="#/tab/dash";
+      window.location.href=LocalData.getrediretfromUrl();
   };
   $scope.gotoshop= function(shopid) {
     LocalData.setreserveRediretfromUrl("#/market/"+$stateParams.marketId);
@@ -255,7 +256,7 @@ AdService.getAds(1).then(function(data){
 
 })
 
-.controller('MarketsCtrl', function($scope,$stateParams,$ionicSlideBoxDelegate,Markets,AdService,LocalData,Location,Session) {
+.controller('MarketsCtrl', function($scope,$stateParams,$ionicPopup,$ionicSlideBoxDelegate,Markets,AdService,LocalData,Location,Session) {
   var type = $stateParams.markettype;
   var typeId = 0;
   if(type==0){
@@ -323,6 +324,7 @@ AdService.getAds(1).then(function(data){
        });
       return;
     }
+    LocalData.setrediretfromUrl("#/markets/"+type);
     window.location.href = "#/market/"+marketId;
   }
   $scope.backtoIndex = function() {
